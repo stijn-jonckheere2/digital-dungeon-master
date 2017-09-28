@@ -3,17 +3,7 @@
   "short_name": "DDM",
   "icons": [
     {
-      "src": "/assets/images/app-icon-tiny.png",
-      "sizes": "96x96",
-      "type": "image/png"
-    },
-    {
-      "src": "/assets/images/app-icon-regular.png",
-      "sizes": "144x144",
-      "type": "image/png"
-    },
-    {
-      "src": "/assets/images/app-icon-large.png",
+      "src": "/assets/images/app-icon.png",
       "sizes": "192x192",
       "type": "image/png"
     }
