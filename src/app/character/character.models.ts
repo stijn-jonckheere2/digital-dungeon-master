@@ -11,10 +11,10 @@ class Serializable {
 
         convertedChar.gold = jsonObj.gold;
 
-        convertedChar.abilities = jsonObj.abilities;
-        convertedChar.inventory = jsonObj.inventory;
-        convertedChar.questLog = jsonObj.questLog;
-        convertedChar.npcList = jsonObj.npcList;
+        convertedChar.abilities = jsonObj.abilities || [];
+        convertedChar.inventory = jsonObj.inventory || [];
+        convertedChar.questLog = jsonObj.questLog || [];
+        convertedChar.npcList = jsonObj.npcList || [];
 
         convertedChar.primaryStats = jsonObj.primaryStats;
         convertedChar.secondaryStats = jsonObj.secondaryStats;
@@ -24,7 +24,7 @@ class Serializable {
         convertedChar.rangedStats = jsonObj.rangedStats;
         convertedChar.professionStats = jsonObj.professionStats;
 
-        convertedChar.logs = jsonObj.logs;
+        convertedChar.logs = jsonObj.logs || [];
 
         return convertedChar;
     }
