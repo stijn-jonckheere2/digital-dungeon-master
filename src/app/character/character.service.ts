@@ -30,7 +30,7 @@ export class CharacterService {
     saveCharacters(characters: Character[]) {
         const userId = this.authService.getUserId();
         const token = this.authService.getToken();
-        const url = "https://digital-dungeon-master.firebaseio.com/" + userId +
+        const url = "https://digital-dungeon-master.firebaseio.com/characters/" + userId +
             "-characters.json?auth=" + token;
         return this.http.put(url, this.characters);
     }
@@ -40,7 +40,7 @@ export class CharacterService {
             (resolve, reject) => {
                 const userId = this.authService.getUserId();
                 const token = this.authService.getToken();
-                const url = "https://digital-dungeon-master.firebaseio.com/" + userId +
+                const url = "https://digital-dungeon-master.firebaseio.com/characters/" + userId +
                     "-characters.json?auth=" + token;
 
                 this.http.get(url).subscribe(
