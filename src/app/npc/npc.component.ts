@@ -30,7 +30,6 @@ export class NpcComponent implements OnInit {
     this.characterService.getCharacterById(this.characterId).then(
       (char: Character) => {
         this.character = char;
-        console.log("Char", char);
         this.handleForm();
       }
     );

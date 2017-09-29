@@ -1,17 +1,26 @@
 @import '~sass/variables';
+div {
 
+    width: 100%;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    background-color: #ED4337;    
+
+    &.hidden {
+        display: none;
+    }
+}
 p {
     display: flex;
     justify-content: space-between;
     box-sizing: border-box;
-    width: 100%;
 
-    position: fixed;
-    bottom: 0;
-    left: 0;
+    width: 100%;
+    max-width: 880px;
+    margin: 0 auto;
     padding: 20px;
 
-    background-color: #ED4337;
     color: #F2F2F2;
     cursor: pointer;
 }
