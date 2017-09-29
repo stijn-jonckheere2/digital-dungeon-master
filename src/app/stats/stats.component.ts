@@ -2,6 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { Character } from "../character/character.models";
 import { CharacterService } from "../character/character.service";
 import { ActivatedRoute, Params } from "@angular/router";
+import { ErrorService } from "../error-service.service";
 
 @Component({
   selector: "app-stats",
@@ -13,7 +14,7 @@ export class StatsComponent implements OnInit {
   characterId: number;
   allowEdit = false;
 
-  constructor(private characterService: CharacterService,
+  constructor(private characterService: CharacterService, private errorService: ErrorService,
     private route: ActivatedRoute) {
   }
 
@@ -58,6 +59,29 @@ export class StatsComponent implements OnInit {
 
   enableEdit() {
     this.allowEdit = true;
+  }
+
+  setStat(type: string, statIndex, statName) {
+    const newStatValue = parseInt(window.prompt("Enter a value for <" + statName + ">:"));
+
+    switch (type) {
+      case "primary":
+        if (typeof newStatValue === typeof 0 && newStatValue <= 20 && newStatValue >= 0) {
+          this.character.primaryStats[statIndex].level = newStatValue;
+        } else {
+          this.errorService.displayError("The stat value you entered for <" + statName + "> was not correct");
+        }
+        break;
+      case "secondary":
+        if (typeof newStatValue === typeof 0 && newStatValue <= 20 && newStatValue >= 3) {
+          this.character.secondaryStats[statIndex].level = newStatValue;
+        } else {
+          this.errorService.displayError("The stat value you entered for <" + statName + "> was not correct");
+        }
+        break;
+    }
+
+
   }
 
   onSave() {

@@ -2,6 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { Character } from "../character/character.models";
 import { CharacterService } from "../character/character.service";
 import { ActivatedRoute } from "@angular/router";
+import { ErrorService } from "../error-service.service";
 
 @Component({
   selector: "app-profession-stats",
@@ -13,7 +14,7 @@ export class ProfessionStatsComponent implements OnInit {
   characterId: number;
   allowEdit = false;
 
-  constructor(private characterService: CharacterService,
+  constructor(private characterService: CharacterService, private errorService: ErrorService,
     private route: ActivatedRoute) {
   }
 
@@ -43,6 +44,16 @@ export class ProfessionStatsComponent implements OnInit {
         break;
     }
   }
+
+  setStat(statIndex, statName) {
+    const newStatValue = parseInt(window.prompt("Enter a value for <" + statName + ">:"));
+    if (typeof newStatValue === typeof 0 && newStatValue <= 20 && newStatValue >= 3) {
+      this.character.professionStats[statIndex].level = newStatValue;
+    } else {
+      this.errorService.displayError("The stat value you entered for <" + statName + "> was not correct");
+    }
+  }
+
 
   enableEdit() {
     this.allowEdit = true;
