@@ -2,6 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { Character } from "../character/character.models";
 import { CharacterService } from "../character/character.service";
 import { ActivatedRoute } from "@angular/router";
+import { ErrorService } from "../error-service.service";
 
 @Component({
   selector: "app-equipment-stats",
@@ -13,7 +14,7 @@ export class EquipmentStatsComponent implements OnInit {
   characterId: number;
   allowEdit = false;
 
-  constructor(private characterService: CharacterService,
+  constructor(private characterService: CharacterService, private errorService: ErrorService,
     private route: ActivatedRoute) {
   }
 
@@ -53,6 +54,24 @@ export class EquipmentStatsComponent implements OnInit {
       case "armor":
         this.character.armorStats[statIndex].level--;
         break;
+    }
+  }
+  setStat(type: string, statIndex, statName) {
+    const newStatValue = parseInt(window.prompt("Enter a value for <" + statName + ">:"));
+    if (typeof newStatValue === typeof 0 && newStatValue <= 20 && newStatValue >= 3) {
+      switch (type) {
+        case "weapon":
+          this.character.weaponStats[statIndex].level = newStatValue;
+          break;
+        case "ranged":
+          this.character.rangedStats[statIndex].level = newStatValue;
+          break;
+        case "armor":
+          this.character.armorStats[statIndex].level = newStatValue;
+          break;
+      }
+    } else {
+      this.errorService.displayError("The stat value you entered for <" + statName + "> was not correct");
     }
   }
 
