@@ -28,7 +28,6 @@ export class QuestlogComponent implements OnInit {
     this.characterService.getCharacterById(this.characterId).then(
       (char: Character) => {
         this.character = char;
-        console.log("QC: Loaded char", char);
         this.handleForm();
       }
     );

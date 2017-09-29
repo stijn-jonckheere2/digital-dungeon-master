@@ -47,11 +47,9 @@ export class CharacterService {
                     (response) => {
                         const characters = response.json();
                         if (characters !== null) {
-                            console.log("got chars", characters);
                             this.convertCharacters(characters);
                         }
                         this.charactersFetched = true;
-                        console.log("characters fetched", this.characters);
                         resolve();
                     },
                     (error) => {

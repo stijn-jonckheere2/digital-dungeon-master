@@ -1,4 +1,6 @@
-<p *ngIf="error && error.length > 0" (click)="removeError()">
-  {{ error }}
-  <span>x</span>
-</p>
+<div [ngClass]="{'hidden' : !error || error.length === 0}" (click)="removeError()">
+  <p>
+    {{ error }}
+    <span>x</span>
+  </p>
+</div>
