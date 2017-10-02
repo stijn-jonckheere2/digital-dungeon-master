@@ -16,6 +16,7 @@ export class InventoryComponent implements OnInit {
 
   itemFormEnabled = false;
   newInventoryItem = new InventoryItem("", "", 1, false);
+  newItemId = -1;
 
   constructor(private characterService: CharacterService,
     private route: ActivatedRoute) {
@@ -35,7 +36,6 @@ export class InventoryComponent implements OnInit {
     );
   }
 
-
   updateInventory() {
     this.character.inventory = this.characterService.getInventory(this.characterId);
   }
@@ -45,10 +45,22 @@ export class InventoryComponent implements OnInit {
   }
 
   addItem() {
-    this.characterService.addInventoryItem(this.characterId, this.newInventoryItem);
+    if (this.newItemId >= 0) {
+      this.characterService.updateInventoryItem(this.characterId, this.newItemId, this.newInventoryItem);
+    } else {
+      this.characterService.addInventoryItem(this.characterId, this.newInventoryItem);
+    }
+
     this.newInventoryItem = new InventoryItem("", "", 1, false);
+    this.newItemId = -1;
     this.itemFormEnabled = false;
     this.updateInventory();
+  }
+
+  editItem(itemId: number) {
+    this.newInventoryItem = this.character.inventory[itemId];
+    this.newItemId = itemId;
+    this.itemFormEnabled = true;
   }
 
   cancelAddItem() {

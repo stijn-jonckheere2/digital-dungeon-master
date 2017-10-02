@@ -167,6 +167,13 @@ export class CharacterService {
         return this.characters[charId].inventory;
     }
 
+    updateInventoryItem(charId: number, itemId: number, item: InventoryItem) {
+        const character = this.characters[charId];
+        character.inventory[itemId] = item;
+        this.characters[charId].addLog("Updated Item  <" + item.name + ">");
+        this.updateCharacterById(charId, character);
+    }
+
     useInventoryItem(charId: number, itemId: number) {
         const character = this.characters[charId];
         const item = character.inventory[itemId];
