@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, OnDestroy } from "@angular/core";
 import { Router } from "@angular/router";
 
 import { CharacterService } from "../character.service";
@@ -10,16 +10,30 @@ import { ErrorService } from "../../error-service.service";
   templateUrl: "./character-list.component.html",
   styleUrls: ["./character-list.component.scss"]
 })
-export class CharacterListComponent implements OnInit {
+export class CharacterListComponent implements OnInit, OnDestroy {
 
   characters: Character[] = [];
   charactersFetched = false;
+  characterSub: any;
 
   constructor(private characterService: CharacterService,
-  private router: Router,
-  private errorService: ErrorService ) { }
+    private router: Router,
+    private errorService: ErrorService) { }
 
   ngOnInit() {
+    this.loadCharacters();
+    this.characterSub = this.characterService.characterUpdatesReceived.subscribe(
+      () => {
+        this.loadCharacters();
+      }
+    );
+  }
+
+  ngOnDestroy() {
+    this.characterSub.unsubscribe();
+  }
+
+  loadCharacters() {
     this.characterService.getCharacters().then(
       (characters: Character[]) => {
         if (characters !== null) {

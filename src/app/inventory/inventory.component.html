@@ -24,6 +24,7 @@
       <p class="inventory-item-description">{{ item.description }}</p>
       <div class="inventory-buttons">
         <button class="btn btn-primary" *ngIf="item.consumable" (click)="useItem(itemIndex)">Use</button>
+        <button class="btn btn-primary" (click)="editItem(itemIndex)">Edit</button>        
         <button class="btn btn-danger" (click)="removeItem(itemIndex)">Remove</button>
       </div>
     </div>

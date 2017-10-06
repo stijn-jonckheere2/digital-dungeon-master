@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, OnDestroy } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 
 import { Character, InventoryItem } from "../character/character.models";
@@ -10,12 +10,14 @@ import { CharacterService } from "../character/character.service";
   templateUrl: "./inventory.component.html",
   styleUrls: ["./inventory.component.scss"]
 })
-export class InventoryComponent implements OnInit {
+export class InventoryComponent implements OnInit, OnDestroy {
   character: Character;
   characterId: number;
+  characterSub: any;
 
   itemFormEnabled = false;
   newInventoryItem = new InventoryItem("", "", 1, false);
+  newItemId = -1;
 
   constructor(private characterService: CharacterService,
     private route: ActivatedRoute) {
@@ -24,7 +26,15 @@ export class InventoryComponent implements OnInit {
   ngOnInit() {
     this.characterId = +this.route.parent.snapshot.params["id"];
     this.loadCharacter();
+    this.characterSub = this.characterService.characterUpdatesReceived.subscribe(
+      () => {
+        this.loadCharacter();
+      }
+    );
+  }
 
+  ngOnDestroy() {
+    this.characterSub.unsubscribe();
   }
 
   loadCharacter() {
@@ -35,7 +45,6 @@ export class InventoryComponent implements OnInit {
     );
   }
 
-
   updateInventory() {
     this.character.inventory = this.characterService.getInventory(this.characterId);
   }
@@ -45,10 +54,22 @@ export class InventoryComponent implements OnInit {
   }
 
   addItem() {
-    this.characterService.addInventoryItem(this.characterId, this.newInventoryItem);
+    if (this.newItemId >= 0) {
+      this.characterService.updateInventoryItem(this.characterId, this.newItemId, this.newInventoryItem);
+    } else {
+      this.characterService.addInventoryItem(this.characterId, this.newInventoryItem);
+    }
+
     this.newInventoryItem = new InventoryItem("", "", 1, false);
+    this.newItemId = -1;
     this.itemFormEnabled = false;
     this.updateInventory();
+  }
+
+  editItem(itemId: number) {
+    this.newInventoryItem = this.character.inventory[itemId];
+    this.newItemId = itemId;
+    this.itemFormEnabled = true;
   }
 
   cancelAddItem() {
