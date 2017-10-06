@@ -117,7 +117,7 @@ export class Character extends Serializable {
     }
 
     public addLog = function (logText: string) {
-        this.logs.push(new CharacterLog(logText));
+        this.logs.unshift(new CharacterLog(logText));
     };
 
     public clearLogs = function () {
