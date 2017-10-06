@@ -16,8 +16,12 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
     firebase.initializeApp({
-      apiKey: "AIzaSyA8J2ryEam-6m4WAoM3k1CT75ylhQPUWLQ",
-      authDomain: "digital-dungeon-master.firebaseapp.com"
+      apiKey: "AIzaSyBqhxlpbErCF557lZd0-0qsXPubgMZzC_4",
+      authDomain: "digital-dungeon-master-dev.firebaseapp.com",
+      databaseURL: "https://digital-dungeon-master-dev.firebaseio.com",
+      projectId: "digital-dungeon-master-dev",
+      storageBucket: "digital-dungeon-master-dev.appspot.com",
+      messagingSenderId: "259994406067"
     });
     this.authService.startAuthListening();
   }

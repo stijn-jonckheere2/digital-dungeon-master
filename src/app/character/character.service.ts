@@ -11,6 +11,7 @@ export class CharacterService {
     characters: Character[] = [];
     charactersFetched = false;
     characterSelection = new EventEmitter<number>();
+    characterDb: any;
 
     constructor(private authService: AuthService,
         private http: Http,
@@ -30,7 +31,7 @@ export class CharacterService {
     saveCharacters(characters: Character[]) {
         const userId = this.authService.getUserId();
         const token = this.authService.getToken();
-        const url = "https://digital-dungeon-master.firebaseio.com/characters/" + userId +
+        const url = "https://digital-dungeon-master-dev.firebaseio.com/characters/" + userId +
             "-characters.json?auth=" + token;
         return this.http.put(url, this.characters);
     }
@@ -39,24 +40,12 @@ export class CharacterService {
         const fetchPromise = new Promise(
             (resolve, reject) => {
                 const userId = this.authService.getUserId();
-                const token = this.authService.getToken();
-                const url = "https://digital-dungeon-master.firebaseio.com/characters/" + userId +
-                    "-characters.json?auth=" + token;
+                this.characterDb = firebase.database().ref().child("characters").child(userId + "-characters");
 
-                this.http.get(url).subscribe(
-                    (response) => {
-                        const characters = response.json();
-                        if (characters !== null) {
-                            this.convertCharacters(characters);
-                        }
-                        this.charactersFetched = true;
-                        resolve();
-                    },
-                    (error) => {
-                        this.errorService.displayError(error.json().error);
-                        reject(error);
-                    }
-                );
+                this.characterDb.on("value", snapshot => {
+                    this.charactersFetched = true;
+                    this.convertCharacters(snapshot.val());
+                });
             }
         );
         return fetchPromise;
