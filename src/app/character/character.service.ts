@@ -208,7 +208,7 @@ export class CharacterService {
     // Npc Methods
     addNpc(charId: number, npc: Npc) {
         if (this.characters[charId].npcList) {
-            this.characters[charId].npcList.unshift(npc);
+            this.characters[charId].npcList.push(npc);
         } else {
             this.characters[charId].npcList = [npc];
         }
@@ -236,7 +236,7 @@ export class CharacterService {
     // Questlog Methods
     addQuest(charId: number, quest: Quest) {
         if (this.characters[charId].questLog) {
-            this.characters[charId].questLog.unshift(quest);
+            this.characters[charId].questLog.push(quest);
         } else {
             this.characters[charId].questLog = [quest];
         }
