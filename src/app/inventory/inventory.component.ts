@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, OnDestroy } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 
 import { Character, InventoryItem } from "../character/character.models";
@@ -10,9 +10,10 @@ import { CharacterService } from "../character/character.service";
   templateUrl: "./inventory.component.html",
   styleUrls: ["./inventory.component.scss"]
 })
-export class InventoryComponent implements OnInit {
+export class InventoryComponent implements OnInit, OnDestroy {
   character: Character;
   characterId: number;
+  characterSub: any;
 
   itemFormEnabled = false;
   newInventoryItem = new InventoryItem("", "", 1, false);
@@ -25,7 +26,15 @@ export class InventoryComponent implements OnInit {
   ngOnInit() {
     this.characterId = +this.route.parent.snapshot.params["id"];
     this.loadCharacter();
+    this.characterSub = this.characterService.characterUpdatesReceived.subscribe(
+      () => {
+        this.loadCharacter();
+      }
+    );
+  }
 
+  ngOnDestroy() {
+    this.characterSub.unsubscribe();
   }
 
   loadCharacter() {

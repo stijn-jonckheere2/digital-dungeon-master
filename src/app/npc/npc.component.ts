@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, OnDestroy } from "@angular/core";
 import { Character, Npc } from "../character/character.models";
 import { CharacterService } from "../character/character.service";
 import { ActivatedRoute } from "@angular/router";
@@ -8,9 +8,10 @@ import { ActivatedRoute } from "@angular/router";
   templateUrl: "./npc.component.html",
   styleUrls: ["./npc.component.scss"]
 })
-export class NpcComponent implements OnInit {
+export class NpcComponent implements OnInit, OnDestroy {
   character: Character;
   characterId: number;
+  characterSub: any;
 
   npcFormEnabled = false;
   newNpc = new Npc("", "");
@@ -23,7 +24,15 @@ export class NpcComponent implements OnInit {
   ngOnInit() {
     this.characterId = +this.route.parent.snapshot.params["id"];
     this.loadCharacter();
+    this.characterSub = this.characterService.characterUpdatesReceived.subscribe(
+      () => {
+        this.loadCharacter();
+      }
+    );
+  }
 
+  ngOnDestroy() {
+    this.characterSub.unsubscribe();
   }
 
   loadCharacter() {

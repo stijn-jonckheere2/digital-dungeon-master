@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, OnDestroy } from "@angular/core";
 import { Quest, Character } from "../character/character.models";
 import { CharacterService } from "../character/character.service";
 import { ActivatedRoute } from "@angular/router";
@@ -8,10 +8,11 @@ import { ActivatedRoute } from "@angular/router";
   templateUrl: "./questlog.component.html",
   styleUrls: ["./questlog.component.scss"]
 })
-export class QuestlogComponent implements OnInit {
+export class QuestlogComponent implements OnInit, OnDestroy {
   character: Character;
   characterId: number;
   completedVisible = false;
+  characterSub: any;
 
   questFormEnabled = false;
   newQuest = new Quest("", "", false);
@@ -36,6 +37,15 @@ export class QuestlogComponent implements OnInit {
   ngOnInit() {
     this.characterId = +this.route.parent.snapshot.params["id"];
     this.loadCharacter();
+    this.characterSub = this.characterService.characterUpdatesReceived.subscribe(
+      () => {
+        this.loadCharacter();
+      }
+    );
+  }
+
+  ngOnDestroy() {
+    this.characterSub.unsubscribe();
   }
 
   handleForm() {

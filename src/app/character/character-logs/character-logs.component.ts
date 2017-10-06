@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, OnDestroy } from "@angular/core";
 import { Character } from "../character.models";
 import { CharacterService } from "../character.service";
 import { ActivatedRoute } from "@angular/router";
@@ -8,9 +8,10 @@ import { ActivatedRoute } from "@angular/router";
   templateUrl: "./character-logs.component.html",
   styleUrls: ["./character-logs.component.scss"]
 })
-export class CharacterLogsComponent implements OnInit {
+export class CharacterLogsComponent implements OnInit, OnDestroy {
   character: Character;
   characterId: number;
+  characterSub: any;
 
   constructor(private characterService: CharacterService,
     private route: ActivatedRoute) {
@@ -19,7 +20,15 @@ export class CharacterLogsComponent implements OnInit {
   ngOnInit() {
     this.characterId = +this.route.parent.snapshot.params["id"];
     this.loadCharacter();
+    this.characterSub = this.characterService.characterUpdatesReceived.subscribe(
+      () => {
+        this.loadCharacter();
+      }
+    );
+  }
 
+  ngOnDestroy() {
+    this.characterSub.unsubscribe();
   }
 
   loadCharacter() {

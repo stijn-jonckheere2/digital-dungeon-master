@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, OnDestroy } from "@angular/core";
 import { Character, Ability } from "../character/character.models";
 import { CharacterService } from "../character/character.service";
 import { ActivatedRoute } from "@angular/router";
@@ -8,8 +8,9 @@ import { ActivatedRoute } from "@angular/router";
   templateUrl: "./abilities.component.html",
   styleUrls: ["./abilities.component.scss"]
 })
-export class AbilitiesComponent implements OnInit {
+export class AbilitiesComponent implements OnInit, OnDestroy {
   character: Character;
+  characterSub: any;
   characterId: number;
 
   abilityFormEnabled = false;
@@ -23,6 +24,15 @@ export class AbilitiesComponent implements OnInit {
   ngOnInit() {
     this.characterId = +this.route.parent.snapshot.params["id"];
     this.loadCharacter();
+    this.characterSub = this.characterService.characterUpdatesReceived.subscribe(
+      () => {
+        this.loadCharacter();
+      }
+    );
+  }
+
+  ngOnDestroy() {
+    this.characterSub.unsubscribe();
   }
 
   loadCharacter() {
