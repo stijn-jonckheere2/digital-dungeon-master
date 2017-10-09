@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, OnDestroy } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 
 import { CharacterService } from "../character.service";
@@ -9,8 +9,8 @@ import { Character } from "../character.models";
   templateUrl: "./character-edit.component.html",
   styleUrls: ["./character-edit.component.scss"]
 })
-export class CharacterEditComponent implements OnInit {
-
+export class CharacterEditComponent implements OnInit, OnDestroy {
+  characterSub: any;
   character: Character;
   charId: number;
 
@@ -28,6 +28,15 @@ export class CharacterEditComponent implements OnInit {
   ngOnInit() {
     this.charId = +this.route.snapshot.params["id"];
     this.loadCharacter();
+    this.characterSub = this.characterService.characterUpdatesReceived.subscribe(
+      () => {
+        this.loadCharacter();
+      }
+    );
+  }
+
+  ngOnDestroy() {
+    this.characterSub.unsubscribe();
   }
 
   onSaveCharacter() {

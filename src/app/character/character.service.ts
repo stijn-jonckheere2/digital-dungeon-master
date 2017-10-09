@@ -1,4 +1,5 @@
 import { Injectable, EventEmitter } from "@angular/core";
+import * as firebase from "firebase";
 
 import { AuthService } from "../auth/auth.service";
 import { Http } from "@angular/http";
@@ -11,6 +12,8 @@ export class CharacterService {
     characters: Character[] = [];
     charactersFetched = false;
     characterSelection = new EventEmitter<number>();
+    characterUpdatesReceived = new EventEmitter<null>();
+    characterDb: any;
 
     constructor(private authService: AuthService,
         private http: Http,
@@ -28,6 +31,7 @@ export class CharacterService {
 
     // Character Methods
     saveCharacters(characters: Character[]) {
+        console.log("Save Characters Called!");
         const userId = this.authService.getUserId();
         const token = this.authService.getToken();
         const url = "https://digital-dungeon-master.firebaseio.com/characters/" + userId +
@@ -39,24 +43,16 @@ export class CharacterService {
         const fetchPromise = new Promise(
             (resolve, reject) => {
                 const userId = this.authService.getUserId();
-                const token = this.authService.getToken();
-                const url = "https://digital-dungeon-master.firebaseio.com/characters/" + userId +
-                    "-characters.json?auth=" + token;
+                this.characterDb = firebase.database().ref().child("characters").child(userId + "-characters");
+                console.log("Fetching Characters!");
 
-                this.http.get(url).subscribe(
-                    (response) => {
-                        const characters = response.json();
-                        if (characters !== null) {
-                            this.convertCharacters(characters);
-                        }
-                        this.charactersFetched = true;
-                        resolve();
-                    },
-                    (error) => {
-                        this.errorService.displayError(error.json().error);
-                        reject(error);
+                this.characterDb.on("value", snapshot => {
+                    if (snapshot.val() !== null) {
+                        this.convertCharacters(snapshot.val());
+                        this.characterUpdatesReceived.emit();
                     }
-                );
+                    resolve();
+                });
             }
         );
         return fetchPromise;
@@ -66,11 +62,14 @@ export class CharacterService {
         this.characters = characters.map((char, index) => {
             return Character.fromJSON(char);
         });
+        this.charactersFetched = true;
+        console.log("Characters Fetched!", this.characters);
     }
 
     getCharacters() {
         const promise = new Promise(
             (resolve, reject) => {
+                console.log("Get Characters Called", this.charactersFetched);
                 if (this.charactersFetched) {
                     resolve(this.characters);
                 } else {
@@ -189,8 +188,8 @@ export class CharacterService {
     }
 
     deleteInventoryItem(charId: number, itemId: number) {
-        this.characters[charId].inventory.splice(itemId, 1);
         this.characters[charId].addLog("Removed <" + this.characters[charId].inventory[itemId].name + "> from inventory");
+        this.characters[charId].inventory.splice(itemId, 1);
         this.updateCharacterById(charId, this.characters[charId]);
     }
 
@@ -209,7 +208,7 @@ export class CharacterService {
     // Npc Methods
     addNpc(charId: number, npc: Npc) {
         if (this.characters[charId].npcList) {
-            this.characters[charId].npcList.unshift(npc);
+            this.characters[charId].npcList.push(npc);
         } else {
             this.characters[charId].npcList = [npc];
         }
@@ -229,15 +228,15 @@ export class CharacterService {
     }
 
     deleteNpc(charId: number, npcId: number) {
-        this.characters[charId].npcList.splice(npcId, 1);
         this.characters[charId].addLog("Removed NPC  <" + this.characters[charId].npcList[npcId].name + ">");
+        this.characters[charId].npcList.splice(npcId, 1);
         this.updateCharacterById(charId, this.characters[charId]);
     }
 
     // Questlog Methods
     addQuest(charId: number, quest: Quest) {
         if (this.characters[charId].questLog) {
-            this.characters[charId].questLog.unshift(quest);
+            this.characters[charId].questLog.push(quest);
         } else {
             this.characters[charId].questLog = [quest];
         }
@@ -257,8 +256,8 @@ export class CharacterService {
     }
 
     deleteQuest(charId: number, questId: number) {
-        this.characters[charId].questLog.splice(questId, 1);
         this.characters[charId].addLog("Deleted quest  <" + this.characters[charId].questLog[questId].name + ">");
+        this.characters[charId].questLog.splice(questId, 1);
         this.updateCharacterById(charId, this.characters[charId]);
     }
 
@@ -285,8 +284,8 @@ export class CharacterService {
     }
 
     deleteAbility(charId: number, abilityId: number) {
-        this.characters[charId].abilities.splice(abilityId, 1);
         this.characters[charId].addLog("Added ability  <" + this.characters[charId].abilities[abilityId].name + ">");
+        this.characters[charId].abilities.splice(abilityId, 1);
         this.updateCharacterById(charId, this.characters[charId]);
     }
 

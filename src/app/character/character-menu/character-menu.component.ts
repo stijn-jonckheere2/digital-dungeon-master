@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, OnDestroy } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 
 import { CharacterService } from "../character.service";
@@ -9,9 +9,10 @@ import { Character } from "../character.models";
   templateUrl: "./character-menu.component.html",
   styleUrls: ["./character-menu.component.scss"]
 })
-export class CharacterMenuComponent implements OnInit {
+export class CharacterMenuComponent implements OnInit, OnDestroy {
   character: Character;
   characterId: number;
+  characterSub: any;
 
   constructor(private characterService: CharacterService,
     private route: ActivatedRoute) {
@@ -26,6 +27,15 @@ export class CharacterMenuComponent implements OnInit {
   ngOnInit() {
     this.characterId = +this.route.parent.snapshot.params["id"];
     this.loadCharacter();
+    this.characterSub = this.characterService.characterUpdatesReceived.subscribe(
+      () => {
+        this.loadCharacter();
+      }
+    );
+  }
+
+  ngOnDestroy() {
+    this.characterSub.unsubscribe();
   }
 
 }
