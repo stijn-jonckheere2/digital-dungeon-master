@@ -14,6 +14,7 @@ export class ProfessionStatsComponent implements OnInit, OnDestroy {
   characterId: number;
   allowEdit = false;
   characterSub: any;
+  statLogs = [];
 
   constructor(private characterService: CharacterService, private errorService: ErrorService,
     private route: ActivatedRoute) {
@@ -43,6 +44,7 @@ export class ProfessionStatsComponent implements OnInit, OnDestroy {
     switch (type) {
       case "profession":
         this.character.professionStats[statIndex].level++;
+        this.statLogs.push("Added 1 stat point to <" + this.character.professionStats[statIndex].name + ">");
         break;
     }
   }
@@ -51,6 +53,7 @@ export class ProfessionStatsComponent implements OnInit, OnDestroy {
     switch (type) {
       case "profession":
         this.character.professionStats[statIndex].level--;
+        this.statLogs.push("Removed 1 stat point from <" + this.character.professionStats[statIndex].name + ">");
         break;
     }
   }
@@ -70,8 +73,13 @@ export class ProfessionStatsComponent implements OnInit, OnDestroy {
   }
 
   onSave() {
+    for (const log of this.statLogs) {
+      this.character.addLog(log);
+    }
+    this.statLogs = [];
     this.characterService.updateCharacterById(this.characterId, this.character);
     this.allowEdit = false;
   }
+
 
 }

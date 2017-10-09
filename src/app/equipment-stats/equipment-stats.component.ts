@@ -14,7 +14,8 @@ export class EquipmentStatsComponent implements OnInit, OnDestroy {
   characterId: number;
   allowEdit = false;
   characterSub: any;
-
+  statLogs = [];
+  
   constructor(private characterService: CharacterService, private errorService: ErrorService,
     private route: ActivatedRoute) {
   }
@@ -43,12 +44,15 @@ export class EquipmentStatsComponent implements OnInit, OnDestroy {
     switch (type) {
       case "weapon":
         this.character.weaponStats[statIndex].level++;
+        this.statLogs.push("Added 1 stat point to <" + this.character.weaponStats[statIndex].name + ">");
         break;
       case "ranged":
         this.character.rangedStats[statIndex].level++;
+        this.statLogs.push("Added 1 stat point to <" + this.character.rangedStats[statIndex].name + ">");
         break;
       case "armor":
         this.character.armorStats[statIndex].level++;
+        this.statLogs.push("Added 1 stat point to <" + this.character.armorStats[statIndex].name + ">");
         break;
     }
   }
@@ -57,15 +61,19 @@ export class EquipmentStatsComponent implements OnInit, OnDestroy {
     switch (type) {
       case "weapon":
         this.character.weaponStats[statIndex].level--;
+        this.statLogs.push("Removed 1 stat point from <" + this.character.weaponStats[statIndex].name + ">");
         break;
       case "ranged":
         this.character.rangedStats[statIndex].level--;
+        this.statLogs.push("Removed 1 stat point from <" + this.character.rangedStats[statIndex].name + ">");
         break;
       case "armor":
         this.character.armorStats[statIndex].level--;
+        this.statLogs.push("Removed 1 stat point from <" + this.character.armorStats[statIndex].name + ">");
         break;
     }
   }
+
   setStat(type: string, statIndex, statName) {
     const newStatValue = parseInt(window.prompt("Enter a value for <" + statName + ">:"));
     if (typeof newStatValue === typeof 0 && newStatValue <= 20 && newStatValue >= 3) {
@@ -90,6 +98,10 @@ export class EquipmentStatsComponent implements OnInit, OnDestroy {
   }
 
   onSave() {
+    for (const log of this.statLogs) {
+      this.character.addLog(log);
+    }
+    this.statLogs = [];
     this.characterService.updateCharacterById(this.characterId, this.character);
     this.allowEdit = false;
   }
