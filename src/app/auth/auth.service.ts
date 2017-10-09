@@ -18,6 +18,13 @@ export class AuthService {
   constructor(private router: Router,
     private errorService: ErrorService) { }
 
+  setAuthPersistence() {
+    firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL)
+      .catch(function (error) {
+        this.errorService.displayError(error.message);
+      });
+  }
+
   signupUser(email: string, password: string) {
     firebase.auth().createUserWithEmailAndPassword(email, password)
       .then(

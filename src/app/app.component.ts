@@ -23,6 +23,7 @@ export class AppComponent implements OnInit {
       storageBucket: "digital-dungeon-master.appspot.com",
       messagingSenderId: "165971576370"
     });
+    this.authService.setAuthPersistence();
     this.authService.startAuthListening();
   }
 }
