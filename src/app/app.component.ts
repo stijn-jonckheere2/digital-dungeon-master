@@ -19,6 +19,7 @@ export class AppComponent implements OnInit {
       apiKey: "AIzaSyA8J2ryEam-6m4WAoM3k1CT75ylhQPUWLQ",
       authDomain: "digital-dungeon-master.firebaseapp.com"
     });
+    this.authService.setAuthPersistence();
     this.authService.startAuthListening();
   }
 }
