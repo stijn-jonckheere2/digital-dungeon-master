@@ -15,6 +15,8 @@ export class StatsComponent implements OnInit, OnDestroy {
   allowEdit = false;
   characterSub: any;
 
+  statLogs = [];
+
   constructor(private characterService: CharacterService, private errorService: ErrorService,
     private route: ActivatedRoute) {
   }
@@ -23,7 +25,6 @@ export class StatsComponent implements OnInit, OnDestroy {
     this.characterService.getCharacterById(this.characterId).then(
       (char: Character) => this.character = char
     );
-
   }
 
   ngOnInit() {
@@ -44,12 +45,11 @@ export class StatsComponent implements OnInit, OnDestroy {
     switch (type) {
       case "primary":
         this.character.primaryStats[statIndex].level++;
-        break;
-      case "armor":
-        this.character.armorStats[statIndex].level++;
+        this.statLogs.push("Added 1 stat point to <" + this.character.primaryStats[statIndex].name + ">");
         break;
       case "secondary":
         this.character.secondaryStats[statIndex].level++;
+        this.statLogs.push("Added 1 stat point to <" + this.character.secondaryStats[statIndex].name + ">");
         break;
     }
   }
@@ -58,12 +58,11 @@ export class StatsComponent implements OnInit, OnDestroy {
     switch (type) {
       case "primary":
         this.character.primaryStats[statIndex].level--;
-        break;
-      case "armor":
-        this.character.armorStats[statIndex].level--;
+        this.statLogs.push("Removed 1 stat point from <" + this.character.primaryStats[statIndex].name + ">");
         break;
       case "secondary":
         this.character.secondaryStats[statIndex].level--;
+        this.statLogs.push("Removed 1 stat point from <" + this.character.secondaryStats[statIndex].name + ">");
         break;
     }
   }
@@ -96,6 +95,10 @@ export class StatsComponent implements OnInit, OnDestroy {
   }
 
   onSave() {
+    for (const log of this.statLogs) {
+      this.character.addLog(log);
+    }
+    this.statLogs = [];
     this.characterService.updateCharacterById(this.characterId, this.character);
     this.allowEdit = false;
   }
