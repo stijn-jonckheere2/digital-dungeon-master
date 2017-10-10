@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from "@angular/core";
-import { Quest, Character } from "../character/character.models";
-import { CharacterService } from "../character/character.service";
+import { Quest, Character } from "../../character/character.models";
+import { CharacterService } from "../../character/character.service";
 import { ActivatedRoute } from "@angular/router";
 
 @Component({

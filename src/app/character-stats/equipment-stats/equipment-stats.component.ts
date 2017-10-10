@@ -1,8 +1,8 @@
 import { Component, OnInit, OnDestroy } from "@angular/core";
-import { Character } from "../character/character.models";
-import { CharacterService } from "../character/character.service";
+import { Character } from "../../character/character.models";
+import { CharacterService } from "../../character/character.service";
 import { ActivatedRoute } from "@angular/router";
-import { ErrorService } from "../error-service.service";
+import { ErrorService } from "../../error-service.service";
 
 @Component({
   selector: "app-equipment-stats",
