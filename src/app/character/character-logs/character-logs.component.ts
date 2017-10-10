@@ -12,6 +12,8 @@ export class CharacterLogsComponent implements OnInit, OnDestroy {
   character: Character;
   characterId: number;
   characterSub: any;
+  logLimit = 5;
+  logsAvailable = true;
 
   constructor(private characterService: CharacterService,
     private route: ActivatedRoute) {
@@ -42,6 +44,15 @@ export class CharacterLogsComponent implements OnInit, OnDestroy {
   clearLogs() {
     this.character.clearLogs();
     this.characterService.updateCharacterById(this.characterId, this.character);
+  }
+
+  loadMoreLogs() {
+    if ((this.logLimit + 5) <= this.character.logs.length) {
+      this.logLimit += 5;
+    } else {
+      this.logLimit = this.character.logs.length;
+      this.logsAvailable = false;
+    }
   }
 
 }
