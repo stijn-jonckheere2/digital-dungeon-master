@@ -4,12 +4,14 @@
 <p *ngIf="character && character.logs.length === 0">No logs yet for this character</p>
 
 <div class="logs-wrapper" *ngIf="character && character.logs.length > 0">
-  <div class="log" *ngFor="let log of character.logs">
-    <span>{{ log.timestamp | date:'medium' }}</span>
-    <p>{{ log.log }}</p>
-  </div>
+  <ng-container *ngFor="let log of character.logs; let logNum = index">
+    <div class="log" *ngIf="logNum <= logLimit && logLimit <= character.logs.length">
+      <span>{{ log.timestamp | date:'medium' }}</span>
+      <p>{{ log.log }}</p>
+    </div>
+    </ng-container>
 </div>
 
-<!-- <div class="button-wrapper" *ngIf="character && character.logs.length > 0">
-  <button class="btn btn-primary" (click)="clearLogs()">Clear logs</button>
-</div> -->
+<div class="button-wrapper" *ngIf="character && character.logs.length > 0 && logsAvailable">
+  <button class="btn btn-primary" (click)="loadMoreLogs()">Load more</button>
+</div>
