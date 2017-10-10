@@ -26,6 +26,12 @@ class Serializable {
 
         convertedChar.logs = jsonObj.logs || [];
 
+        for (let i = 0; i < convertedChar.logs.length; i++) {
+            if (!convertedChar.logs[i].type) {
+                convertedChar.logs[i]["type"] = "all";
+            }
+        }
+
         return convertedChar;
     }
 }
@@ -116,8 +122,8 @@ export class Character extends Serializable {
         }
     }
 
-    public addLog = function (logText: string) {
-        this.logs.unshift(new CharacterLog(logText));
+    public addLog = function (logText: string, logType: string) {
+        this.logs.unshift(new CharacterLog(logText, logType));
     };
 
     public clearLogs = function () {
@@ -224,7 +230,8 @@ export class CharacterLog {
     timestamp: Date;
 
     constructor(
-        private log: string,
+        public log: string,
+        public type: string
     ) {
         this.timestamp = new Date();
     }

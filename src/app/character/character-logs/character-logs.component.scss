@@ -22,6 +22,16 @@ p {
     }
 }
 
+.form {
+    display: flex;
+    justify-content: space-between;
+    padding-top: 15px;
+    padding-bottom: 35px;
+    select {
+        width: 120px;
+    }
+}
+
 @media (min-width: 768px) {
 
 }

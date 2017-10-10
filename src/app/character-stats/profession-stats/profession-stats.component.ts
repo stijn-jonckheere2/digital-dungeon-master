@@ -59,6 +59,7 @@ export class ProfessionStatsComponent implements OnInit, OnDestroy {
   }
 
   setStat(statIndex, statName) {
+    // tslint:disable-next-line:radix
     const newStatValue = parseInt(window.prompt("Enter a value for <" + statName + ">:"));
     if (typeof newStatValue === typeof 0 && newStatValue <= 20 && newStatValue >= 3) {
       this.character.professionStats[statIndex].level = newStatValue;
@@ -74,7 +75,7 @@ export class ProfessionStatsComponent implements OnInit, OnDestroy {
 
   onSave() {
     for (const log of this.statLogs) {
-      this.character.addLog(log);
+      this.character.addLog(log, "statLog");
     }
     this.statLogs = [];
     this.characterService.updateCharacterById(this.characterId, this.character);
