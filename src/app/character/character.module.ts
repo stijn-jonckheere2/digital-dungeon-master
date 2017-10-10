@@ -10,14 +10,14 @@ import { AuthGuard } from "../auth/auth-guard.service";
 import { CharacterEditComponent } from "./character-edit/character-edit.component";
 import { CharacterNewComponent } from "./character-new/character-new.component";
 import { CharacterMenuComponent } from "./character-menu/character-menu.component";
-import { InventoryComponent } from "../inventory/inventory.component";
-import { NpcComponent } from "../npc/npc.component";
-import { QuestlogComponent } from "../questlog/questlog.component";
-import { StatsComponent } from "../stats/stats.component";
-import { EquipmentStatsComponent } from "../equipment-stats/equipment-stats.component";
-import { ProfessionStatsComponent } from "../profession-stats/profession-stats.component";
+import { InventoryComponent } from "../character-sub/inventory/inventory.component";
+import { NpcComponent } from "../character-sub/npc/npc.component";
+import { QuestlogComponent } from "../character-sub/questlog/questlog.component";
+import { StatsComponent } from "../character-stats/stats/stats.component";
+import { EquipmentStatsComponent } from "../character-stats/equipment-stats/equipment-stats.component";
+import { ProfessionStatsComponent } from "../character-stats/profession-stats/profession-stats.component";
 import { ErrorService } from "../error-service.service";
-import { AbilitiesComponent } from "../abilities/abilities.component";
+import { AbilitiesComponent } from "../character-sub/abilities/abilities.component";
 import { CharacterLogsComponent } from "./character-logs/character-logs.component";
 
 const charRoutes: Routes = [

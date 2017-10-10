@@ -12,16 +12,16 @@ import { ErrorService } from "./error-service.service";
 import { AuthGuard } from "./auth/auth-guard.service";
 import { AuthModule } from "./auth/auth.module";
 
-import { HeaderComponent } from "./header/header.component";
+import { HeaderComponent } from "./infrastructure/header/header.component";
 import { CharacterModule } from "./character/character.module";
-import { InventoryComponent } from "./inventory/inventory.component";
-import { NpcComponent } from "./npc/npc.component";
-import { QuestlogComponent } from "./questlog/questlog.component";
-import { StatsComponent } from "./stats/stats.component";
-import { EquipmentStatsComponent } from "./equipment-stats/equipment-stats.component";
-import { ProfessionStatsComponent } from "./profession-stats/profession-stats.component";
-import { ErrorDisplayComponent } from "./error-display/error-display.component";
-import { AbilitiesComponent } from "./abilities/abilities.component";
+import { InventoryComponent } from "./character-sub/inventory/inventory.component";
+import { NpcComponent } from "./character-sub/npc/npc.component";
+import { QuestlogComponent } from "./character-sub/questlog/questlog.component";
+import { StatsComponent } from "./character-stats/stats/stats.component";
+import { EquipmentStatsComponent } from "./character-stats/equipment-stats/equipment-stats.component";
+import { ProfessionStatsComponent } from "./character-stats/profession-stats/profession-stats.component";
+import { ErrorDisplayComponent } from "./infrastructure/error-display/error-display.component";
+import { AbilitiesComponent } from "./character-sub/abilities/abilities.component";
 
 @NgModule({
   declarations: [

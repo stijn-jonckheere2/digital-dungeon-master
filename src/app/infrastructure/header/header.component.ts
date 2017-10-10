@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from "@angular/core";
 
-import { AuthService } from "../auth/auth.service";
-import { CharacterService } from "../character/character.service";
+import { AuthService } from "../../auth/auth.service";
+import { CharacterService } from "../../character/character.service";
 import { Router } from "@angular/router";
 
 @Component({
