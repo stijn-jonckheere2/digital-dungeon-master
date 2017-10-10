@@ -7,7 +7,7 @@
   <div class="form-group" *ngIf="character && character.logs.length > 0 && logsAvailable">
     <label for="logFilter">Type</label>
     <select id="logFilter" class="form-control" [(ngModel)]="logType" name="secret">
-      <option value="all" selected="selected">All</option>
+      <option value="all">All</option>
       <option value="statLog">Stat logs</option>
       <option value="abilityLog">Ability logs</option>
       <option value="inventoryLog">Inventory logs</option>
@@ -29,7 +29,7 @@
 
 <div class="logs-wrapper" *ngIf="character && character.logs.length > 0">
   <ng-container *ngFor="let log of character.logs | filter:logType:'type'; let logNum = index">
-    <div class="log" *ngIf="logNum < logLimit && logLimit <= character.logs.length">
+    <div class="log" *ngIf="logNum < logLimit && logNum <= character.logs.length">
       <span>{{ log.timestamp | date:'medium' }}</span>
       <p>{{ log.log }}</p>
     </div>
