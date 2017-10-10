@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy } from "@angular/core";
 import { Quest, Character } from "../../character/character.models";
 import { CharacterService } from "../../character/character.service";
 import { ActivatedRoute } from "@angular/router";
+import { ErrorService } from "../../error-service.service";
 
 @Component({
   selector: "app-questlog",
@@ -22,6 +23,7 @@ export class QuestlogComponent implements OnInit, OnDestroy {
   completedQuestLog: Quest[] = [];
 
   constructor(private characterService: CharacterService,
+    private errorService: ErrorService,
     private route: ActivatedRoute) {
   }
 
@@ -78,7 +80,11 @@ export class QuestlogComponent implements OnInit, OnDestroy {
     if (this.newQuestId >= 0) {
       this.characterService.updateQuest(this.characterId, this.newQuestId, this.newQuest);
     } else {
-      this.characterService.addQuest(this.characterId, this.newQuest);
+      if (this.newQuest.name.length === 0) {
+        this.errorService.displayError("Quest name can't be empty!");
+      } else {
+        this.characterService.addQuest(this.characterId, this.newQuest);
+      }
     }
     this.newQuest = new Quest("", "", false);
     this.questFormEnabled = false;

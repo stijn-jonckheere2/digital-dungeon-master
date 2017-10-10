@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy } from "@angular/core";
 import { Character, Npc } from "../../character/character.models";
 import { CharacterService } from "../../character/character.service";
 import { ActivatedRoute } from "@angular/router";
+import { ErrorService } from "../../error-service.service";
 
 @Component({
   selector: "app-npc",
@@ -18,6 +19,7 @@ export class NpcComponent implements OnInit, OnDestroy {
   newNpcId = -1;
 
   constructor(private characterService: CharacterService,
+    private errorService: ErrorService,
     private route: ActivatedRoute) {
   }
 
@@ -62,7 +64,11 @@ export class NpcComponent implements OnInit, OnDestroy {
     if (this.newNpcId >= 0) {
       this.characterService.updateNpc(this.characterId, this.newNpcId, this.newNpc);
     } else {
-      this.characterService.addNpc(this.characterId, this.newNpc);
+      if (this.newNpc.name.length === 0) {
+        this.errorService.displayError("NPC name can't be empty!");
+      } else {
+        this.characterService.addNpc(this.characterId, this.newNpc);
+      }
     }
     this.newNpc = new Npc("", "");
     this.npcFormEnabled = false;
