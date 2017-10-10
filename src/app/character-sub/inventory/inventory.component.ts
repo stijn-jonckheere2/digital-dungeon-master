@@ -3,6 +3,7 @@ import { ActivatedRoute } from "@angular/router";
 
 import { Character, InventoryItem } from "../../character/character.models";
 import { CharacterService } from "../../character/character.service";
+import { ErrorService } from "../../error-service.service";
 
 
 @Component({
@@ -20,6 +21,7 @@ export class InventoryComponent implements OnInit, OnDestroy {
   newItemId = -1;
 
   constructor(private characterService: CharacterService,
+    private errorService: ErrorService,
     private route: ActivatedRoute) {
   }
 
@@ -57,7 +59,11 @@ export class InventoryComponent implements OnInit, OnDestroy {
     if (this.newItemId >= 0) {
       this.characterService.updateInventoryItem(this.characterId, this.newItemId, this.newInventoryItem);
     } else {
-      this.characterService.addInventoryItem(this.characterId, this.newInventoryItem);
+      if (this.newInventoryItem.name.length === 0) {
+        this.errorService.displayError("Item name can't be empty!");
+      } else {
+        this.characterService.addInventoryItem(this.characterId, this.newInventoryItem);
+      }
     }
 
     this.newInventoryItem = new InventoryItem("", "", 1, false);
