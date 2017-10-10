@@ -3,28 +3,60 @@
     <li class="hide-on-desktop">
       <a>Menu</a>
     </li>
-    <li routerLinkActive="active"><a routerLink="/login">Login</a></li>
-    <li routerLinkActive="active"><a routerLink="/register">Register</a></li>
+    <li routerLinkActive="active">
+      <a routerLink="/login">Login</a>
+    </li>
+    <li routerLinkActive="active">
+      <a routerLink="/register">Register</a>
+    </li>
   </ul>
   <ul [ngClass]="{'dropdown-closed': !mobileMenuOpen, 'dropdown-open': mobileMenuOpen }" (click)="toggleMobileMenu()" *ngIf="authenticated && selectedChar === -1">
     <li class="hide-on-desktop">
       <a>Menu</a>
     </li>
-    <li class="nav-dark"><a (click)="onLogout()">Logout</a></li>
+    <li routerLinkActive="active">
+      <a [routerLink]="['/characters']">My Characters</a>
+    </li>
+    <li routerLinkActive="active">
+      <a [routerLink]="['/player-notes']">My Notes</a>
+    </li>
+    <li class="nav-dark">
+      <a (click)="onLogout()">Logout</a>
+    </li>
   </ul>
   <ul [ngClass]="{'dropdown-closed': !mobileMenuOpen, 'dropdown-open': mobileMenuOpen }" (click)="toggleMobileMenu()" *ngIf="authenticated && selectedChar > -1">
     <li class="hide-on-desktop">
       <a>Menu</a>
     </li>
-    <li routerLinkActive="active"><a [routerLink]="['/characters', selectedChar, 'stats']">Stats</a></li>
-    <li routerLinkActive="active"><a [routerLink]="['/characters', selectedChar, 'abilities']">Abilities</a></li>
-    <li routerLinkActive="active"><a [routerLink]="['/characters', selectedChar, 'equipment']">Gear</a></li>
-    <li routerLinkActive="active"><a [routerLink]="['/characters', selectedChar, 'professions']">Professions</a></li>
-    <li routerLinkActive="active"><a [routerLink]="['/characters', selectedChar, 'inventory']">Inventory</a></li>
-    <li routerLinkActive="active"><a [routerLink]="['/characters', selectedChar, 'quests']">Quests</a></li>
-    <li routerLinkActive="active"><a [routerLink]="['/characters', selectedChar, 'npcs']">NPCs</a></li>
-    <li routerLinkActive="active"><a [routerLink]="['/characters', selectedChar, 'logs']">Logs</a></li>    
-    <li class="nav-dark"><a (click)="unselectCharacter()">Chars</a></li>
-    <li class="nav-dark"><a (click)="onLogout()">Logout</a></li>
+    <li routerLinkActive="active">
+      <a [routerLink]="['/characters', selectedChar, 'stats']">Stats</a>
+    </li>
+    <li routerLinkActive="active">
+      <a [routerLink]="['/characters', selectedChar, 'abilities']">Abilities</a>
+    </li>
+    <li routerLinkActive="active">
+      <a [routerLink]="['/characters', selectedChar, 'equipment']">Gear</a>
+    </li>
+    <li routerLinkActive="active">
+      <a [routerLink]="['/characters', selectedChar, 'professions']">Professions</a>
+    </li>
+    <li routerLinkActive="active">
+      <a [routerLink]="['/characters', selectedChar, 'inventory']">Inventory</a>
+    </li>
+    <li routerLinkActive="active">
+      <a [routerLink]="['/characters', selectedChar, 'quests']">Quests</a>
+    </li>
+    <li routerLinkActive="active">
+      <a [routerLink]="['/characters', selectedChar, 'npcs']">NPCs</a>
+    </li>
+    <li routerLinkActive="active">
+      <a [routerLink]="['/characters', selectedChar, 'logs']">Logs</a>
+    </li>
+    <li class="nav-dark">
+      <a (click)="unselectCharacter()">Chars</a>
+    </li>
+    <li class="nav-dark">
+      <a (click)="onLogout()">Logout</a>
+    </li>
   </ul>
 </div>

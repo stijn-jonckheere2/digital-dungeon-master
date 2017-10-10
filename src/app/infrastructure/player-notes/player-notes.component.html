@@ -1,0 +1,17 @@
+<h2>Player Notes</h2>
+
+<ng-container *ngIf="!noteEdit && playerNotes && playerNotes.length > 0">
+  <p>{{ playerNotes }}</p>
+  <div class="button-wrapper">
+    <button class="btn btn-primary" (click)="editNotes()">Edit</button>
+  </div>
+</ng-container>
+
+<ng-container *ngIf="noteEdit">
+  <div class="form-group">
+    <label for="playerNotes">My notes:</label>
+    <textarea id="playerNotes" class="form-control" [(ngModel)]="playerNotes" rows="15"></textarea>
+  </div>
+  <button class="btn btn-primary" (click)="saveNotes()">Save</button>
+
+</ng-container>

@@ -22,6 +22,8 @@ import { EquipmentStatsComponent } from "./character-stats/equipment-stats/equip
 import { ProfessionStatsComponent } from "./character-stats/profession-stats/profession-stats.component";
 import { ErrorDisplayComponent } from "./infrastructure/error-display/error-display.component";
 import { AbilitiesComponent } from "./character-sub/abilities/abilities.component";
+import { PlayerNotesComponent } from "./infrastructure/player-notes/player-notes.component";
+import { PlayerNotesService } from "./player-notes.service";
 
 @NgModule({
   declarations: [
@@ -35,6 +37,7 @@ import { AbilitiesComponent } from "./character-sub/abilities/abilities.componen
     ProfessionStatsComponent,
     ErrorDisplayComponent,
     AbilitiesComponent,
+    PlayerNotesComponent,
   ],
   imports: [
     BrowserModule,
@@ -44,7 +47,7 @@ import { AbilitiesComponent } from "./character-sub/abilities/abilities.componen
     CharacterModule,
     AppRoutingModule,
   ],
-  providers: [AuthService, ErrorService, AuthGuard],
+  providers: [AuthService, ErrorService, PlayerNotesService, AuthGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
