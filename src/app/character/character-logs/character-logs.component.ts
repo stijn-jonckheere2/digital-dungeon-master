@@ -14,6 +14,7 @@ export class CharacterLogsComponent implements OnInit, OnDestroy {
   characterSub: any;
   logLimit = 5;
   logsAvailable = true;
+  logType = "all";
 
   constructor(private characterService: CharacterService,
     private route: ActivatedRoute) {

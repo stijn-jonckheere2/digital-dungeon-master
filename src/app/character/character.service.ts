@@ -158,7 +158,7 @@ export class CharacterService {
         } else {
             this.characters[charId].inventory = [item];
         }
-        this.characters[charId].addLog("Added <" + item.name + " x" + item.amount + "> to inventory");
+        this.characters[charId].addLog("Added <" + item.name + " x" + item.amount + "> to inventory", "inventoryLog");
         this.updateCharacterById(charId, this.characters[charId]);
     }
 
@@ -169,14 +169,14 @@ export class CharacterService {
     updateInventoryItem(charId: number, itemId: number, item: InventoryItem) {
         const character = this.characters[charId];
         character.inventory[itemId] = item;
-        this.characters[charId].addLog("Updated Item  <" + item.name + ">");
+        this.characters[charId].addLog("Updated Item  <" + item.name + ">", "inventoryLog");
         this.updateCharacterById(charId, character);
     }
 
     useInventoryItem(charId: number, itemId: number) {
         const character = this.characters[charId];
         const item = character.inventory[itemId];
-        this.characters[charId].addLog("Removed 1 stack of <" + item.name + "> from inventory");
+        this.characters[charId].addLog("Removed 1 stack of <" + item.name + "> from inventory", "inventoryLog");
 
         if (item.amount === 1) {
             character.inventory.splice(itemId, 1);
@@ -188,20 +188,20 @@ export class CharacterService {
     }
 
     deleteInventoryItem(charId: number, itemId: number) {
-        this.characters[charId].addLog("Removed <" + this.characters[charId].inventory[itemId].name + "> from inventory");
+        this.characters[charId].addLog("Removed <" + this.characters[charId].inventory[itemId].name + "> from inventory", "inventoryLog");
         this.characters[charId].inventory.splice(itemId, 1);
         this.updateCharacterById(charId, this.characters[charId]);
     }
 
     addGold(charId: number, gold: number) {
         this.characters[charId].gold += gold;
-        this.characters[charId].addLog("Added  <" + gold + "> gold to inventory");
+        this.characters[charId].addLog("Added  <" + gold + "> gold to inventory", "inventoryLog");
         this.updateCharacterById(charId, this.characters[charId]);
     }
 
     reduceGold(charId: number, gold: number) {
         this.characters[charId].gold -= gold;
-        this.characters[charId].addLog("Removed  <" + gold + "> gold from inventory");
+        this.characters[charId].addLog("Removed  <" + gold + "> gold from inventory", "inventoryLog");
         this.updateCharacterById(charId, this.characters[charId]);
     }
 
@@ -212,7 +212,7 @@ export class CharacterService {
         } else {
             this.characters[charId].npcList = [npc];
         }
-        this.characters[charId].addLog("Added NPC  <" + npc.name + ">");
+        this.characters[charId].addLog("Added NPC  <" + npc.name + ">", "npcLog");
         this.updateCharacterById(charId, this.characters[charId]);
     }
 
@@ -223,12 +223,12 @@ export class CharacterService {
     updateNpc(charId: number, npcId: number, npc: Npc) {
         const character = this.characters[charId];
         character.npcList[npcId] = npc;
-        this.characters[charId].addLog("Updated NPC  <" + npc.name + ">");
+        this.characters[charId].addLog("Updated NPC  <" + npc.name + ">", "npcLog");
         this.updateCharacterById(charId, character);
     }
 
     deleteNpc(charId: number, npcId: number) {
-        this.characters[charId].addLog("Removed NPC  <" + this.characters[charId].npcList[npcId].name + ">");
+        this.characters[charId].addLog("Removed NPC  <" + this.characters[charId].npcList[npcId].name + ">", "npcLog");
         this.characters[charId].npcList.splice(npcId, 1);
         this.updateCharacterById(charId, this.characters[charId]);
     }
@@ -240,7 +240,7 @@ export class CharacterService {
         } else {
             this.characters[charId].questLog = [quest];
         }
-        this.characters[charId].addLog("Added quest  <" + quest.name + ">");
+        this.characters[charId].addLog("Added quest  <" + quest.name + ">", "questLog");
         this.updateCharacterById(charId, this.characters[charId]);
     }
 
@@ -251,12 +251,12 @@ export class CharacterService {
     updateQuest(charId: number, questId: number, quest: Quest) {
         const character = this.characters[charId];
         character.questLog[questId] = quest;
-        this.characters[charId].addLog("Updated quest  <" + quest.name + ">");
+        this.characters[charId].addLog("Updated quest  <" + quest.name + ">", "questLog");
         this.updateCharacterById(charId, character);
     }
 
     deleteQuest(charId: number, questId: number) {
-        this.characters[charId].addLog("Deleted quest  <" + this.characters[charId].questLog[questId].name + ">");
+        this.characters[charId].addLog("Deleted quest  <" + this.characters[charId].questLog[questId].name + ">", "questLog");
         this.characters[charId].questLog.splice(questId, 1);
         this.updateCharacterById(charId, this.characters[charId]);
     }
@@ -268,14 +268,14 @@ export class CharacterService {
         } else {
             this.characters[charId].abilities = [ability];
         }
-        this.characters[charId].addLog("Added ability  <" + ability.name + ">");
+        this.characters[charId].addLog("Added ability  <" + ability.name + ">", "abilityLog");
         this.updateCharacterById(charId, this.characters[charId]);
     }
 
     updateAbility(charId: number, abilityId: number, ability: Ability) {
         const character = this.characters[charId];
         character.abilities[abilityId] = ability;
-        this.characters[charId].addLog("Updated ability  <" + ability.name + ">");
+        this.characters[charId].addLog("Updated ability  <" + ability.name + ">", "abilityLog");
         this.updateCharacterById(charId, character);
     }
 
@@ -284,7 +284,7 @@ export class CharacterService {
     }
 
     deleteAbility(charId: number, abilityId: number) {
-        this.characters[charId].addLog("Added ability  <" + this.characters[charId].abilities[abilityId].name + ">");
+        this.characters[charId].addLog("Removed ability  <" + this.characters[charId].abilities[abilityId].name + ">", "abilityLog");
         this.characters[charId].abilities.splice(abilityId, 1);
         this.updateCharacterById(charId, this.characters[charId]);
     }

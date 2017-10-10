@@ -3,15 +3,35 @@
 <p *ngIf="!character">Loading...</p>
 <p *ngIf="character && character.logs.length === 0">No logs yet for this character</p>
 
+<div class="form">
+  <div class="form-group" *ngIf="character && character.logs.length > 0 && logsAvailable">
+    <label for="logFilter">Type</label>
+    <select id="logFilter" class="form-control" [(ngModel)]="logType" name="secret">
+      <option value="all" selected="selected">All</option>
+      <option value="statLog">Stat logs</option>
+      <option value="abilityLog">Ability logs</option>
+      <option value="inventoryLog">Inventory logs</option>
+      <option value="questLog">Quest logs</option>
+      <option value="npcLog">NPC logs</option>
+    </select>
+  </div>
+  <div class="form-group" *ngIf="character && character.logs.length > 0 && logsAvailable">
+    <label for="name">Limit</label>
+    <select id="logFilter" class="form-control" [(ngModel)]="logLimit" name="secret">
+      <option value="5">5</option>
+      <option value="10">10</option>
+      <option value="20">20</option>
+      <option value="50">50</option>
+      <option value="100">100</option>
+    </select>
+  </div>
+</div>
+
 <div class="logs-wrapper" *ngIf="character && character.logs.length > 0">
-  <ng-container *ngFor="let log of character.logs; let logNum = index">
-    <div class="log" *ngIf="logNum <= logLimit && logLimit <= character.logs.length">
+  <ng-container *ngFor="let log of character.logs | filter:logType:'type'; let logNum = index">
+    <div class="log" *ngIf="logNum < logLimit && logLimit <= character.logs.length">
       <span>{{ log.timestamp | date:'medium' }}</span>
       <p>{{ log.log }}</p>
     </div>
-    </ng-container>
-</div>
-
-<div class="button-wrapper" *ngIf="character && character.logs.length > 0 && logsAvailable">
-  <button class="btn btn-primary" (click)="loadMoreLogs()">Load more</button>
+  </ng-container>
 </div>
