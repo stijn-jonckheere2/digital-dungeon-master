@@ -1,5 +1,7 @@
 import { Router } from "@angular/router";
 import * as firebase from "firebase";
+import { environment } from "../../environments/environment";
+
 import { Injectable, EventEmitter } from "@angular/core";
 
 import { Observable } from "rxjs/Observable";
@@ -46,8 +48,8 @@ export class AuthService {
             this.userId = firebase.auth().currentUser.uid;
             this.authChangedEvent.emit(true);
 
-            localStorage.setItem("digital-dungeon-master-auth-user", this.userId);
-            localStorage.setItem("digital-dungeon-master-auth-token", this.token);
+            localStorage.setItem(environment.localStorageUser, this.userId);
+            localStorage.setItem(environment.localStorageToken, this.token);
 
             this.router.navigate(["/characters"]);
           }
@@ -65,10 +67,10 @@ export class AuthService {
         this.router.navigate(["/login"]);
         this.errorService.displayError("Your session has expired. Please login again.");
       } else {
-        localStorage.setItem("digital-dungeon-master-auth-user", user.uid);
+        localStorage.setItem(environment.localStorageUser, user.uid);
         firebase.auth().currentUser.getIdToken(true).then(
           (token) => {
-            localStorage.setItem("digital-dungeon-master-auth-token", token);
+            localStorage.setItem(environment.localStorageToken, token);
           }
         );
       }
@@ -81,25 +83,25 @@ export class AuthService {
         this.token = null;
         this.authChangedEvent.emit(false);
 
-        localStorage.removeItem("digital-dungeon-master-auth-user");
-        localStorage.removeItem("digital-dungeon-master-auth-token");
+        localStorage.removeItem(environment.localStorageUser);
+        localStorage.removeItem(environment.localStorageToken);
         this.router.navigate(["/login"]);
       }
     );
   }
 
   getUserId() {
-    const user = localStorage.getItem("digital-dungeon-master-auth-user");
+    const user = localStorage.getItem(environment.localStorageUser);
     return user;
   }
 
   getToken() {
-    const token = localStorage.getItem("digital-dungeon-master-auth-token");
+    const token = localStorage.getItem(environment.localStorageToken);
     return token;
   }
 
   isAuthenticated() {
-    if (localStorage.getItem("digital-dungeon-master-auth-token")) {
+    if (localStorage.getItem(environment.localStorageToken)) {
       return true;
     }
     return false;
