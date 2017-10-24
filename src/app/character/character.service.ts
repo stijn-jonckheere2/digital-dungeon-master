@@ -1,5 +1,6 @@
 import { Injectable, EventEmitter } from "@angular/core";
 import * as firebase from "firebase";
+import { environment } from "../../environments/environment";
 
 import { AuthService } from "../auth/auth.service";
 import { Http } from "@angular/http";
@@ -34,7 +35,7 @@ export class CharacterService {
         console.log("Save Characters Called!");
         const userId = this.authService.getUserId();
         const token = this.authService.getToken();
-        const url = "https://digital-dungeon-master.firebaseio.com/characters/" + userId +
+        const url = environment.database.databaseURL + "/characters/" + userId +
             "-characters.json?auth=" + token;
         return this.http.put(url, this.characters);
     }
