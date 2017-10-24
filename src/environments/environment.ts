@@ -4,5 +4,17 @@
 // The list of which env maps to which file can be found in `.angular-cli.json`.
 
 export const environment = {
-  production: false
+  production: false,
+
+  database: {
+    apiKey: "AIzaSyBqhxlpbErCF557lZd0-0qsXPubgMZzC_4",
+    authDomain: "digital-dungeon-master-dev.firebaseapp.com",
+    databaseURL: "https://digital-dungeon-master-dev.firebaseio.com",
+    projectId: "digital-dungeon-master-dev",
+    storageBucket: "digital-dungeon-master-dev.appspot.com",
+    messagingSenderId: "259994406067"
+  },
+
+  localStorageUser: "ddm-dev-auth-user",
+  localStorageToken: "ddm-dev-auth-token"
 };

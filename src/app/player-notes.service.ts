@@ -2,6 +2,7 @@ import { Injectable } from "@angular/core";
 import { AuthService } from "./auth/auth.service";
 import { ErrorService } from "./error-service.service";
 import { Http } from "@angular/http";
+import { environment } from "../environments/environment";
 
 @Injectable()
 export class PlayerNotesService {
@@ -18,7 +19,7 @@ export class PlayerNotesService {
       (resolve, reject) => {
         const userId = this.authService.getUserId();
         const token = this.authService.getToken();
-        const url = "https://digital-dungeon-master.firebaseio.com/playernotes/" + userId + "-notes.json?auth=" + token;
+        const url = environment.database.databaseURL + "/playernotes/" + userId + "-notes.json?auth=" + token;
 
         this.http.get(url).subscribe(
           (response) => {
@@ -60,7 +61,7 @@ export class PlayerNotesService {
   saveNotes(notes: string) {
     const userId = this.authService.getUserId();
     const token = this.authService.getToken();
-    const url = "https://digital-dungeon-master.firebaseio.com/playernotes/" + userId + "-notes.json?auth=" + token;
+    const url = environment.database.databaseURL + "/playernotes/" + userId + "-notes.json?auth=" + token;
     this.playerNotes = notes;
 
     this.http.put(url, [notes]).subscribe(
