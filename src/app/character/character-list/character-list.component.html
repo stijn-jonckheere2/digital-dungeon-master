@@ -19,9 +19,15 @@
                 <p>{{ character.age }}</p>
             </div>
             <div class="character-links">
-                <a class="btn btn-primary" (click)="onSelectCharacter(i)">Select</a>
-                <a class="btn btn-default" [routerLink]="['/characters', i, 'edit']">Edit</a>
-                <a class="btn btn-danger" (click)="onDeleteCharacter(i)">Delete</a>
+                <a class="btn btn-primary" (click)="onSelectCharacter(i)">
+                    <i class="material-icons">touch_app</i>
+                </a>
+                <a class="btn btn-default" [routerLink]="['/characters', i, 'edit']">
+                    <i class="material-icons">&#xE254;</i>
+                </a>
+                <!-- <a class="btn btn-danger" (click)="onDeleteCharacter(i)">
+                    <i class="material-icons">delete_forever</i>
+                </a> -->
             </div>
         </div>
     </div>
