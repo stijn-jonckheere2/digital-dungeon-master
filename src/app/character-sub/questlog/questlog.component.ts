@@ -104,8 +104,10 @@ export class QuestlogComponent implements OnInit, OnDestroy {
   }
 
   removeQuest(npcId: number) {
-    this.characterService.deleteQuest(this.characterId, npcId);
-    this.updateQuests();
+    if (confirm("Are you sure you want to delete this quest?")) {
+      this.characterService.deleteQuest(this.characterId, npcId);
+      this.updateQuests();
+    }
   }
 
   resetQuest() {

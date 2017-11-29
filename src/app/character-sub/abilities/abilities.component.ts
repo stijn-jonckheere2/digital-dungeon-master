@@ -89,8 +89,10 @@ export class AbilitiesComponent implements OnInit, OnDestroy {
   }
 
   removeAbility(abilityId: number) {
-    this.characterService.deleteAbility(this.characterId, abilityId);
-    this.updateAbilities();
+    if(confirm("Are you sure you want to delete this ability?")) {
+      this.characterService.deleteAbility(this.characterId, abilityId);
+      this.updateAbilities();
+    }
   }
 
 }
