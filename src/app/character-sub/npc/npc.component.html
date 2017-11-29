@@ -8,8 +8,12 @@
         <p class="inventory-item-description" [innerHtml]="npc.description">
         </p>
         <div class="inventory-buttons">
-          <button class="btn btn-primary" (click)="editNpc(npcIndex, npc)">Edit</button>
-          <button class="btn btn-danger" (click)="removeNpc(npcIndex)">Remove</button>
+          <button class="btn btn-primary" (click)="editNpc(npcIndex, npc)">
+              <i class="material-icons">&#xE254;</i>
+          </button>
+          <button class="btn btn-danger" (click)="removeNpc(npcIndex)">
+              <i class="material-icons">delete_forever</i>
+          </button>
         </div>
       </div>
     </div>

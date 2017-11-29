@@ -44,10 +44,22 @@ h3 {
     font-weight: bold;
 }
 
+.character-links {
+    display: flex !important;
+    justify-content: center !important;
+
+    a {
+        margin-right: 20px;
+        &:last-of-type {
+            margin-right: 0;
+        }
+    }
+}
+
 .character-links > a {
     display: block;
     text-decoration: none;
-    padding: 10px 25px;
+    padding: 10px;
     margin-top: 20px;
     border-radius: 5px;
 }
@@ -64,17 +76,6 @@ h3 {
     .character {
         width: 48%;
         flex-shrink: 0;
-    }
-    .character-links {
-        display: flex !important;
-        justify-content: center !important;
-
-        a {
-            margin-right: 20px;
-            &:last-of-type {
-                margin-right: 0;
-            }
-        }
     }
     .character:nth-of-type(2n+1) {
         margin-right: 2%;

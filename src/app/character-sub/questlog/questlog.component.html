@@ -7,8 +7,12 @@
       </p>
       <p class="inventory-item-description">{{ quest.description }}</p>
       <div class="inventory-buttons">
-        <button class="btn btn-primary" (click)="editQuest(quest.originId, quest)">Edit</button>
-        <button class="btn btn-danger" (click)="removeQuest(quest.originId)">Remove</button>
+        <button class="btn btn-primary" (click)="editQuest(quest.originId, quest)">
+            <i class="material-icons">&#xE254;</i>
+        </button>
+        <button class="btn btn-danger" (click)="removeQuest(quest.originId)">
+            <i class="material-icons">delete_forever</i>
+        </button>
       </div>
     </div>
   </div>
@@ -26,7 +30,9 @@
       </p>
       <p class="inventory-item-description">{{ quest.description }}</p>
       <div class="inventory-buttons">
-        <button class="btn btn-primary" (click)="editQuest(quest.originId, quest)">Edit</button>
+        <button class="btn btn-primary" (click)="editQuest(quest.originId, quest)">
+            <i class="material-icons">&#xE254;</i>
+        </button>
         <button class="btn btn-danger" (click)="removeQuest(quest.originId)">Remove</button>
       </div>
     </div>

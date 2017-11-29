@@ -9,8 +9,12 @@
         </p>
         <p class="inventory-item-description">{{ ability.description }}</p>
         <div class="inventory-buttons">
-          <button class="btn btn-primary" (click)="editAbility(abilityIndex, ability)">Edit</button>
-          <button class="btn btn-danger" (click)="removeAbility(abilityIndex)">Remove</button>
+          <button class="btn btn-primary" (click)="editAbility(abilityIndex, ability)">
+              <i class="material-icons">&#xE254;</i>
+          </button>
+          <button class="btn btn-danger" (click)="removeAbility(abilityIndex)">
+              <i class="material-icons">delete_forever</i>
+          </button>
         </div>
       </ng-container>
     </div>
@@ -24,8 +28,12 @@
         </p>
         <p class="inventory-item-description">{{ ability.description }}</p>
         <div class="inventory-buttons">
-          <button class="btn btn-primary" (click)="editAbility(abilityIndex, ability)">Edit</button>
-          <button class="btn btn-danger" (click)="removeAbility(abilityIndex)">Remove</button>
+          <button class="btn btn-primary" (click)="editAbility(abilityIndex, ability)">
+            <i class="material-icons">&#xE254;</i>
+          </button>
+          <button class="btn btn-danger" (click)="removeAbility(abilityIndex)">
+            <i class="material-icons">delete_forever</i>
+          </button>
         </div>
       </ng-container>
     </div>
