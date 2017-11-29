@@ -89,8 +89,10 @@ export class InventoryComponent implements OnInit, OnDestroy {
   }
 
   removeItem(itemId: number) {
-    this.characterService.deleteInventoryItem(this.characterId, itemId);
-    this.updateInventory();
+    if (confirm("Are you sure you want to delete this item?")) {
+      this.characterService.deleteInventoryItem(this.characterId, itemId);
+      this.updateInventory();
+    }
   }
 
   addGold(amount: number) {

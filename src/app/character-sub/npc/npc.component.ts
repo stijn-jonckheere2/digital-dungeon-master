@@ -88,8 +88,10 @@ export class NpcComponent implements OnInit, OnDestroy {
   }
 
   removeNpc(npcId: number) {
-    this.characterService.deleteNpc(this.characterId, npcId);
-    this.updateNpcs();
+    if (confirm("Are you sure you want to delete this NPC?")) {
+      this.characterService.deleteNpc(this.characterId, npcId);
+      this.updateNpcs();
+    }
   }
 
   resetNpc() {
