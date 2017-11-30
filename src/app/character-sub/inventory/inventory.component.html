@@ -7,10 +7,8 @@
       <img src="/assets/images/gold-coins.png" height="50px"/>
     </p>
     <div class="inventory-buttons">
-      <button class="btn btn-primary btn-small" (click)="reduceGold(50)" [disabled]="character.gold <= 50">- 50</button>
-      <button class="btn btn-primary btn-small" (click)="reduceGold(10)" [disabled]="character.gold < 10">- 10</button>
-      <button class="btn btn-danger btn-small" (click)="addGold(10)">+ 10</button>
-      <button class="btn btn-danger btn-small" (click)="addGold(50)">+ 50</button>
+      <button class="btn btn-primary" (click)="addGold()"><i class="material-icons">add_circle_outline</i></button>
+      <button class="btn btn-danger" (click)="reduceGold()" [disabled]="character.gold == 0"><i class="material-icons">remove_circle_outline</i></button>
     </div>
   </div>
 </div>

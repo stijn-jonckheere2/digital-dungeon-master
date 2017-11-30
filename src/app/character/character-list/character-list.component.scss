@@ -1,3 +1,5 @@
+@import '~sass/variables';
+
 h3 {
     padding-bottom: 20px;
 }
@@ -18,6 +20,10 @@ h3 {
     font-size: 1.2em;
     margin-bottom: 20px;
     text-transform: capitalize;
+
+    &:first-of-type {
+        color: $primary-color;
+    }
 }
 
 .character > div {
