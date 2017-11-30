@@ -7,7 +7,7 @@
       </p>
       <p class="inventory-item-description">{{ quest.description }}</p>
       <div class="inventory-buttons">
-        <button class="btn btn-primary" (click)="editQuest(quest.originId, quest)">
+        <button class="btn btn-default" (click)="editQuest(quest.originId, quest)">
             <i class="material-icons">&#xE254;</i>
         </button>
         <button class="btn btn-danger" (click)="removeQuest(quest.originId)">
@@ -18,8 +18,8 @@
   </div>
   <div class="button-wrapper">
     <button class="btn btn-primary" (click)="enableAddQuest()">Add new quest</button>
-    <button class="btn btn-primary" (click)="toggleCompleted()" *ngIf="!completedVisible">Show completed quests</button>
-    <button class="btn btn-primary" (click)="toggleCompleted()" *ngIf="completedVisible">Hide completed quests</button>
+    <button class="btn btn-default" (click)="toggleCompleted()" *ngIf="!completedVisible">Show completed quests</button>
+    <button class="btn btn-default" (click)="toggleCompleted()" *ngIf="completedVisible">Hide completed quests</button>
   </div>
   <h2 *ngIf="completedVisible && character && character.questLog && completedQuestLog.length > 0">Completed</h2>
   <div class="inventory" *ngIf="completedVisible && character && character.questLog && completedQuestLog.length > 0">
