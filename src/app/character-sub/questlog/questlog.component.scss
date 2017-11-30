@@ -34,8 +34,19 @@
 .inventory-buttons {
     text-align: center;
     padding-top: 20px;
-    
 }
+
+@media (max-width: 450px) {
+    .button-wrapper {
+        button {
+            margin-bottom: 20px;
+            &:last-of-type {
+                margin-bottom: 0;
+            }
+        }
+    }
+}
+
 @media (min-width: 768px) {
     .inventory {
         margin-top: 0;
