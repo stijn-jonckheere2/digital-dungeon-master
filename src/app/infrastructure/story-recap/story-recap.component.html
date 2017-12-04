@@ -1,0 +1,31 @@
+<h2>This Week's Recap</h2>
+
+<ng-container *ngIf="!recapEditEnabled">
+    <p *ngIf="!recapsFetched">Loading...</p>
+    <p *ngIf="recapsFetched && recaps.length === 0" style="margin-bottom: 20px; text-align: center">There are no recaps yet</p>
+
+    <div class="recap-wrapper" *ngIf="recapsFetched && recaps.length > 0">
+        <ng-container *ngFor="let recap of recaps; let recapIndex = index">
+            <div class="recap">
+                <span>Updated: {{ recap.modifiedOn | date:'EEEE d/M/y' }} <span>{{ recap.modifiedOn | date:'shortTime' }}</span></span>
+                <p>{{ recap.recap }}</p>
+            </div>
+            <ng-container *ngIf="recapIndex == 0">
+                <div class="button-wrapper">
+                    <button (click)="editRecap(recap)" class="btn btn-primary">Edit</button>
+                </div>
+                <h2 *ngIf="recaps.length >= 2">Previous Recaps</h2>                            
+            </ng-container>
+            <hr *ngIf="recapIndex >= 1 && recapIndex < recaps.length - 1">
+        </ng-container>
+    </div>
+</ng-container>
+
+<ng-container *ngIf="recapEditEnabled">
+    <div class="form-group">
+        <label for="recap">Recap of the last session:</label>
+        <textarea id="recap" class="form-control" [(ngModel)]="selectedRecap.recap" rows="20"></textarea>
+    </div>
+    <button class="btn btn-primary" (click)="saveRecap()">Save</button>
+
+</ng-container>

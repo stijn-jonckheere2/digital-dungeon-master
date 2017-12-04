@@ -24,6 +24,8 @@ import { ErrorDisplayComponent } from "./infrastructure/error-display/error-disp
 import { AbilitiesComponent } from "./character-sub/abilities/abilities.component";
 import { PlayerNotesComponent } from "./infrastructure/player-notes/player-notes.component";
 import { PlayerNotesService } from "./player-notes.service";
+import { StoryRecapComponent } from "./infrastructure/story-recap/story-recap.component";
+import { StoryRecapService } from "./story-recap.service";
 
 @NgModule({
   declarations: [
@@ -38,6 +40,7 @@ import { PlayerNotesService } from "./player-notes.service";
     ErrorDisplayComponent,
     AbilitiesComponent,
     PlayerNotesComponent,
+    StoryRecapComponent,
   ],
   imports: [
     BrowserModule,
@@ -47,7 +50,7 @@ import { PlayerNotesService } from "./player-notes.service";
     CharacterModule,
     AppRoutingModule,
   ],
-  providers: [AuthService, ErrorService, PlayerNotesService, AuthGuard],
+  providers: [AuthService, ErrorService, PlayerNotesService, StoryRecapService, AuthGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
