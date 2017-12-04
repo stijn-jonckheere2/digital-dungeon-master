@@ -33,8 +33,8 @@ firebase.initializeApp({
 // Automated jobs
 
 var job1 = new cron.CronJob({
-  // cronTime: '00 00 23 * * 5',
-  cronTime: '10 * * * * *',
+  cronTime: '00 30 23 * * 5',
+  // cronTime: '10 * * * * *',
   onTick: function () {
     console.log('Adding a new story recap...');
 
