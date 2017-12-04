@@ -12,7 +12,7 @@ const cronUser = 'cronjob@ddm.be';
 const cronPassword = 'Cr0nj0b2017!';
 var cronToken = "";
 
-/*firebase.initializeApp({
+firebase.initializeApp({
   apiKey: "AIzaSyA8J2ryEam-6m4WAoM3k1CT75ylhQPUWLQ",
   authDomain: "digital-dungeon-master.firebaseapp.com",
   databaseURL: "https://digital-dungeon-master.firebaseio.com",
@@ -71,7 +71,7 @@ function createNewRecap() {
     console.log("Response from firebase:", response);
   });
 
-}*/
+}
 
 // Run the app by serving the static files
 // in the dist directory
