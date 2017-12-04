@@ -39,7 +39,10 @@
 @media (max-width: 450px) {
     .button-wrapper {
         button {
+            margin-left: auto;
+            margin-right: auto;
             margin-bottom: 20px;
+            display: block;
             &:last-of-type {
                 margin-bottom: 0;
             }
