@@ -1,0 +1,54 @@
+@import '~sass/variables';
+
+h2 {
+    margin-bottom: 40px;
+}
+
+hr {
+    margin: 60px auto;
+    width: 100px;
+    height: 2px;
+    border: none;
+    color: $primary-color !important;
+    background-color: $primary-color !important;
+}
+
+textarea {
+    min-height: 250px;
+}
+
+.recap {
+    span {
+        display: flex;
+        justify-content: space-between;
+        padding-bottom: 10px;
+        color: $primary-color;
+        font-size: 0.8em;
+    }
+    
+    p {
+        white-space: pre-wrap;
+        
+        font-size: 0.8em;
+        line-height: 1.2em;
+    
+        margin-bottom: 20px;
+        padding: 10px;
+        background-color: rgba(0, 0, 0, 0.3);    
+        box-shadow: 0px 0px 9px 0px rgba(0,0,0,0.75);
+        border: 2px solid black;
+        color: #f2f2f2;
+    }
+}
+
+.button-wrapper {
+    margin-bottom: 40px;
+    margin-top: 40px;
+}
+
+@media (min-width: 768px) {
+    .button-wrapper {
+        margin-bottom: 60px;
+        margin-top: 20px;
+    }
+}

@@ -318,6 +318,22 @@ export class CharacterLog {
     }
 }
 
+export class StoryRecap {
+    public id: string;
+    public createdOn: Date;
+    public modifiedOn: Date;
+
+    constructor(
+        public recap: string,
+        public createdBy: string,
+        public modifiedBy: string,
+    ) {
+        this.id = uuidv1();
+        this.createdOn = new Date();
+        this.modifiedOn = new Date();
+    }
+}
+
 export const primaryStatNames = [
     "strength",
     "agility",

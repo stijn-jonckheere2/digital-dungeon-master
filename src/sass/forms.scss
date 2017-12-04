@@ -6,6 +6,7 @@ input[type="text"], input[type="password"], input[type="email"], input[type="num
 }
 textarea {
     min-height: 150px;
+    resize: vertical;
 }
 
 .form-group {
