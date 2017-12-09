@@ -29,67 +29,10 @@ class Serializable {
 
         convertedChar.logs = jsonObj.logs || [];
 
-        for (let i = 0; i < convertedChar.logs.length; i++) {
-            if (!convertedChar.logs[i].type) {
-                convertedChar.logs[i]["type"] = "all";
-            }
-        }
-
-        // add UUIDs
-        for (let i = 0; i < convertedChar.abilities.length; i++) {
-            if (!convertedChar.abilities[i]["id"]) {
-                convertedChar.abilities[i]["id"] = uuidv1();
-            }
-        }
+        // add inventory item types
         for (let i = 0; i < convertedChar.inventory.length; i++) {
-            if (!convertedChar.inventory[i]["id"]) {
-                convertedChar.inventory[i]["id"] = uuidv1();
-            }
-        }
-        for (let i = 0; i < convertedChar.questLog.length; i++) {
-            if (!convertedChar.questLog[i]["id"]) {
-                convertedChar.questLog[i]["id"] = uuidv1();
-            }
-        }
-        for (let i = 0; i < convertedChar.npcList.length; i++) {
-            if (!convertedChar.npcList[i]["id"]) {
-                convertedChar.npcList[i]["id"] = uuidv1();
-            }
-        }
-        // add stat UUIDs
-        for (let i = 0; i < convertedChar.primaryStats.length; i++) {
-            if (!convertedChar.primaryStats[i]["id"]) {
-                convertedChar.primaryStats[i]["id"] = uuidv1();
-            }
-        }
-        for (let i = 0; i < convertedChar.secondaryStats.length; i++) {
-            if (!convertedChar.secondaryStats[i]["id"]) {
-                convertedChar.secondaryStats[i]["id"] = uuidv1();
-            }
-        }
-        for (let i = 0; i < convertedChar.weaponStats.length; i++) {
-            if (!convertedChar.weaponStats[i]["id"]) {
-                convertedChar.weaponStats[i]["id"] = uuidv1();
-            }
-        }
-        for (let i = 0; i < convertedChar.armorStats.length; i++) {
-            if (!convertedChar.armorStats[i]["id"]) {
-                convertedChar.armorStats[i]["id"] = uuidv1();
-            }
-        }
-        for (let i = 0; i < convertedChar.rangedStats.length; i++) {
-            if (!convertedChar.rangedStats[i]["id"]) {
-                convertedChar.rangedStats[i]["id"] = uuidv1();
-            }
-        }
-        for (let i = 0; i < convertedChar.professionStats.length; i++) {
-            if (!convertedChar.professionStats[i]["id"]) {
-                convertedChar.professionStats[i]["id"] = uuidv1();
-            }
-        }
-        for (let i = 0; i < convertedChar.logs.length; i++) {
-            if (!convertedChar.logs[i]["id"]) {
-                convertedChar.logs[i]["id"] = uuidv1();
+            if (!convertedChar.inventory[i]["type"]) {
+                convertedChar.inventory[i]["type"] = "unknown";
             }
         }
 
@@ -249,7 +192,8 @@ export class InventoryItem {
         public name: string,
         public description: string,
         public amount: number,
-        public consumable: boolean
+        public consumable: boolean,
+        public type: string
     ) {
         this.id = uuidv1();
     }
