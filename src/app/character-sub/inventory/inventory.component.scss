@@ -5,7 +5,20 @@
     margin-top: 10px;
 }
 .inventory-gold {
-    .inventory-item-description {
+    margin-top: 10px;
+    margin-bottom: 20px;
+    padding: 10px;
+    background-color: rgba(0, 0, 0, 0.3);    
+    box-shadow: 0px 0px 9px 0px rgba(0,0,0,0.75);
+    border: 2px solid black;   
+
+    .gold-item-name {
+        color: $primary-color;
+        font-weight: bold;
+        margin-bottom: 20px;
+    }
+
+    .gold-item-description {
         display: flex;
         justify-content: center;
         align-items: center;
@@ -20,9 +33,39 @@
     padding: 10px;
     background-color: rgba(0, 0, 0, 0.3);    
     box-shadow: 0px 0px 9px 0px rgba(0,0,0,0.75);
-    border: 2px solid black;    
+    border: 2px solid black;
+
+    &-main {
+        display: flex;
+        align-items: center;
+    }
+    &-sub {
+        display: none;
+        margin-top: 10px;
+    }
+    &.active {
+        .inventory-item-main {
+            
+        }
+        .inventory-item-sub {
+            display: block;
+            padding: 10px;
+            border-top: 2px solid black;
+        }
+    }
+}
+.inventory-item-image {
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+
+    flex-shrink: 0;
+    height: 50px;
+    width: 50px;
 }
 .inventory-item-name {
+    font-weight: bold;    
+    margin-left: 10px;
     color: $primary-color;
     span {
         color: $primary-color;
@@ -35,45 +78,47 @@
 .inventory-item-name:first-letter{
     text-transform: uppercase;
 }
-.inventory-item-name {
-    font-weight: bold;
-    margin-bottom: 20px;
-}
 .inventory-buttons {
     text-align: center;
-    padding-top: 20px;
+    padding-top: 10px;
 }
+select {
+    display: block;
+    width: 100%;
+  }
 @media (min-width: 768px) {
-    .inventory {
-    }
     .inventory-gold {
-        .inventory-item-description {
+        .gold-item {
+            display: flex;
+        }
+        .gold-item-name {
+            width: 20%;
+        }
+        .gold-item-description {
+            width: 60%;
             display: flex;
             justify-content: flex-start;
             align-items: flex-start;
+            white-space: pre-wrap;
+            line-height: 1.2em;
 
             img {
                 height: 20px !important;
             }
         }
+        .inventory-buttons {
+            width: 20%;
+            padding-top: 0;
+        }
     }
     .inventory-item {
-        display: flex;
-    }
-    .inventory-item-name {
-        margin-bottom: 0;
-        box-sizing: border-box;
-        padding-right: 10px;
-    }
-    .inventory-item-name, .inventory-buttons {
-        width: 20%;
-    }
-    .inventory-item-description {
-        width: 60%;
+        &:hover {
+            cursor: pointer;
+            background-color: rgba(0, 0, 0, 0.6);
+        }
     }
     .inventory-buttons {
         text-align: right;
-        padding: 0;
     }
 }
 @media (max-width: 768px) {

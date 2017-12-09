@@ -7,9 +7,11 @@ import { CharacterNewComponent } from "./character/character-new/character-new.c
 import { CharacterEditComponent } from "./character/character-edit/character-edit.component";
 import { CharacterListComponent } from "./character/character-list/character-list.component";
 import { PlayerNotesComponent } from "./infrastructure/player-notes/player-notes.component";
+import { StoryRecapComponent } from "./infrastructure/story-recap/story-recap.component";
 
 const appRoutes: Routes = [
   { path: "player-notes", component: PlayerNotesComponent, canActivate: [AuthGuard] },
+  { path: "story-recap", component: StoryRecapComponent, canActivate: [AuthGuard] },
   { path: "", redirectTo: "characters", pathMatch: "full" },
   // { path: "**", redirectTo: "characters" }
 ];
