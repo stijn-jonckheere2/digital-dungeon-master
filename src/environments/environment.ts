@@ -15,6 +15,13 @@ export const environment = {
     messagingSenderId: "259994406067"
   },
 
-  localStorageUser: "ddm-dev-auth-user",
-  localStorageToken: "ddm-dev-auth-token"
+  authZero: {
+    clientID: "w2DOJNRWBOxnCfe2oYYSowIS5U8C4PaZ",
+    domain: "midlin.eu.auth0.com",
+    responseType: "token id_token",
+    audience: "https://midlin.eu.auth0.com/userinfo",
+    redirectUri: "http://localhost:4200/redirecting",
+    scope: "openid"
+  }
+
 };

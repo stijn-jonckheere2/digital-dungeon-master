@@ -8,102 +8,66 @@ import { Observable } from "rxjs/Observable";
 import { Observer } from "rxjs/Observer";
 import { ErrorService } from "../error-service.service";
 import { CharacterService } from "../character/character.service";
+import "rxjs/add/operator/filter";
+import * as auth0 from "auth0-js";
+import * as jwt_decode from "jwt-decode";
 
 @Injectable()
 export class AuthService {
-  token: string;
-  userId: string;
 
-  authChangedEvent = new EventEmitter<boolean>();
-  firebaseAuthListener: any;
+  auth0 = new auth0.WebAuth(environment.authZero);
 
-  constructor(private router: Router,
-    private errorService: ErrorService) { }
+  constructor(public router: Router) { }
 
-  setAuthPersistence() {
-    firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL)
-      .catch(function (error) {
-        this.errorService.displayError(error.message);
-      });
+  public authEvent = new EventEmitter<boolean>();
+
+  public login(): void {
+    this.auth0.authorize();
   }
 
-  signupUser(email: string, password: string) {
-    firebase.auth().createUserWithEmailAndPassword(email, password)
-      .then(
-      () => this.signinUser(email, password)
-      )
-      .catch(
-      error => this.errorService.displayError(error.message)
-      );
-  }
-
-  signinUser(email: string, password: string) {
-    firebase.auth().signInWithEmailAndPassword(email, password)
-      .then(
-      response => {
-        firebase.auth().currentUser.getIdToken()
-          .then(
-          (token: string) => {
-            this.token = token;
-            this.userId = firebase.auth().currentUser.uid;
-            this.authChangedEvent.emit(true);
-
-            localStorage.setItem(environment.localStorageUser, this.userId);
-            localStorage.setItem(environment.localStorageToken, this.token);
-
-            this.router.navigate(["/characters"]);
-          }
-          );
-      }
-      )
-      .catch(
-      error => this.errorService.displayError(error.message)
-      );
-  }
-
-  startAuthListening() {
-    this.firebaseAuthListener = firebase.auth().onAuthStateChanged((user: any) => {
-      if (user === null) {
-        this.router.navigate(["/login"]);
-        this.errorService.displayError("Your session has expired. Please login again.");
-      } else {
-        localStorage.setItem(environment.localStorageUser, user.uid);
-        firebase.auth().currentUser.getIdToken(true).then(
-          (token) => {
-            localStorage.setItem(environment.localStorageToken, token);
-          }
-        );
+  public handleAuthentication(): void {
+    this.auth0.parseHash((err, authResult) => {
+      if (authResult && authResult.accessToken && authResult.idToken) {
+        window.location.hash = "";
+        this.setSession(authResult);
+        this.authEvent.emit(true);
+        this.router.navigate(["/characters"]);
+      } else if (err) {
+        this.router.navigate(["/characters"]);
+        console.log(err);
       }
     });
   }
 
-  logout() {
-    firebase.auth().signOut().then(
-      () => {
-        this.token = null;
-        this.authChangedEvent.emit(false);
-
-        localStorage.removeItem(environment.localStorageUser);
-        localStorage.removeItem(environment.localStorageToken);
-        this.router.navigate(["/login"]);
-      }
-    );
+  private setSession(authResult): void {
+    // Set the time that the Access Token will expire at
+    const expiresAt = JSON.stringify((authResult.expiresIn * 1000) + new Date().getTime());
+    localStorage.setItem("access_token", authResult.accessToken);
+    localStorage.setItem("id_token", authResult.idToken);
+    localStorage.setItem("expires_at", expiresAt);
   }
 
-  getUserId() {
-    const user = localStorage.getItem(environment.localStorageUser);
-    return user;
+  public logout(): void {
+    // Remove tokens and expiry time from localStorage
+    localStorage.removeItem("access_token");
+    localStorage.removeItem("id_token");
+    localStorage.removeItem("expires_at");
+
+    // Go back to the home route
+    this.login();
   }
 
-  getToken() {
-    const token = localStorage.getItem(environment.localStorageToken);
-    return token;
+  public isAuthenticated(): boolean {
+    // Check whether the current time is past the
+    // Access Token"s expiry time
+    const expiresAt = JSON.parse(localStorage.getItem("expires_at"));
+    return new Date().getTime() < expiresAt;
   }
 
-  isAuthenticated() {
-    if (localStorage.getItem(environment.localStorageToken)) {
-      return true;
-    }
-    return false;
+  public getUserId(): string {
+    const idToken = localStorage.getItem("id_token");
+    const tokenData = jwt_decode(idToken);
+    return tokenData.sub;
   }
+
 }

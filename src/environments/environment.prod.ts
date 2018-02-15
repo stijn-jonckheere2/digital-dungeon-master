@@ -15,6 +15,13 @@ export const environment = {
     messagingSenderId: "165971576370",
   },
 
-  localStorageUser: "ddm-auth-user",
-  localStorageToken: "ddm-auth-token"
+  authZero: {
+    clientID: "sPwD5NzgX12pkJQoyUVNqdDT9usmuwNC",
+    domain: "midlin.eu.auth0.com",
+    responseType: "token id_token",
+    audience: "https://midlin.eu.auth0.com/userinfo",
+    redirectUri: "http://ddm.netlify.com/redirecting",
+    scope: "openid"
+  }
+
 };

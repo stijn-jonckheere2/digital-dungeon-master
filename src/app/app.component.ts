@@ -13,8 +13,8 @@ export class AppComponent implements OnInit {
   title = "app";
 
   constructor(private authService: AuthService) {
-
-  }
+    authService.handleAuthentication();
+   }
 
   ngOnInit() {
 
@@ -27,7 +27,5 @@ export class AppComponent implements OnInit {
       messagingSenderId: environment.database.messagingSenderId
     });
 
-    this.authService.setAuthPersistence();
-    this.authService.startAuthListening();
   }
 }

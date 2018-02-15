@@ -1,15 +1,4 @@
 <div class="header">
-  <ul [ngClass]="{'dropdown-closed': !mobileMenuOpen, 'dropdown-open': mobileMenuOpen }" (click)="toggleMobileMenu()" *ngIf="!authenticated">
-    <li class="hide-on-desktop">
-      <a>Menu</a>
-    </li>
-    <li routerLinkActive="active">
-      <a routerLink="/login">Login</a>
-    </li>
-    <li routerLinkActive="active">
-      <a routerLink="/register">Register</a>
-    </li>
-  </ul>
   <ul [ngClass]="{'dropdown-closed': !mobileMenuOpen, 'dropdown-open': mobileMenuOpen }" (click)="toggleMobileMenu()" *ngIf="authenticated && selectedChar === -1">
     <li class="hide-on-desktop">
       <a>Menu</a>

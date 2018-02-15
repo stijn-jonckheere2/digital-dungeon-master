@@ -18,8 +18,7 @@ export class PlayerNotesService {
     const fetchPromise = new Promise(
       (resolve, reject) => {
         const userId = this.authService.getUserId();
-        const token = this.authService.getToken();
-        const url = environment.database.databaseURL + "/playernotes/" + userId + "-notes.json?auth=" + token;
+        const url = environment.database.databaseURL + "/playernotes/" + userId + "-notes.json";
 
         this.http.get(url).subscribe(
           (response) => {
@@ -60,8 +59,7 @@ export class PlayerNotesService {
 
   saveNotes(notes: string) {
     const userId = this.authService.getUserId();
-    const token = this.authService.getToken();
-    const url = environment.database.databaseURL + "/playernotes/" + userId + "-notes.json?auth=" + token;
+    const url = environment.database.databaseURL + "/playernotes/" + userId + "-notes.json";
     this.playerNotes = notes;
 
     this.http.put(url, [notes]).subscribe(
