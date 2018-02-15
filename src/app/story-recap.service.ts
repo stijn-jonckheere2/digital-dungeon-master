@@ -75,8 +75,7 @@ export class StoryRecapService {
   }
 
   saveRecap(recap: StoryRecap) {
-    const token = this.authService.getToken();
-    const url = environment.database.databaseURL + "/recaps/" + recap.id + "-recap.json?auth=" + token;
+    const url = environment.database.databaseURL + "/recaps/" + recap.id + "-recap.json";
     this.http.put(url, recap).subscribe(
       (response) => { console.log("Recap saved succesfully!" + new Date()); },
       (error) => {

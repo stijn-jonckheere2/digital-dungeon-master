@@ -34,9 +34,7 @@ export class CharacterService {
     saveCharacters(characters: Character[]) {
         console.log("Save Characters Called!");
         const userId = this.authService.getUserId();
-        const token = this.authService.getToken();
-        const url = environment.database.databaseURL + "/characters/" + userId +
-            "-characters.json?auth=" + token;
+        const url = environment.database.databaseURL + "/characters/" + userId + "-characters.json";
         return this.http.put(url, this.characters);
     }
 
