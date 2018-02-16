@@ -1,0 +1,16 @@
+@import '~sass/variables';
+
+.fullScreenLoader {
+    position: fixed;
+    top: 0;
+    left: 0;
+
+    height: 100vh;
+    width: 100vw;
+    background-color: $primary-color;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
+}
