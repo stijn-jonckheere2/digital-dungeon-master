@@ -18,6 +18,7 @@ class Serializable {
         convertedChar.inventory = jsonObj.inventory || [];
         convertedChar.questLog = jsonObj.questLog || [];
         convertedChar.npcList = jsonObj.npcList || [];
+        convertedChar.combatSheets = jsonObj.combatSheets || [];
 
         convertedChar.primaryStats = jsonObj.primaryStats;
         convertedChar.secondaryStats = jsonObj.secondaryStats;
@@ -47,6 +48,7 @@ export class Character extends Serializable {
     public inventory: InventoryItem[];
     public questLog: Quest[];
     public npcList: Npc[];
+    public combatSheets: CombatSheet[];
 
     public primaryStats: CharacterStat[];
     public armorStats: CharacterStat[];
@@ -71,6 +73,7 @@ export class Character extends Serializable {
         this.inventory = [];
         this.questLog = [];
         this.npcList = [];
+        this.combatSheets = [];
 
         this.gold = 0;
 
@@ -276,6 +279,40 @@ export class StoryRecap {
         this.createdOn = new Date();
         this.modifiedOn = new Date();
     }
+}
+
+export class CombatSheet {
+    public id: string;
+    public createdOn: Date;
+    public modifiedOn: Date;
+    public actions: any[];
+    public wounds: CombatWound[];
+
+    /*public usedAbilities: {
+        toHitRoll: boolean;
+        damageRoll: number;
+        ability: Ability
+    }[];
+    public usedItems: InventoryItem[];*/
+
+    constructor(
+        public name: string,
+        public autoRoll: boolean,
+        public initiative?: number,
+    ) {
+        this.id = uuidv1();
+        this.createdOn = new Date();
+        this.modifiedOn = new Date();
+        this.actions = [];
+        this.wounds = [];
+    }
+}
+
+export class CombatWound {
+    constructor(
+        public location: string,
+        public severity: string
+    ) { }
 }
 
 export const primaryStatNames = [

@@ -1,0 +1,59 @@
+@import '~sass/variables';
+
+.combatTabs {
+    display: flex;
+    a {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 50%;
+        text-align: center;
+        box-sizing: border-box;
+        padding: 10px 15px;
+        background-color: $primary-color;
+        color: white;
+        cursor: pointer;
+        &.disabled {
+            background-color: rgba(0, 0, 0, 0.3);
+            border: 2px solid black;
+        }
+    }
+}
+
+.buttonWrapper {
+    display: flex;
+    flex-wrap: wrap;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    background-color: $primary-color;
+    width: 100%;
+
+    a {
+        color: white;
+        display: block;
+        box-sizing: border-box;
+        padding: 20px 15px;
+        width: 50%;
+        text-align: center;
+        border-top: 2px solid white;
+        cursor: pointer;
+        
+        & + a {
+            border-left: 2px solid white;
+        }
+        &:nth-of-type(3) {
+            border-left: 0 !important;
+        }
+    }
+}
+
+@media (min-width: 768px) {
+    .buttonWrapper {
+        max-width: 880px;
+        margin: 0 auto;
+        right: 0;
+        border-left: 2px solid white;
+        border-right: 2px solid white;
+    }
+}

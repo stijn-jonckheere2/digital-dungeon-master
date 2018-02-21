@@ -1,0 +1,43 @@
+<h2>Combat Sheets</h2>
+
+<ng-container *ngIf="sheetFormEnabled === false">
+    <div class="inventory" *ngIf="character && character.combatSheets">
+        <div class="inventory-item" *ngFor="let sheet of character.combatSheets; let sI = index">
+            <p class="inventory-item-name">
+                {{ sheet.name }} {{ sheet.autoRoll ? '(auto)' : '' }}
+            </p>
+            <p class="inventory-item-description">Initiative roll: {{ sheet.initiative || 'not set' }}</p>
+            <div class="inventory-buttons">
+                <button class="btn btn-primary" (click)="onSelectSheet(sI)">
+                    <i class="material-icons">pan_tool</i>
+                </button>
+                <button class="btn btn-default" (click)="editSheet(sI, sheet)">
+                    <i class="material-icons">&#xE254;</i>
+                </button>
+                <button class="btn btn-danger" (click)="removeSheet(sI)">
+                    <i class="material-icons">delete_forever</i>
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="button-wrapper">
+        <button class="btn btn-primary" (click)="enableAddSheet()">New Combat Sheet</button>
+    </div>
+</ng-container>
+
+<div *ngIf="sheetFormEnabled === true">
+    <div class="form-group">
+        <label for="name">name</label>
+        <input type="text" id="name" class="form-control" [(ngModel)]="newSheet.name" />
+    </div>
+    <div class="form-group">
+        <label for="ini">initiative (optional)</label>
+        <input type="number" id="ini" class="form-control" [(ngModel)]="newSheet.initiative" />
+    </div>
+    <div class="checkbox">
+        <label>
+            <input type="checkbox" value="" [(ngModel)]="newSheet.autoRoll">auto roll enabled</label>
+    </div>
+    <button class="btn btn-primary" (click)="addSheet()">Save</button>
+    <a (click)="cancelAddSheet()" class="btn btn-default">Cancel</a>
+</div>

@@ -19,7 +19,12 @@ import { ProfessionStatsComponent } from "../character-stats/profession-stats/pr
 import { ErrorService } from "../error-service.service";
 import { AbilitiesComponent } from "../character-sub/abilities/abilities.component";
 import { CharacterLogsComponent } from "./character-logs/character-logs.component";
-import { FilterPipe } from './character-logs/filter.pipe';
+import { FilterPipe } from "./character-logs/filter.pipe";
+import { CombatSheetListComponent } from "../character-sub/combat-sheet-list/combat-sheet-list.component";
+import { AbilityChooserComponent } from "../character-sub/ability-chooser/ability-chooser.component";
+import { ItemChooserComponent } from "../character-sub/item-chooser/item-chooser.component";
+import { WoundSelectorComponent } from "../character-sub/wound-selector/wound-selector.component";
+import { CombatSheetComponent } from "../character-sub/combat-sheet/combat-sheet.component";
 
 const charRoutes: Routes = [
     { path: "characters", component: CharacterListComponent, canActivate: [AuthGuard] },
@@ -33,6 +38,8 @@ const charRoutes: Routes = [
             { path: "inventory", component: InventoryComponent, canActivate: [AuthGuard] },
             { path: "npcs", component: NpcComponent, canActivate: [AuthGuard] },
             { path: "quests", component: QuestlogComponent, canActivate: [AuthGuard] },
+            { path: "combat-sheets", component: CombatSheetListComponent, canActivate: [AuthGuard] },
+            { path: "combat-sheets/:sheetId", component: CombatSheetComponent, canActivate: [AuthGuard] },
             { path: "logs", component: CharacterLogsComponent, canActivate: [AuthGuard] }
         ]
     },
@@ -46,6 +53,11 @@ const charRoutes: Routes = [
         CharacterNewComponent,
         CharacterMenuComponent,
         CharacterLogsComponent,
+        CombatSheetListComponent,
+        AbilityChooserComponent,
+        ItemChooserComponent,
+        WoundSelectorComponent,
+        CombatSheetComponent,
         FilterPipe
     ],
     imports: [

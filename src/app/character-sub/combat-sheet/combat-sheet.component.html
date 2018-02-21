@@ -1,0 +1,34 @@
+<div class="combatTabs">
+    <a (click)="actionsEnabled = true" [ngClass]="{'disabled': !actionsEnabled}">Combat</a>
+    <a (click)="actionsEnabled = false" [ngClass]="{'disabled': actionsEnabled}">Wounds</a>
+</div>
+
+<div class="actionWrapper" *ngIf="actionsEnabled && currentSheet && currentSheet.actions && currentSheet.actions.length > 0">
+    <div class="action" *ngFor="let action of currentSheet.actions"></div>
+</div>
+
+<div class="woundsWrapper" *ngIf="!actionsEnabled && currentSheet && currentSheet.wounds && currentSheet.wounds.length > 0">
+
+</div>
+
+<div class="buttonWrapper" *ngIf="actionsEnabled && currentSheet">
+    <a (click)="showAbilities()">Cast ability</a>
+    <a (click)="showItems()">Use Consumable</a>
+    <a (click)="setInitiative()">Set Initiative {{ currentSheet.initiative ? "(" + currentSheet.initiative + ")" : '' }}</a>
+    <a (click)="toggleAutoRoll()">
+        {{ currentSheet.autoRoll ? "Enable auto roll" : "Disable auto roll" }}
+    </a>
+</div>
+
+<div class="buttonWrapper" *ngIf="!actionsEnabled && currentSheet">
+    <a (click)="addWound()">Add wound</a>
+    <a (click)="lowerWound()">Lower Wound</a>
+    <a (click)="removeWound()">Remove Wound</a>
+    <a (click)="clearWounds()">Clear Wound</a>
+</div>
+
+<app-ability-chooser
+    [abilities]="character.abilities"
+    [abilitiesOnCooldown]="abilitiesOnCooldown"
+    (abilitySelected)="castAbility($event)">
+</app-ability-chooser>
