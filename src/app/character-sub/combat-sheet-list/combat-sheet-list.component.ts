@@ -15,7 +15,7 @@ export class CombatSheetListComponent implements OnInit, OnDestroy {
   characterId: number;
 
   sheetFormEnabled = false;
-  newSheet = new CombatSheet("", false);
+  newSheet = new CombatSheet("", true);
   newSheetId = -1;
 
   constructor(private characterService: CharacterService,
@@ -64,13 +64,20 @@ export class CombatSheetListComponent implements OnInit, OnDestroy {
   addSheet() {
     if (this.newSheet.name.length === 0) {
       this.errorService.displayError("Sheet name can't be empty!");
+    } else if (this.newSheet.initiative && (this.newSheet.initiative > 10 || this.newSheet.initiative < 1)) {
+      this.errorService.displayError("Initiative must be between 1 and 10!");
+    }  else if (!this.newSheet.autoRoll && !this.newSheet.initiative) {
+      this.errorService.displayError("Initiative can't be empty!");
     } else {
       if (this.newSheetId >= 0) {
         this.characterService.updateCombatSheet(this.characterId, this.newSheetId, this.newSheet);
       } else {
+        if (this.newSheet.autoRoll) {
+          this.newSheet.initiative = this.rollDice(10);
+        }
         this.characterService.addCombatSheet(this.characterId, this.newSheet);
       }
-      this.newSheet = new CombatSheet("", false);
+      this.newSheet = new CombatSheet("", true);
       this.newSheetId = -1;
       this.sheetFormEnabled = false;
       this.updateSheets();
@@ -78,7 +85,7 @@ export class CombatSheetListComponent implements OnInit, OnDestroy {
   }
 
   cancelAddSheet() {
-    this.newSheet = new CombatSheet("", false);
+    this.newSheet = new CombatSheet("", true);
     this.newSheetId = -1;
     this.sheetFormEnabled = false;
   }
@@ -97,7 +104,11 @@ export class CombatSheetListComponent implements OnInit, OnDestroy {
   }
 
   onSelectSheet(sheetId: any) {
-    this.router.navigate([sheetId], {relativeTo: this.route});
+    this.router.navigate([sheetId], { relativeTo: this.route });
+  }
+
+  rollDice(number: number) {
+    return Math.floor(Math.random() * (number - 1 + 1)) + 1;
   }
 
 }

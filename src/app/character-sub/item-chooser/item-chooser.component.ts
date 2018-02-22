@@ -1,4 +1,5 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, Input, EventEmitter, Output } from "@angular/core";
+import { InventoryItem } from "../../character/character.models";
 
 @Component({
   selector: "app-item-chooser",
@@ -6,10 +7,33 @@ import { Component, OnInit } from "@angular/core";
   styleUrls: ["./item-chooser.component.scss"]
 })
 export class ItemChooserComponent implements OnInit {
+  @Input() inventory: InventoryItem[];
+  @Output() itemSelected: EventEmitter<InventoryItem> = new EventEmitter();
+  @Output() itemCanceled: EventEmitter<null> = new EventEmitter();
+
+  availableItems: InventoryItem[] = [];
 
   constructor() { }
 
   ngOnInit() {
+    this.filterItems();
+  }
+
+  filterItems() {
+    for (const it of this.inventory) {
+      if (it.consumable) {
+        this.availableItems.push(it);
+      }
+    }
+    console.log("Filtered items", this.availableItems);
+  }
+
+  useItem(item: InventoryItem) {
+    this.itemSelected.emit(item);
+  }
+
+  cancelItem() {
+    this.itemCanceled.emit();
   }
 
 }

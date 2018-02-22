@@ -10,10 +10,10 @@
         <p class="inventory-item-description">{{ ability.description }}</p>
         <div class="inventory-buttons">
           <button class="btn btn-default" (click)="editAbility(abilityIndex, ability)">
-              <i class="material-icons">&#xE254;</i>
+            <i class="material-icons">&#xE254;</i>
           </button>
           <button class="btn btn-danger" (click)="removeAbility(abilityIndex)">
-              <i class="material-icons">delete_forever</i>
+            <i class="material-icons">delete_forever</i>
           </button>
         </div>
       </ng-container>
@@ -53,12 +53,17 @@
     <label for="description">description</label>
     <textarea rows="10" id="description" class="form-control" [(ngModel)]="newAbility.description"></textarea>
   </div>
-  <div class="form-group">
+  <div class="checkbox">
+    <label>
+      <input type="checkbox" value="" [(ngModel)]="newAbility.isFlavourAbility">flavour ability</label>
+  </div>
+  <div class="form-group" *ngIf="!newAbility.isFlavourAbility">
     <label for="usesPerTurn">uses per turn</label>
     <input type="number" id="usesPerTurn" class="form-control" [(ngModel)]="newAbility.usesPerTurn" />
   </div>
-  <div class="checkbox">
-    <label><input type="checkbox" value="" [(ngModel)]="newAbility.isFlavourAbility">flavour ability</label>
+  <div class="form-group" *ngIf="!newAbility.isFlavourAbility">
+    <label for="amountOfStrikes">amount of strikes</label>
+    <input type="number" id="amountOfStrikes" class="form-control" [(ngModel)]="newAbility.amountOfStrikes" />
   </div>
   <button class="btn btn-primary" (click)="addAbility()">Save</button>
   <a (click)="cancelAddAbility()" class="btn btn-default">Cancel</a>

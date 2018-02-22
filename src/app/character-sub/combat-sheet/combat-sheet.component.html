@@ -4,31 +4,67 @@
 </div>
 
 <div class="actionWrapper" *ngIf="actionsEnabled && currentSheet && currentSheet.actions && currentSheet.actions.length > 0">
-    <div class="action" *ngFor="let action of currentSheet.actions"></div>
+    <div class="action" *ngFor="let action of currentSheet.actions">
+        <ng-container *ngIf="action.type === 'ability'">
+            <div class="ability">
+                <div class="abilityInfo">
+                    <span>Cast ability </span>
+                    <p>{{ action.abilityName }}</p>
+                </div>
+                <ng-container *ngIf="action.rolls && action.rolls.length > 0">
+                    <div class="abilityRolls" *ngFor="let roll of action.rolls">
+                        <div class="abilityRoll">
+                            <span>Hit</span>
+                            <p> {{ roll.toHitRoll }}</p>
+                        </div>
+                        <div class="abilityRoll">
+                            <span>Loc</span>
+                            <p> {{ roll.locationRoll }}</p>
+                        </div>
+                        <div class="abilityRoll">
+                            <span>Dmg</span>
+                            <p> {{ roll.damageRoll }}</p>
+                        </div>
+                    </div>
+                </ng-container>
+            </div>
+        </ng-container>
+        <ng-container *ngIf="action.type === 'item'">
+            <div class="item">
+                <div class="itemInfo">
+                    <span>Used item </span>
+                    <p>{{ action.itemName }}</p>
+                </div>
+            </div>
+        </ng-container>
+    </div>
 </div>
 
 <div class="woundsWrapper" *ngIf="!actionsEnabled && currentSheet && currentSheet.wounds && currentSheet.wounds.length > 0">
 
 </div>
 
-<div class="buttonWrapper" *ngIf="actionsEnabled && currentSheet">
+<div class="buttonWrapper" *ngIf="actionsEnabled && character && currentSheet">
     <a (click)="showAbilities()">Cast ability</a>
     <a (click)="showItems()">Use Consumable</a>
-    <a (click)="setInitiative()">Set Initiative {{ currentSheet.initiative ? "(" + currentSheet.initiative + ")" : '' }}</a>
+    <a (click)="setInitiative()" *ngIf="currentSheet.autoRoll">Set Initiative {{ currentSheet.initiative ? "(" + currentSheet.initiative + ")" : '' }}</a>
+    <a (click)="rollInitiative()" *ngIf="!currentSheet.autoRoll">Roll Initiative {{ currentSheet.initiative ? "(" + currentSheet.initiative + ")" : '' }}</a>
     <a (click)="toggleAutoRoll()">
-        {{ currentSheet.autoRoll ? "Enable auto roll" : "Disable auto roll" }}
+        {{ currentSheet.autoRoll ? 'Enable auto roll' : 'Disable auto roll' }}
     </a>
 </div>
 
-<div class="buttonWrapper" *ngIf="!actionsEnabled && currentSheet">
+<div class="buttonWrapper" *ngIf="!actionsEnabled && character && currentSheet">
     <a (click)="addWound()">Add wound</a>
     <a (click)="lowerWound()">Lower Wound</a>
     <a (click)="removeWound()">Remove Wound</a>
     <a (click)="clearWounds()">Clear Wound</a>
 </div>
 
-<app-ability-chooser
-    [abilities]="character.abilities"
-    [abilitiesOnCooldown]="abilitiesOnCooldown"
-    (abilitySelected)="castAbility($event)">
+<app-ability-chooser *ngIf="character && currentSheet && abilitiesVisible" [actions]="currentSheet.actions" [abilities]="character.abilities"
+    [abilitiesOnCooldown]="abilitiesOnCooldown" (abilitySelected)="castAbility($event)" (abilityCanceled)="cancelAbility()">
 </app-ability-chooser>
+
+<app-item-chooser *ngIf="character && currentSheet && itemsVisible" [inventory]="character.inventory" (itemSelected)="useConsumable($event)"
+    (itemCanceled)="cancelItem()">
+</app-item-chooser>

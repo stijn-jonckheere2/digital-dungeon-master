@@ -19,6 +19,7 @@ export class CombatSheetComponent implements OnInit, OnDestroy {
 
   actionsEnabled = true;
   abilitiesVisible = false;
+  itemsVisible = false;
 
   abilitiesOnCooldown: Ability[] = [];
 
@@ -35,6 +36,7 @@ export class CombatSheetComponent implements OnInit, OnDestroy {
         this.character = char;
         this.currentSheet = char.combatSheets[this.currentSheetIndex];
         console.log("Loaded sheet", this.currentSheet);
+        this.calculateCooldowns();
       }
     );
   }
@@ -60,9 +62,15 @@ export class CombatSheetComponent implements OnInit, OnDestroy {
     }
   }
 
+  rollInitiative() {
+    const ini = this.rollDice(10);
+    this.currentSheet.initiative = ini;
+    this.characterService.updateCombatSheet(this.charId, this.currentSheetIndex, this.currentSheet);
+  }
+
   toggleAutoRoll() {
     this.currentSheet.autoRoll = !this.currentSheet.autoRoll;
-    this.onSaveCharacter();
+    this.characterService.updateCombatSheet(this.charId, this.currentSheetIndex, this.currentSheet);
   }
 
   showAbilities() {
@@ -77,37 +85,67 @@ export class CombatSheetComponent implements OnInit, OnDestroy {
 
     // Add roll data
     if (this.currentSheet.autoRoll) {
-      this.currentSheet.actions.push({
-        type: "ability",
-        abilityName: ability.name,
-        rolls: {
+      const rolls = [];
+      for (let counter = 0; counter < ability.amountOfStrikes; counter++) {
+        rolls.push({
           toHitRoll: this.rollDice(20),
           locationRoll: this.rollDice(20),
           damageRoll: this.rollDice(20)
-        }
+        });
+      }
+      this.currentSheet.actions.unshift({
+        type: "ability",
+        abilityName: ability.name,
+        rolls: rolls
       });
     } else {
       // Skip roll data
-      this.currentSheet.actions.push({
+      this.currentSheet.actions.unshift({
         type: "ability",
         abilityName: ability.name
       });
     }
+
+    this.cancelAbility();
+    this.characterService.updateCombatSheet(this.charId, this.currentSheetIndex, this.currentSheet);
+  }
+
+  cancelAbility() {
+    this.abilitiesVisible = false;
+  }
+
+  showItems() {
+    let amountOfConsumables = 0;
+
+    this.character.inventory.map((it) => {
+      if (it.consumable) {
+        amountOfConsumables++;
+      }
+    });
+
+    if (amountOfConsumables > 0) {
+      this.itemsVisible = true;
+    } else {
+      this.errorService.displayError("You don't have any consumables!");
+    }
+  }
+
+  cancelItem() {
+    this.itemsVisible = false;
   }
 
   useConsumable(consumable: InventoryItem) {
-    // Subtract a use from the item
-    consumable.amount--;
     const itemIndex = this.character.inventory.findIndex(item => item.name === consumable.name);
 
-    this.currentSheet.actions.push({
+    this.currentSheet.actions.unshift({
       type: "item",
       itemName: consumable.name
     });
 
-    if (consumable.amount === 0) {
-      this.characterService.deleteInventoryItem(this.charId, itemIndex);
-    }
+    this.characterService.updateCombatSheet(this.charId, this.currentSheetIndex, this.currentSheet);
+    this.characterService.useInventoryItem(this.charId, itemIndex);
+
+    this.cancelItem();
   }
 
   abilityOutOfUses(ability: Ability) {
@@ -115,13 +153,39 @@ export class CombatSheetComponent implements OnInit, OnDestroy {
 
     this.currentSheet.actions.map((action) => {
       if (action["ability"]) {
-        if (action["ability"]["name"] === ability.name) {
+        if (action["abilityName"] === ability.name) {
           amountOfCasts++;
         }
       }
     });
 
     return amountOfCasts >= ability.usesPerTurn ? true : false;
+  }
+
+  calculateCooldowns() {
+    if (this.currentSheet.actions.length === 0) {
+      return;
+    }
+    this.abilitiesOnCooldown = [];
+    const usedAbilities = {};
+
+    for (const action of this.currentSheet.actions) {
+      if (action["type"] === "ability") {
+        if (usedAbilities[action["abilityName"]]) {
+          usedAbilities[action["abilityName"]]++;
+        } else {
+          usedAbilities[action["abilityName"]] = 1;
+        }
+      }
+    }
+
+    for (const ability of this.character.abilities) {
+      if (usedAbilities[ability["name"]] >= ability["usesPerTurn"]) {
+        this.abilitiesOnCooldown.push(ability);
+      }
+    }
+
+    console.log("Calculated Cooldowns", this.abilitiesOnCooldown, usedAbilities);
   }
 
   clearWounds() {

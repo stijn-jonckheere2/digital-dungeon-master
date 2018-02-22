@@ -18,7 +18,7 @@ class Serializable {
         convertedChar.inventory = jsonObj.inventory || [];
         convertedChar.questLog = jsonObj.questLog || [];
         convertedChar.npcList = jsonObj.npcList || [];
-        convertedChar.combatSheets = jsonObj.combatSheets || [];
+        convertedChar.combatSheets = jsonObj.combatSheets ? this.combatSheetsFromJSON(jsonObj.combatSheets) : [];
 
         convertedChar.primaryStats = jsonObj.primaryStats;
         convertedChar.secondaryStats = jsonObj.secondaryStats;
@@ -37,7 +37,29 @@ class Serializable {
             }
         }
 
+        // add ability amountOfStrikes
+        for (let i = 0; i < convertedChar.abilities.length; i++) {
+            if (!convertedChar.abilities[i]["amountOfStrikes"]) {
+                convertedChar.abilities[i]["amountOfStrikes"] = 1;
+            }
+        }
+
         return convertedChar;
+    }
+    static combatSheetsFromJSON(jsonObj: CombatSheet[]) {
+        const sheets: CombatSheet[] = [];
+
+        jsonObj.map((sheet) => {
+            if (!sheet.actions) {
+                sheet.actions = [];
+            }
+            if (!sheet.wounds) {
+                sheet.wounds = [];
+            }
+            sheets.push(sheet);
+        });
+
+        return sheets;
     }
 }
 
@@ -183,7 +205,8 @@ export class Ability {
         public name: string,
         public description: string,
         public usesPerTurn: number,
-        public isFlavourAbility: boolean
+        public amountOfStrikes: number,
+        public isFlavourAbility: boolean,
     ) {
         this.id = uuidv1();
     }
@@ -281,7 +304,7 @@ export class StoryRecap {
     }
 }
 
-export class CombatSheet {
+export class CombatSheet extends Serializable {
     public id: string;
     public createdOn: Date;
     public modifiedOn: Date;
@@ -300,6 +323,7 @@ export class CombatSheet {
         public autoRoll: boolean,
         public initiative?: number,
     ) {
+        super();
         this.id = uuidv1();
         this.createdOn = new Date();
         this.modifiedOn = new Date();
