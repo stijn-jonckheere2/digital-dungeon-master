@@ -47,10 +47,10 @@
 <div class="buttonWrapper" *ngIf="actionsEnabled && character && currentSheet">
     <a (click)="showAbilities()">Cast ability</a>
     <a (click)="showItems()">Use Consumable</a>
-    <a (click)="setInitiative()" *ngIf="currentSheet.autoRoll">Set Initiative {{ currentSheet.initiative ? "(" + currentSheet.initiative + ")" : '' }}</a>
-    <a (click)="rollInitiative()" *ngIf="!currentSheet.autoRoll">Roll Initiative {{ currentSheet.initiative ? "(" + currentSheet.initiative + ")" : '' }}</a>
+    <a (click)="setInitiative()" *ngIf="!currentSheet.autoRoll">Set Initiative {{ currentSheet.initiative ? "(" + currentSheet.initiative + ")" : '' }}</a>
+    <a (click)="rollInitiative()" *ngIf="currentSheet.autoRoll">Roll Initiative {{ currentSheet.initiative ? "(" + currentSheet.initiative + ")" : '' }}</a>
     <a (click)="toggleAutoRoll()">
-        {{ currentSheet.autoRoll ? 'Enable auto roll' : 'Disable auto roll' }}
+        {{ currentSheet.autoRoll ? 'Disable auto roll' : 'Enable auto roll' }}
     </a>
 </div>
 
