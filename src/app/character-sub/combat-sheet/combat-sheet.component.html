@@ -3,6 +3,16 @@
     <a (click)="actionsEnabled = false" [ngClass]="{'disabled': actionsEnabled}">Wounds</a>
 </div>
 
+<div class="effectsWrapper" *ngIf="actionsEnabled && currentSheet && currentSheet.statusEffects && currentSheet.statusEffects.length > 0">
+    <ng-container *ngFor="let effect of currentSheet.statusEffects">
+        <div class="effect">
+            <p>
+                <span>{{ effect.name }}</span> ({{ effect.numberOfTurns }} T)
+            </p>
+        </div>
+    </ng-container>
+</div>
+
 <div class="actionWrapper" *ngIf="actionsEnabled && currentSheet && currentSheet.actions && currentSheet.actions.length > 0">
     <div class="action" *ngFor="let action of currentSheet.actions">
         <ng-container *ngIf="action.type === 'ability'">
@@ -40,25 +50,62 @@
     </div>
 </div>
 
-<div class="woundsWrapper" *ngIf="!actionsEnabled && currentSheet && currentSheet.wounds && currentSheet.wounds.length > 0">
-
+<div class="woundsWrapper" *ngIf="!actionsEnabled && currentSheet && currentSheet.wounds">
+    <app-wound-selector *ngIf="!woundFormVisible" [wounds]="currentSheet.wounds"></app-wound-selector>
+    <app-wound-form *ngIf="woundFormVisible" [wounds]="formWounds" [formType]="formType" (woundAdded)="woundAdded($event)" (woundLowered)="woundLowered($event)"
+        (woundRemoved)="woundRemoved($event)" (formCanceled)="woundFormCanceled()"></app-wound-form>
 </div>
 
 <div class="buttonWrapper" *ngIf="actionsEnabled && character && currentSheet">
-    <a (click)="showAbilities()">Cast ability</a>
-    <a (click)="showItems()">Use Consumable</a>
-    <a (click)="setInitiative()" *ngIf="!currentSheet.autoRoll">Set Initiative {{ currentSheet.initiative ? "(" + currentSheet.initiative + ")" : '' }}</a>
-    <a (click)="rollInitiative()" *ngIf="currentSheet.autoRoll">Roll Initiative {{ currentSheet.initiative ? "(" + currentSheet.initiative + ")" : '' }}</a>
+    <a (click)="showAbilities()">
+        <i class="material-icons">whatshot</i>
+    </a>
+    <a (click)="showItems()">
+        <i class="material-icons">invert_colors</i>
+    </a>
+    <a (click)="updateStatusEffects()" *ngIf="currentSheet.statusEffects.length > 0">
+        <i class="material-icons">access_time</i>
+    </a>
+    <a *ngIf="currentSheet.statusEffects.length === 0">
+        <i class="material-icons" style="opacity: 0.5">access_time</i>
+    </a>
+    <a (click)="setInitiative()" class="buttonIni" *ngIf="!currentSheet.autoRoll">
+        <i class="material-icons">crop_din</i>
+        <span>
+            {{ currentSheet.initiative ? currentSheet.initiative : '' }}
+        </span>
+    </a>
+    <a (click)="rollInitiative()" class="buttonIni" *ngIf="currentSheet.autoRoll">
+        <i class="material-icons">crop_din</i>
+        <span>
+            {{ currentSheet.initiative ? currentSheet.initiative : '' }}
+        </span>
+    </a>
     <a (click)="toggleAutoRoll()">
-        {{ currentSheet.autoRoll ? 'Disable auto roll' : 'Enable auto roll' }}
+        <i *ngIf="currentSheet.autoRoll" class="material-icons">brightness_auto</i>
+        <i *ngIf="!currentSheet.autoRoll" style="opacity: 0.5" class="material-icons">brightness_auto</i>
     </a>
 </div>
 
 <div class="buttonWrapper" *ngIf="!actionsEnabled && character && currentSheet">
-    <a (click)="addWound()">Add wound</a>
-    <a (click)="lowerWound()">Lower Wound</a>
-    <a (click)="removeWound()">Remove Wound</a>
-    <a (click)="clearWounds()">Clear Wound</a>
+    <a (click)="addWound()">
+        <i class="material-icons">add_circle</i>
+    </a>
+    <a (click)="lowerWound()" *ngIf="currentSheet.wounds.length > 0">
+        <i class="material-icons">low_priority</i>
+    </a>
+    <a *ngIf="currentSheet.wounds.length === 0">
+        <i style="opacity: 0.5" class="material-icons">low_priority</i>
+    </a>
+    <a (click)="removeWound()" *ngIf="currentSheet.wounds.length > 0">
+        <i class="material-icons">remove_circle</i>
+    </a>
+    <a *ngIf="currentSheet.wounds.length === 0">
+        <i style="opacity: 0.5" class="material-icons">remove_circle</i>
+    </a>
+    <a (click)="clearWounds()">
+        <i class="material-icons">clear_all</i>
+    </a>
 </div>
 
 <app-ability-chooser *ngIf="character && currentSheet && abilitiesVisible" [actions]="currentSheet.actions" [abilities]="character.abilities"

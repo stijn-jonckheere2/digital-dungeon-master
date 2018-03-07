@@ -1,0 +1,40 @@
+<div class="woundFormWrapper">
+  <ng-container *ngIf="formType === 'add'">
+    <h2>Add a wound</h2>
+    <div class="form-group">
+      <label for="location">Location</label>
+      <select name="location" id="location" class="form-control" [(ngModel)]="newWound.location">
+        <option value="head">Head</option>
+        <option value="chest">Chest</option>
+        <option value="abdomen">Abdomen</option>
+        <option value="leftArm">Left arm</option>
+        <option value="rightArm">Right arm</option>
+        <option value="leftLeg">Left leg</option>
+        <option value="rightLeg">Right leg</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="severity">Severity</label>
+      <select name="severity" id="severity" class="form-control" [(ngModel)]="newWound.severity">
+        <option value="SCR">Scratch</option>
+        <option value="LW">Light wound</option>
+        <option value="SW">Severe wound</option>
+        <option value="FAT">Fatal</option>
+      </select>
+    </div>
+    <button (click)="addWound()" class="btn btn-primary">Add</button>
+    <button (click)="cancelForm()" class="btn btn-default">Cancel</button>
+  </ng-container>
+  <ng-container *ngIf="formType !== 'add'">
+    <h2>Which wound do you want to {{ formType }}?</h2>
+    <div class="wound" *ngFor="let wound of wounds">
+      <p>
+        {{wound.location | woundName}}
+        <span class="wound{{wound.severity}}">&nbsp;({{wound.severity}})</span>
+        <i class="material-icons" *ngIf="formType === 'lower'" (click)="lowerWound(wound)">low_priority</i>
+        <i class="material-icons" *ngIf="formType === 'remove'" (click)="removeWound(wound)">remove_circle</i>
+      </p>
+    </div>
+    <button (click)="cancelForm()" class="btn btn-default">Cancel</button>
+  </ng-container>
+</div>

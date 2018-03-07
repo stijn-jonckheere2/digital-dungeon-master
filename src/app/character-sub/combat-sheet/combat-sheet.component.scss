@@ -1,5 +1,4 @@
 @import '~sass/variables';
-
 .combatTabs {
     display: flex;
     a {
@@ -20,11 +19,33 @@
     }
 }
 
+.effectsWrapper {
+    box-sizing: border-box;
+    padding-top: 20px;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.effect {
+    box-sizing: border-box;
+    background-color: rgba(0, 0, 0, 0.3);
+    border: 2px solid $effect-color;
+    padding: 10px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    p {
+        display: inline-block;
+        span {
+            display: inline-block;
+            color: $effect-color;
+        }
+    }
+}
+
 .actionWrapper {
     box-sizing: border-box;
     padding-top: 20px;
-    padding-bottom: 116px;
-
+    padding-bottom: 40px;
     .action {
         margin-bottom: 20px;
         &:last-of-type {
@@ -37,12 +58,10 @@
     width: 100%;
     max-width: 880px;
     box-sizing: border-box;
-
-    .abilityInfo {        
-        background-color:rgba(0, 0, 0, 0.3);
+    .abilityInfo {
+        background-color: rgba(0, 0, 0, 0.3);
         border: 2px solid black;
         padding: 10px;
-
         p {
             color: $primary-color;
             display: inline-block;
@@ -54,12 +73,11 @@
     .abilityRolls {
         display: flex;
         justify-content: flex-end;
-
         .abilityRoll {
             display: flex;
             border: 2px solid black;
             border-top: 0;
-            & + .abilityRoll {
+            &+.abilityRoll {
                 border-left: 0;
             }
             p {
@@ -72,7 +90,7 @@
             span {
                 display: inline-block;
                 padding: 5px 10px;
-                background-color:  rgba(0, 0, 0, 0.3);
+                background-color: rgba(0, 0, 0, 0.3);
             }
         }
     }
@@ -82,12 +100,10 @@
     width: 100%;
     max-width: 880px;
     box-sizing: border-box;
-
-    .itemInfo {        
-        background-color:rgba(0, 0, 0, 0.3);
+    .itemInfo {
+        background-color: rgba(0, 0, 0, 0.3);
         border: 2px solid black;
         padding: 10px;
-
         p {
             color: $primary-color;
             display: inline-block;
@@ -100,34 +116,55 @@
 
 .buttonWrapper {
     display: flex;
-    flex-wrap: wrap;
     position: fixed;
     bottom: 0;
     left: 0;
-    background-color: $primary-color;
+    background-color: $btn-action-color;
     box-sizing: border-box;
     width: 100%;
-
     a {
         color: white;
-        display: block;
+        display: flex;
+        align-items: center;
+        justify-content: center;
         box-sizing: border-box;
-        padding: 20px 15px;
-        width: 50%;
+        padding: 5px;
+        flex-basis: 25%;
+        flex-grow: 0;
+        flex-shrink: 1;
         text-align: center;
-        border-top: 2px solid white;
         cursor: pointer;
-        
-        & + a {
+        border-top: 2px solid white;
+        i {
+            font-size: 1.8em;
+        }
+        +a {
             border-left: 2px solid white;
         }
-        &:nth-of-type(3) {
-            border-left: 0 !important;
+        &.buttonIni {
+            position: relative;
+            span {
+                position: absolute;
+                top: calc(50% - 10px);
+                left: calc(50% - 10px);
+                display: flex;
+                width: 20px;
+                height: 20px;
+                align-items: center;
+                justify-content: center;
+                font-size: 0.8em;
+            }
         }
     }
 }
 
 @media (min-width: 768px) {
+    .effectsWrapper {
+        padding-top: 60px;
+        & + .actionWrapper {
+            padding-top: 20px;
+        }
+    }
     .actionWrapper {
         padding-top: 60px;
     }

@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from "@angular/core";
-import { Character, CombatSheet, Ability, InventoryItem } from "../../character/character.models";
+import { Character, CombatSheet, Ability, InventoryItem, CombatWound } from "../../character/character.models";
 import { CharacterService } from "../../character/character.service";
 import { ActivatedRoute, Router } from "@angular/router";
 import { ErrorService } from "../../error-service.service";
@@ -20,8 +20,11 @@ export class CombatSheetComponent implements OnInit, OnDestroy {
   actionsEnabled = true;
   abilitiesVisible = false;
   itemsVisible = false;
+  woundFormVisible = false;
 
   abilitiesOnCooldown: Ability[] = [];
+  formWounds: CombatWound[] = [];
+  formType = "add";
 
   constructor(private characterService: CharacterService,
     private errorService: ErrorService,
@@ -63,15 +66,21 @@ export class CombatSheetComponent implements OnInit, OnDestroy {
   }
 
   rollInitiative() {
-    const ini = this.rollDice(10);
-    this.currentSheet.initiative = ini;
-    this.characterService.updateCombatSheet(this.charId, this.currentSheetIndex, this.currentSheet);
+    if (confirm("Would you like to re-roll initiative?")) {
+      const ini = this.rollDice(10);
+      this.currentSheet.initiative = ini;
+      this.characterService.updateCombatSheet(this.charId, this.currentSheetIndex, this.currentSheet);
+    }
   }
 
   toggleAutoRoll() {
-    this.currentSheet.autoRoll = !this.currentSheet.autoRoll;
-    this.characterService.updateCombatSheet(this.charId, this.currentSheetIndex, this.currentSheet);
+    if (confirm("Would you like to toggle automatic dice rolling?")) {
+      this.currentSheet.autoRoll = !this.currentSheet.autoRoll;
+      this.characterService.updateCombatSheet(this.charId, this.currentSheetIndex, this.currentSheet);
+    }
   }
+
+  // ABILITIES
 
   showAbilities() {
     this.abilitiesVisible = true;
@@ -104,6 +113,10 @@ export class CombatSheetComponent implements OnInit, OnDestroy {
         type: "ability",
         abilityName: ability.name
       });
+    }
+
+    if (ability.hasStatusEffect) {
+      this.addStatusEffect(ability.effect);
     }
 
     this.cancelAbility();
@@ -188,12 +201,108 @@ export class CombatSheetComponent implements OnInit, OnDestroy {
     console.log("Calculated Cooldowns", this.abilitiesOnCooldown, usedAbilities);
   }
 
+  // WOUNDS
+
+  addWound() {
+    this.formType = "add";
+    this.formWounds = [];
+    this.woundFormVisible = true;
+  }
+
+  woundAdded(wound: CombatWound) {
+    this.currentSheet.wounds.push(wound);
+    this.recalculateWounds();
+  }
+
+  lowerWound() {
+    this.formType = "lower";
+    this.formWounds = this.currentSheet.wounds.filter((w) => {
+      if (w.severity !== "SCR") {
+        return w;
+      }
+    });
+    this.woundFormVisible = true;
+  }
+
+  woundLowered(wound: CombatWound) {
+    const woundIndex = this.currentSheet.wounds.findIndex(w => w.location === wound.location && w.severity === wound.severity);
+    switch (this.currentSheet.wounds[woundIndex].severity) {
+      case "FAT":
+        this.currentSheet.wounds.push(new CombatWound(wound.location, "SW"), new CombatWound(wound.location, "SW"));
+        break;
+      case "SW":
+        this.currentSheet.wounds.push(new CombatWound(wound.location, "LW"),
+          new CombatWound(wound.location, "LW"));
+        break;
+      case "LW":
+        this.currentSheet.wounds.push(new CombatWound(wound.location, "SCR"),
+          new CombatWound(wound.location, "SCR"));
+        break;
+    }
+    this.currentSheet.wounds.splice(woundIndex, 1);
+    this.recalculateWounds();
+  }
+
+  removeWound() {
+    this.formType = "remove";
+    this.formWounds = this.currentSheet.wounds;
+    this.woundFormVisible = true;
+  }
+
+  woundRemoved(wound: CombatWound) {
+    const woundIndex = this.currentSheet.wounds.findIndex(w => w.location === wound.location && w.severity === wound.severity);
+    this.currentSheet.wounds.splice(woundIndex, 1);
+    this.recalculateWounds();
+  }
+
   clearWounds() {
     if (confirm("Are you sure you want to clear your wounds?")) {
       this.currentSheet.wounds = [];
       this.onSaveCharacter();
     }
   }
+
+  woundFormCanceled() {
+    this.formType = "add";
+    this.formWounds = [];
+    this.woundFormVisible = false;
+  }
+
+  recalculateWounds() {
+    // Accumulate wounds
+
+    //
+    this.woundFormVisible = false;
+    this.characterService.updateCombatSheet(this.charId, this.currentSheetIndex, this.currentSheet);
+  }
+
+  // STATUS EFFECTS
+
+  addStatusEffect(effect: any) {
+    const effectIndex = this.currentSheet.statusEffects.findIndex(e => e.name === effect.name);
+    if (effectIndex >= 0) {
+      this.currentSheet.statusEffects[effectIndex].numberOfTurns = effect.numberOfTurns;
+    } else {
+      this.currentSheet.statusEffects.push(effect);
+    }
+  }
+
+  updateStatusEffects() {
+    if (confirm("Proceed to the next round?")) {
+      this.currentSheet.statusEffects = this.currentSheet.statusEffects.filter((eff) => {
+        if (eff.numberOfTurns > 1) {
+          return eff;
+        }
+      });
+      this.currentSheet.statusEffects.map((eff) => {
+        eff.numberOfTurns--;
+        return eff;
+      });
+      this.characterService.updateCombatSheet(this.charId, this.currentSheetIndex, this.currentSheet);
+    }
+  }
+
+  // OTHER
 
   ngOnDestroy() {
     this.characterSub.unsubscribe();

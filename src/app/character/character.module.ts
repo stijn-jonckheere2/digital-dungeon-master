@@ -25,6 +25,8 @@ import { AbilityChooserComponent } from "../character-sub/ability-chooser/abilit
 import { ItemChooserComponent } from "../character-sub/item-chooser/item-chooser.component";
 import { WoundSelectorComponent } from "../character-sub/wound-selector/wound-selector.component";
 import { CombatSheetComponent } from "../character-sub/combat-sheet/combat-sheet.component";
+import { WoundFormComponent } from "../character-sub/wound-form/wound-form.component";
+import { WoundPipePipe } from "./wound-pipe.pipe";
 
 const charRoutes: Routes = [
     { path: "characters", component: CharacterListComponent, canActivate: [AuthGuard] },
@@ -58,7 +60,9 @@ const charRoutes: Routes = [
         ItemChooserComponent,
         WoundSelectorComponent,
         CombatSheetComponent,
-        FilterPipe
+        WoundFormComponent,
+        FilterPipe,
+        WoundPipePipe
     ],
     imports: [
         CommonModule,

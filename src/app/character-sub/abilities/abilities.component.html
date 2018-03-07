@@ -57,14 +57,30 @@
     <label>
       <input type="checkbox" value="" [(ngModel)]="newAbility.isFlavourAbility">flavour ability</label>
   </div>
-  <div class="form-group" *ngIf="!newAbility.isFlavourAbility">
-    <label for="usesPerTurn">uses per turn</label>
-    <input type="number" id="usesPerTurn" class="form-control" [(ngModel)]="newAbility.usesPerTurn" />
-  </div>
-  <div class="form-group" *ngIf="!newAbility.isFlavourAbility">
-    <label for="amountOfStrikes">amount of strikes</label>
-    <input type="number" id="amountOfStrikes" class="form-control" [(ngModel)]="newAbility.amountOfStrikes" />
-  </div>
+  <ng-container *ngIf="!newAbility.isFlavourAbility">
+    <div class="form-group">
+      <label for="usesPerTurn">uses per turn</label>
+      <input type="number" id="usesPerTurn" class="form-control" [(ngModel)]="newAbility.usesPerTurn" />
+    </div>
+    <div class="form-group">
+      <label for="amountOfStrikes">amount of strikes</label>
+      <input type="number" id="amountOfStrikes" class="form-control" [(ngModel)]="newAbility.amountOfStrikes" />
+    </div>
+    <div class="checkbox">
+      <label>
+        <input type="checkbox" value="" [(ngModel)]="newAbility.hasStatusEffect">has status effect</label>
+    </div>
+    <ng-container *ngIf="newAbility.hasStatusEffect">
+      <div class="form-group">
+        <label for="effectName">effect name</label>
+        <input type="text" id="effectName" class="form-control" [(ngModel)]="newAbility.effect.name" />
+      </div>
+      <div class="form-group">
+        <label for="effectTurns">turns the effect lasts</label>
+        <input type="number" id="effectTurns" class="form-control" [(ngModel)]="newAbility.effect.numberOfTurns" />
+      </div>
+    </ng-container>
+  </ng-container>
   <button class="btn btn-primary" (click)="addAbility()">Save</button>
   <a (click)="cancelAddAbility()" class="btn btn-default">Cancel</a>
 </div>

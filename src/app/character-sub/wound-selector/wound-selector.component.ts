@@ -1,4 +1,5 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, Input } from "@angular/core";
+import { CombatWound } from "../../character/character.models";
 
 @Component({
   selector: "app-wound-selector",
@@ -6,6 +7,7 @@ import { Component, OnInit } from "@angular/core";
   styleUrls: ["./wound-selector.component.scss"]
 })
 export class WoundSelectorComponent implements OnInit {
+  @Input() wounds: CombatWound[];
 
   constructor() { }
 

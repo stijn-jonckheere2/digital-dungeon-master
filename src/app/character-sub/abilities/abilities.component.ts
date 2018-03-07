@@ -15,7 +15,7 @@ export class AbilitiesComponent implements OnInit, OnDestroy {
   characterId: number;
 
   abilityFormEnabled = false;
-  newAbility = new Ability("", "", 1, 1, false);
+  newAbility = new Ability("", "", 1, 1, false, false, {name: "", numberOfTurns: 1});
   newAbilityId = -1;
 
   constructor(private characterService: CharacterService,
@@ -70,14 +70,14 @@ export class AbilitiesComponent implements OnInit, OnDestroy {
         this.characterService.addAbility(this.characterId, this.newAbility);
       }
     }
-    this.newAbility = new Ability("", "", 1, 1, false);
+    this.newAbility = new Ability("", "", 1, 1, false, false, {name: "", numberOfTurns: 1});
     this.newAbilityId = -1;
     this.abilityFormEnabled = false;
     this.updateAbilities();
   }
 
   cancelAddAbility() {
-    this.newAbility = new Ability("", "", 1, 1, false);
+    this.newAbility = new Ability("", "", 1, 1, false, false, {name: "", numberOfTurns: 1});
     this.newAbilityId = -1;
     this.abilityFormEnabled = false;
   }

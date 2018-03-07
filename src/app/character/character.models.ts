@@ -42,6 +42,13 @@ class Serializable {
             if (!convertedChar.abilities[i]["amountOfStrikes"]) {
                 convertedChar.abilities[i]["amountOfStrikes"] = 1;
             }
+            if (!convertedChar.abilities[i]["hasStatusEffect"]) {
+                convertedChar.abilities[i]["hasStatusEffect"] = false;
+                convertedChar.abilities[i]["effect"] = {
+                    name: "",
+                    numberOfTurns: 1
+                };
+            }
         }
 
         return convertedChar;
@@ -55,6 +62,9 @@ class Serializable {
             }
             if (!sheet.wounds) {
                 sheet.wounds = [];
+            }
+            if (!sheet.statusEffects) {
+                sheet.statusEffects = [];
             }
             sheets.push(sheet);
         });
@@ -207,6 +217,11 @@ export class Ability {
         public usesPerTurn: number,
         public amountOfStrikes: number,
         public isFlavourAbility: boolean,
+        public hasStatusEffect: boolean,
+        public effect: {
+            name: string;
+            numberOfTurns: number;
+        }
     ) {
         this.id = uuidv1();
     }
@@ -310,6 +325,10 @@ export class CombatSheet extends Serializable {
     public modifiedOn: Date;
     public actions: any[];
     public wounds: CombatWound[];
+    public statusEffects: {
+        name: string;
+        numberOfTurns: number;
+    }[];
 
     /*public usedAbilities: {
         toHitRoll: boolean;
@@ -329,6 +348,7 @@ export class CombatSheet extends Serializable {
         this.modifiedOn = new Date();
         this.actions = [];
         this.wounds = [];
+        this.statusEffects = [];
     }
 }
 
