@@ -29,6 +29,11 @@ export class AbilityChooserComponent implements OnInit {
         this.availableAbilities.push(ab);
       }
     }
+    this.availableAbilities = this.availableAbilities.filter((ab) => {
+      if(!ab.isFlavourAbility) {
+        return ab;
+      }
+    });
     console.log("Filtered abilities", this.availableAbilities);
   }
 
