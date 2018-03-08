@@ -33,6 +33,14 @@
     padding: 10px;
     margin-right: 10px;
     margin-bottom: 10px;
+    &.debuff {
+        border-color: $debuff-color;
+        p {
+            span {
+                color: $debuff-color;
+            }
+        }
+    }
     p {
         display: inline-block;
         span {

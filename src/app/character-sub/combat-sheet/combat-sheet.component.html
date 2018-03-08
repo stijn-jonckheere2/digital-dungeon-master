@@ -5,9 +5,9 @@
 
 <div class="effectsWrapper" *ngIf="actionsEnabled && currentSheet && currentSheet.statusEffects && currentSheet.statusEffects.length > 0">
     <ng-container *ngFor="let effect of currentSheet.statusEffects">
-        <div class="effect">
+        <div class="effect" [ngClass]="{'debuff': effect.type && effect.type === 'debuff'}">
             <p>
-                <span>{{ effect.name }}</span> ({{ effect.numberOfTurns }} T)
+                <span>{{ effect.name }}</span> ({{ effect.numberOfTurns }}T)
             </p>
         </div>
     </ng-container>
