@@ -61,6 +61,15 @@ export class CombatSheetListComponent implements OnInit, OnDestroy {
     this.sheetFormEnabled = true;
   }
 
+  enableCopySheet(sheetIndex: number) {
+    const sheet = this.character.combatSheets[sheetIndex];
+    this.sheetFormEnabled = true;
+    this.newSheet.wounds = sheet.wounds;
+    this.newSheet.name = sheet.name + " (continued)";
+    this.newSheet.autoRoll = sheet.autoRoll;
+    this.newSheet.initiative = sheet.initiative;
+  }
+
   addSheet() {
     if (this.newSheet.name.length === 0) {
       this.errorService.displayError("Sheet name can't be empty!");

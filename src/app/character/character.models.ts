@@ -330,13 +330,6 @@ export class CombatSheet extends Serializable {
         numberOfTurns: number;
     }[];
 
-    /*public usedAbilities: {
-        toHitRoll: boolean;
-        damageRoll: number;
-        ability: Ability
-    }[];
-    public usedItems: InventoryItem[];*/
-
     constructor(
         public name: string,
         public autoRoll: boolean,
