@@ -3,7 +3,7 @@ import { FormsModule } from "@angular/forms";
 import { CommonModule } from "@angular/common";
 
 import { AuthRoutingModule } from "./auth-routing.module";
-import { RedirectComponent } from "./redirect/redirect.component";
+import { RedirectComponent } from "./components/redirect/redirect.component";
 
 @NgModule({
   declarations: [
