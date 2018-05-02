@@ -10,12 +10,15 @@ import { Character } from "../../../../shared/models";
 })
 export class CharacterNewComponent implements OnInit {
 
-  character = new Character("", "", "", 1, "", 1);
+  character = new Character("", "", "Base Class", 1, "", 1);
 
   constructor(private characterService: CharacterService,
-    private router: Router) { }
+    private router: Router) {
+    console.log("New char const");
+  }
 
   ngOnInit() {
+    console.log("New char init");
   }
 
   onSaveCharacter() {

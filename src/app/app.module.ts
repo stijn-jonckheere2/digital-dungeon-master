@@ -13,7 +13,6 @@ import { RouterModule, Routes } from "@angular/router";
 
 import { CharacterListComponent } from "./main/components/character/character-list/character-list.component";
 import { AuthGuard, AuthService } from "./auth/services";
-import { CharacterNewComponent } from "./main/components/character/character-new/character-new.component";
 import { CharacterMenuComponent } from "./main/components/character/character-menu/character-menu.component";
 import { StatsComponent } from "./main/components/character-stats/stats/stats.component";
 import { AbilitiesComponent } from "./main/components/character-sub/abilities/abilities.component";
@@ -31,6 +30,7 @@ import { StoryRecapComponent } from "./main/components/infrastructure/story-reca
 import { FilterPipe } from "./main/components/character/character-logs/filter.pipe";
 import { PlayerNotesService, StoryRecapService } from "./main/services";
 import { ErrorService, CharacterService } from "./shared/services";
+import { CharacterNewComponent } from "./main/components/character/character-new/character-new.component";
 
 const charRoutes: Routes = [
   { path: "characters", component: CharacterListComponent, canActivate: [AuthGuard] },
@@ -80,7 +80,7 @@ const charRoutes: Routes = [
     CommonModule,
     FormsModule,
     HttpModule,
-    RouterModule.forChild(charRoutes)
+    RouterModule.forRoot(charRoutes)
   ],
   providers: [
     AuthService,
@@ -93,6 +93,8 @@ const charRoutes: Routes = [
   ],
   bootstrap: [
     AppComponent
+  ],
+  exports: [
   ]
 })
 export class AppModule { }

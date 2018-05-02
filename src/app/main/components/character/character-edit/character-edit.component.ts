@@ -39,8 +39,10 @@ export class CharacterEditComponent implements OnInit, OnDestroy {
   }
 
   onSaveCharacter() {
-    this.characterService.updateCharacterById(this.charId, this.character);
-    this.router.navigate(["/characters"]);
+    if (confirm("Saving your character will apply your selected class. Are you sure?")) {
+      this.characterService.updateCharacterByIdAfterEdit(this.charId, this.character);
+      this.router.navigate(["/characters"]);
+    }
   }
 
 }

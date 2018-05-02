@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from "@angular/core";
-import { Ability } from "../../../shared/models";
+import { Ability } from "../../../../../shared/models";
 
 @Component({
   selector: "app-ability-chooser",

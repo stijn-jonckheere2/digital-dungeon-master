@@ -1,7 +1,7 @@
 import { Injectable, EventEmitter } from "@angular/core";
 import * as firebase from "firebase";
 import { Http } from "@angular/http";
-import { Character, InventoryItem, Npc, Quest, Ability, CombatSheet } from "../models";
+import { Character, InventoryItem, Npc, Quest, Ability, CombatSheet, DraconicBloodKnightCombatSheet, DraconicBloodKnightAbility } from "../models";
 import { AuthService } from "../../auth/services";
 import { ErrorService } from "./error-service.service";
 import { environment } from "../../../environments/environment";
@@ -121,6 +121,17 @@ export class CharacterService {
 
     updateCharacterById(id: number, character: Character) {
         this.characters[id] = character;
+        this.saveCharacters(this.characters).subscribe(
+            () => { },
+            (error) => {
+                this.errorService.displayError(error.json().error);
+            }
+        );
+    }
+
+    updateCharacterByIdAfterEdit(id: number, character: Character) {
+        const char = this.convertClass(character);
+        this.characters[id] = char;
         this.saveCharacters(this.characters).subscribe(
             () => { },
             (error) => {
@@ -289,12 +300,16 @@ export class CharacterService {
 
     // Combat Sheet Methods
     addCombatSheet(charId: number, sheet: CombatSheet) {
-        if (this.characters[charId].combatSheets) {
-            this.characters[charId].combatSheets.push(sheet);
-        } else {
-            this.characters[charId].combatSheets = [sheet];
+        let newSheet = sheet;
+        if (this.characters[charId].className === "Draconic Blood Knight") {
+            newSheet = Character.convertCombatSheet(sheet, "Draconic Blood Knight");
         }
-        this.characters[charId].addLog("Added combat sheet  <" + sheet.name + ">", "combatSheetLog");
+        if (this.characters[charId].combatSheets) {
+            this.characters[charId].combatSheets.push(newSheet);
+        } else {
+            this.characters[charId].combatSheets = [newSheet];
+        }
+        this.characters[charId].addLog("Added combat sheet  <" + newSheet.name + ">", "combatSheetLog");
         this.updateCharacterById(charId, this.characters[charId]);
     }
 
@@ -321,5 +336,34 @@ export class CharacterService {
     clear() {
         this.characters = [];
         this.charactersFetched = false;
+    }
+
+    // Class conversion
+
+    convertClass(char: Character): Character {
+        const className = char.className;
+
+        switch (className) {
+            case "Draconic Blood Knight":
+                for (let i = 0; i < char.combatSheets.length; i++) {
+                    const currentSheet = char.combatSheets[i];
+
+                    if (!(currentSheet instanceof DraconicBloodKnightCombatSheet)) {
+                        const newSheet = Character.convertCombatSheet(currentSheet, "Draconic Blood Knight");
+                        char.combatSheets[i] = newSheet;
+                    }
+                }
+                for (let i = 0; i < char.abilities.length; i++) {
+                    const currentAbility = char.abilities[i];
+
+                    if (!(currentAbility instanceof DraconicBloodKnightAbility)) {
+                        const newAbilitiy = Character.convertAbility(currentAbility, "Draconic Blood Knight");
+                        char.abilities[i] = newAbilitiy;
+                    }
+                }
+                break;
+        }
+
+        return char;
     }
 }

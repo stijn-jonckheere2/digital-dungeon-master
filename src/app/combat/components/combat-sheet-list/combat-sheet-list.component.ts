@@ -47,7 +47,7 @@ export class CombatSheetListComponent implements OnInit, OnDestroy {
   }
 
   handleForm() {
-    if (!this.character.combatSheets || this.character.combatSheets.length === 0) {
+    if (this.character && !this.character.combatSheets || this.character && this.character.combatSheets.length === 0) {
       this.sheetFormEnabled = true;
     }
   }

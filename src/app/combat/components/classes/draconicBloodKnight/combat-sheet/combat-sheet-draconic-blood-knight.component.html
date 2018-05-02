@@ -1,0 +1,125 @@
+<div class="combatTabs">
+    <a (click)="actionsEnabled = true" [ngClass]="{'disabled': !actionsEnabled}">Combat</a>
+    <a (click)="actionsEnabled = false" [ngClass]="{'disabled': actionsEnabled}">Wounds</a>
+</div>
+
+<ng-container *ngIf="actionsEnabled">
+    <div class="effectsWrapper" *ngIf="currentSheet && currentSheet.statusEffects && currentSheet.statusEffects.length > 0">
+        <ng-container *ngFor="let effect of currentSheet.statusEffects">
+            <div class="effect" [ngClass]="{'debuff': effect.type && effect.type === 'debuff'}">
+                <p>
+                    <span>{{ effect.name }}</span> ({{ effect.numberOfTurns }}T)
+                </p>
+            </div>
+        </ng-container>
+    </div>
+    <div class="actionWrapper" *ngIf="currentSheet && currentSheet.actions && currentSheet.actions.length > 0">
+        <div class="action" *ngFor="let action of currentSheet.actions">
+            <ng-container *ngIf="action.type === 'ability'">
+                <div class="ability">
+                    <div class="abilityInfo">
+                        <span>Cast ability </span>
+                        <p>{{ action.abilityName }}</p>
+                    </div>
+                    <ng-container *ngIf="action.rolls && action.rolls.length > 0">
+                        <div class="abilityRolls" *ngFor="let roll of action.rolls">
+                            <div class="abilityRoll">
+                                <span>Hit</span>
+                                <p> {{ roll.toHitRoll }}</p>
+                            </div>
+                            <div class="abilityRoll">
+                                <span>Loc</span>
+                                <p> {{ roll.locationRoll }}</p>
+                            </div>
+                            <div class="abilityRoll">
+                                <span>Dmg</span>
+                                <p> {{ roll.damageRoll }}</p>
+                            </div>
+                        </div>
+                    </ng-container>
+                </div>
+            </ng-container>
+            <ng-container *ngIf="action.type === 'item'">
+                <div class="item">
+                    <div class="itemInfo">
+                        <span>Used item </span>
+                        <p>{{ action.itemName }}</p>
+                    </div>
+                </div>
+            </ng-container>
+        </div>
+    </div>
+    <div class="buttonWrapper" *ngIf="character && currentSheet">
+        <a (click)="showAbilities()">
+            <i class="material-icons">whatshot</i>
+        </a>
+        <a (click)="showItems()">
+            <i class="material-icons">invert_colors</i>
+        </a>
+        <a (click)="addBloodmarks()">
+            <i class="material-icons">bubble_chart</i>
+        </a>
+        <a (click)="updateStatusEffects()" *ngIf="currentSheet.statusEffects.length > 0">
+            <i class="material-icons">access_time</i>
+        </a>
+        <a *ngIf="currentSheet.statusEffects.length === 0">
+            <i class="material-icons" style="opacity: 0.5">access_time</i>
+        </a>
+        <a (click)="setInitiative()" class="buttonIni" *ngIf="!currentSheet.autoRoll">
+            <i class="material-icons">crop_din</i>
+            <span>
+                {{ currentSheet.initiative ? currentSheet.initiative : '' }}
+            </span>
+        </a>
+        <a (click)="rollInitiative()" class="buttonIni" *ngIf="currentSheet.autoRoll">
+            <i class="material-icons">crop_din</i>
+            <span>
+                {{ currentSheet.initiative ? currentSheet.initiative : '' }}
+            </span>
+        </a>
+        <a (click)="toggleAutoRoll()">
+            <i *ngIf="currentSheet.autoRoll" class="material-icons">brightness_auto</i>
+            <i *ngIf="!currentSheet.autoRoll" style="opacity: 0.5" class="material-icons">brightness_auto</i>
+        </a>
+    </div>
+</ng-container>
+
+<ng-container *ngIf="!actionsEnabled">
+    <div class="woundsWrapper" *ngIf="currentSheet && currentSheet.wounds">
+        <app-wound-selector *ngIf="!woundFormVisible" [wounds]="currentSheet.wounds"></app-wound-selector>
+        <app-wound-form *ngIf="woundFormVisible" [wounds]="formWounds" [formType]="formType" (woundAdded)="woundAdded($event)" (woundLowered)="woundLowered($event)"
+            (woundRemoved)="woundRemoved($event)" (formCanceled)="woundFormCanceled()"></app-wound-form>
+    </div>
+    <div class="buttonWrapper" *ngIf="character && currentSheet">
+        <a (click)="addWound()">
+            <i class="material-icons">add_circle</i>
+        </a>
+        <a (click)="lowerWound()" *ngIf="currentSheet.wounds.length > 0">
+            <i class="material-icons">low_priority</i>
+        </a>
+        <a *ngIf="currentSheet.wounds.length === 0">
+            <i style="opacity: 0.5" class="material-icons">low_priority</i>
+        </a>
+        <a (click)="removeWound()" *ngIf="currentSheet.wounds.length > 0">
+            <i class="material-icons">remove_circle</i>
+        </a>
+        <a *ngIf="currentSheet.wounds.length === 0">
+            <i style="opacity: 0.5" class="material-icons">remove_circle</i>
+        </a>
+        <a (click)="clearWounds()">
+            <i class="material-icons">clear_all</i>
+        </a>
+    </div>
+</ng-container>
+
+<ng-container *ngIf="abilitiesVisible">
+    <app-ability-chooser-draconic-blood-knight *ngIf="character && currentSheet" [actions]="currentSheet.actions" [abilities]="character.abilities"
+        [availableBloodmarks]="currentSheet.bloodMarks" (abilitySelected)="castAbility($event)" (abilityCanceled)="cancelAbility()">
+    </app-ability-chooser-draconic-blood-knight>
+</ng-container>
+
+<ng-container *ngIf="itemsVisible">
+    <app-item-chooser *ngIf="character && currentSheet" [inventory]="character.inventory" (itemSelected)="useConsumable($event)"
+        (itemCanceled)="cancelItem()">
+    </app-item-chooser>
+</ng-container>

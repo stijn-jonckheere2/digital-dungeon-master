@@ -71,6 +71,39 @@ class Serializable {
 
         return sheets;
     }
+    static convertCombatSheet(sheet: CombatSheet, className: string) {
+        switch (className) {
+            case "Draconic Blood Knight":
+                const transformedSheet = new DraconicBloodKnightCombatSheet(sheet.name, sheet.autoRoll, sheet.initiative);
+                transformedSheet.actions = sheet.actions;
+                transformedSheet.createdOn = sheet.createdOn;
+                transformedSheet.id = sheet.id;
+                transformedSheet.modifiedOn = sheet.modifiedOn;
+                transformedSheet.statusEffects = sheet.statusEffects;
+                transformedSheet.wounds = sheet.wounds;
+                return transformedSheet;
+            default:
+                return sheet;
+        }
+    }
+    static convertAbility(ability: Ability, className: string) {
+        switch (className) {
+            case "Draconic Blood Knight":
+                const transformedAbility = new DraconicBloodKnightAbility(
+                    ability.name,
+                    ability.description,
+                    ability.usesPerTurn,
+                    1,
+                    ability.amountOfStrikes,
+                    ability.isFlavourAbility,
+                    ability.hasStatusEffect,
+                    ability.effect
+                );
+                return transformedAbility;
+            default:
+                return ability;
+        }
+    }
 }
 
 export class Character extends Serializable {
@@ -218,12 +251,30 @@ export class Ability {
         public amountOfStrikes: number,
         public isFlavourAbility: boolean,
         public hasStatusEffect: boolean,
-        public effect: {
+        public effect: {
             name: string;
             numberOfTurns: number;
         }
     ) {
         this.id = uuidv1();
+    }
+}
+
+export class DraconicBloodKnightAbility extends Ability {
+    constructor(
+        public name: string,
+        public description: string,
+        public usesPerTurn: number,
+        public bloodmarksPerUse: number,
+        public amountOfStrikes: number,
+        public isFlavourAbility: boolean,
+        public hasStatusEffect: boolean,
+        public effect: {
+            name: string;
+            numberOfTurns: number;
+        },
+    ) {
+        super(name, description, usesPerTurn, amountOfStrikes, isFlavourAbility, hasStatusEffect, effect);
     }
 }
 
@@ -342,6 +393,19 @@ export class CombatSheet extends Serializable {
         this.actions = [];
         this.wounds = [];
         this.statusEffects = [];
+    }
+}
+
+export class DraconicBloodKnightCombatSheet extends CombatSheet {
+    public bloodMarks: number;
+
+    constructor(
+        public name: string,
+        public autoRoll: boolean,
+        public initiative?: number,
+    ) {
+        super(name, autoRoll, initiative);
+        this.bloodMarks = 3;
     }
 }
 

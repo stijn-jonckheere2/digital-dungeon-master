@@ -1,14 +1,14 @@
 import { Component, OnInit, OnDestroy } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
-import { Character, CombatSheet, Ability, CombatWound, InventoryItem } from "../../../shared/models";
-import { CharacterService, ErrorService } from "../../../shared/services";
+import { Character, CombatSheet, Ability, CombatWound, InventoryItem, DraconicBloodKnightCombatSheet } from "../../../../../shared/models";
+import { CharacterService, ErrorService } from "../../../../../shared/services";
 
 @Component({
-  selector: "app-combat-sheet",
-  templateUrl: "./combat-sheet.component.html",
-  styleUrls: ["./combat-sheet.component.scss"]
+  selector: "app-combat-sheet-draconic-blood-knight",
+  templateUrl: "./combat-sheet-draconic-blood-knight.component.html",
+  styleUrls: ["./combat-sheet-draconic-blood-knight.component.scss"]
 })
-export class CombatSheetComponent implements OnInit, OnDestroy {
+export class CombatSheetDraconicBloodKnightComponent implements OnInit, OnDestroy {
   characterSub: any;
   character: Character;
   charId: number;
@@ -21,7 +21,6 @@ export class CombatSheetComponent implements OnInit, OnDestroy {
   itemsVisible = false;
   woundFormVisible = false;
 
-  abilitiesOnCooldown: Ability[] = [];
   formWounds: CombatWound[] = [];
   formType = "add";
 
@@ -38,7 +37,6 @@ export class CombatSheetComponent implements OnInit, OnDestroy {
         this.character = char;
         this.currentSheet = char.combatSheets[this.currentSheetIndex];
         console.log("Loaded sheet", this.currentSheet);
-        this.calculateCooldowns();
       }
     );
   }
@@ -86,11 +84,6 @@ export class CombatSheetComponent implements OnInit, OnDestroy {
   }
 
   castAbility(ability: Ability) {
-    // The ability is now casting for the last time
-    if (this.abilityOutOfUses(ability)) {
-      this.abilitiesOnCooldown.push(ability);
-    }
-
     // Add roll data
     if (this.currentSheet.autoRoll) {
       const rolls = [];
@@ -116,6 +109,10 @@ export class CombatSheetComponent implements OnInit, OnDestroy {
 
     if (ability.hasStatusEffect) {
       this.addStatusEffect(ability.effect);
+    }
+
+    if (this.currentSheet.hasOwnProperty("bloodMarks")) {
+      this.currentSheet["bloodMarks"] -= ability["bloodmarksPerUse"];
     }
 
     this.cancelAbility();
@@ -158,46 +155,6 @@ export class CombatSheetComponent implements OnInit, OnDestroy {
     this.characterService.useInventoryItem(this.charId, itemIndex);
 
     this.cancelItem();
-  }
-
-  abilityOutOfUses(ability: Ability) {
-    let amountOfCasts = 0;
-
-    this.currentSheet.actions.map((action) => {
-      if (action["ability"]) {
-        if (action["abilityName"] === ability.name) {
-          amountOfCasts++;
-        }
-      }
-    });
-
-    return amountOfCasts >= ability.usesPerTurn ? true : false;
-  }
-
-  calculateCooldowns() {
-    if (this.currentSheet.actions.length === 0) {
-      return;
-    }
-    this.abilitiesOnCooldown = [];
-    const usedAbilities = {};
-
-    for (const action of this.currentSheet.actions) {
-      if (action["type"] === "ability") {
-        if (usedAbilities[action["abilityName"]]) {
-          usedAbilities[action["abilityName"]]++;
-        } else {
-          usedAbilities[action["abilityName"]] = 1;
-        }
-      }
-    }
-
-    for (const ability of this.character.abilities) {
-      if (usedAbilities[ability["name"]] >= ability["usesPerTurn"]) {
-        this.abilitiesOnCooldown.push(ability);
-      }
-    }
-
-    console.log("Calculated Cooldowns", this.abilitiesOnCooldown, usedAbilities);
   }
 
   // WOUNDS
@@ -297,6 +254,16 @@ export class CombatSheetComponent implements OnInit, OnDestroy {
         eff.numberOfTurns--;
         return eff;
       });
+      this.characterService.updateCombatSheet(this.charId, this.currentSheetIndex, this.currentSheet);
+    }
+  }
+
+  // CLASS SPECIFIC
+
+  addBloodmarks() {
+    const marks = +prompt("How many blood marks would you like to add?");
+    if (marks && marks > 0 && !isNaN(marks)) {
+      this.currentSheet["bloodMarks"] += marks;
       this.characterService.updateCombatSheet(this.charId, this.currentSheetIndex, this.currentSheet);
     }
   }

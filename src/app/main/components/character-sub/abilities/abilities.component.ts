@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
-import { Character, Ability } from "../../../../shared/models";
+import { Character, Ability, DraconicBloodKnightAbility } from "../../../../shared/models";
 import { CharacterService, ErrorService } from "../../../../shared/services";
 
 @Component({
@@ -14,7 +14,7 @@ export class AbilitiesComponent implements OnInit, OnDestroy {
   characterId: number;
 
   abilityFormEnabled = false;
-  newAbility = new Ability("", "", 1, 1, false, false, {name: "", numberOfTurns: 1});
+  newAbility = new Ability("", "", 1, 1, false, false, { name: "", numberOfTurns: 1 });
   newAbilityId = -1;
 
   constructor(private characterService: CharacterService,
@@ -40,6 +40,7 @@ export class AbilitiesComponent implements OnInit, OnDestroy {
     this.characterService.getCharacterById(this.characterId).then(
       (char: Character) => {
         this.character = char;
+        this.updateNewAbility();
         this.handleForm();
       }
     );
@@ -69,15 +70,17 @@ export class AbilitiesComponent implements OnInit, OnDestroy {
         this.characterService.addAbility(this.characterId, this.newAbility);
       }
     }
-    this.newAbility = new Ability("", "", 1, 1, false, false, {name: "", numberOfTurns: 1});
+    this.newAbility = new Ability("", "", 1, 1, false, false, { name: "", numberOfTurns: 1 });
     this.newAbilityId = -1;
+    this.updateNewAbility();
     this.abilityFormEnabled = false;
     this.updateAbilities();
   }
 
   cancelAddAbility() {
-    this.newAbility = new Ability("", "", 1, 1, false, false, {name: "", numberOfTurns: 1});
+    this.newAbility = new Ability("", "", 1, 1, false, false, { name: "", numberOfTurns: 1 });
     this.newAbilityId = -1;
+    this.updateNewAbility();
     this.abilityFormEnabled = false;
   }
 
@@ -88,9 +91,17 @@ export class AbilitiesComponent implements OnInit, OnDestroy {
   }
 
   removeAbility(abilityId: number) {
-    if(confirm("Are you sure you want to delete this ability?")) {
+    if (confirm("Are you sure you want to delete this ability?")) {
       this.characterService.deleteAbility(this.characterId, abilityId);
       this.updateAbilities();
+    }
+  }
+
+  updateNewAbility() {
+    switch (this.character.className) {
+      case "Draconic Blood Knight":
+        this.newAbility = Character.convertAbility(this.newAbility, "Draconic Blood Knight");
+        break;
     }
   }
 

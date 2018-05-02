@@ -5,7 +5,8 @@
       <ng-container *ngIf="!ability.isFlavourAbility">
         <p class="inventory-item-name">
           {{ ability.name }}
-          <span>({{ ability.usesPerTurn }}/R)</span>
+          <span *ngIf="!ability.hasOwnProperty('bloodmarksPerUse')">({{ ability.usesPerTurn }}/R)</span>
+          <span *ngIf="ability.hasOwnProperty('bloodmarksPerUse')">(BM: {{ ability.bloodmarksPerUse }})</span>
         </p>
         <p class="inventory-item-description">{{ ability.description }}</p>
         <div class="inventory-buttons">
@@ -58,9 +59,13 @@
       <input type="checkbox" value="" [(ngModel)]="newAbility.isFlavourAbility">flavour ability</label>
   </div>
   <ng-container *ngIf="!newAbility.isFlavourAbility">
-    <div class="form-group">
+    <div class="form-group" *ngIf="!newAbility.hasOwnProperty('bloodmarksPerUse')">
       <label for="usesPerTurn">uses per turn</label>
       <input type="number" id="usesPerTurn" class="form-control" [(ngModel)]="newAbility.usesPerTurn" />
+    </div>
+    <div class="form-group" *ngIf="newAbility.hasOwnProperty('bloodmarksPerUse')">
+      <label for="bloodmarksPerUse">bloodmarks per use</label>
+      <input type="number" id="bloodmarksPerUse" class="form-control" [(ngModel)]="newAbility.bloodmarksPerUse" />
     </div>
     <div class="form-group">
       <label for="amountOfStrikes">amount of strikes</label>
