@@ -301,8 +301,8 @@ export class CharacterService {
     // Combat Sheet Methods
     addCombatSheet(charId: number, sheet: CombatSheet) {
         let newSheet = sheet;
-        if (this.characters[charId].className === "Draconic Blood Knight") {
-            newSheet = Character.convertCombatSheet(sheet, "Draconic Blood Knight");
+        if (this.characters[charId].className !== "Base Class") {
+            newSheet = Character.convertCombatSheet(sheet, this.characters[charId].className);
         }
         if (this.characters[charId].combatSheets) {
             this.characters[charId].combatSheets.push(newSheet);
@@ -348,7 +348,7 @@ export class CharacterService {
                 for (let i = 0; i < char.combatSheets.length; i++) {
                     const currentSheet: any = char.combatSheets[i];
 
-                    if (!currentSheet.bloodMarks || !(currentSheet instanceof DraconicBloodKnightCombatSheet)) {
+                    if (!currentSheet.hasOwnProperty("bloodMarks")) {
                         const newSheet = Character.convertCombatSheet(currentSheet, "Draconic Blood Knight");
                         char.combatSheets[i] = newSheet;
                     }
@@ -356,7 +356,7 @@ export class CharacterService {
                 for (let i = 0; i < char.abilities.length; i++) {
                     const currentAbility = char.abilities[i];
 
-                    if (!(currentAbility instanceof DraconicBloodKnightAbility)) {
+                    if (!currentAbility.hasOwnProperty("bloodmarksPerUse")) {
                         const newAbilitiy = Character.convertAbility(currentAbility, "Draconic Blood Knight");
                         char.abilities[i] = newAbilitiy;
                     }
@@ -366,7 +366,7 @@ export class CharacterService {
                 for (let i = 0; i < char.combatSheets.length; i++) {
                     const currentSheet: any = char.combatSheets[i];
 
-                    if (!currentSheet.minionWoundSheets || !(currentSheet instanceof NecromancerCombatSheet)) {
+                    if (!currentSheet.hasOwnProperty("minionWoundSheets")) {
                         const newSheet = Character.convertCombatSheet(currentSheet, "Necromancer");
                         char.combatSheets[i] = newSheet;
                     }
