@@ -72,9 +72,11 @@ class Serializable {
         return sheets;
     }
     static convertCombatSheet(sheet: CombatSheet, className: string) {
+        let transformedSheet: CombatSheet;
+
         switch (className) {
             case "Draconic Blood Knight":
-                const transformedSheet = new DraconicBloodKnightCombatSheet(sheet.name, sheet.autoRoll, sheet.initiative);
+                transformedSheet = new DraconicBloodKnightCombatSheet(sheet.name, sheet.autoRoll, sheet.initiative);
                 transformedSheet.actions = sheet.actions;
                 transformedSheet.createdOn = sheet.createdOn;
                 transformedSheet.id = sheet.id;
@@ -82,6 +84,17 @@ class Serializable {
                 transformedSheet.statusEffects = sheet.statusEffects;
                 transformedSheet.wounds = sheet.wounds;
                 return transformedSheet;
+
+            case "Necromancer":
+                transformedSheet = new NecromancerCombatSheet(sheet.name, sheet.autoRoll, sheet.initiative);
+                transformedSheet.actions = sheet.actions;
+                transformedSheet.createdOn = sheet.createdOn;
+                transformedSheet.id = sheet.id;
+                transformedSheet.modifiedOn = sheet.modifiedOn;
+                transformedSheet.statusEffects = sheet.statusEffects;
+                transformedSheet.wounds = sheet.wounds;
+                return transformedSheet;
+
             default:
                 return sheet;
         }
@@ -406,6 +419,28 @@ export class DraconicBloodKnightCombatSheet extends CombatSheet {
     ) {
         super(name, autoRoll, initiative);
         this.bloodMarks = 3;
+    }
+}
+
+export class NecromancerCombatSheet extends CombatSheet {
+    public minionWoundSheets: MinionWoundSheet[];
+
+    constructor(
+        public name: string,
+        public autoRoll: boolean,
+        public initiative?: number,
+    ) {
+        super(name, autoRoll, initiative);
+        this.minionWoundSheets = [];
+    }
+}
+
+export class MinionWoundSheet {
+    public wounds: CombatWound[];
+    constructor(
+        public name: string
+    ) {
+        this.wounds = [];
     }
 }
 

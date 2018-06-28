@@ -1,7 +1,7 @@
 import { Injectable, EventEmitter } from "@angular/core";
 import * as firebase from "firebase";
 import { Http } from "@angular/http";
-import { Character, InventoryItem, Npc, Quest, Ability, CombatSheet, DraconicBloodKnightCombatSheet, DraconicBloodKnightAbility } from "../models";
+import { Character, InventoryItem, Npc, Quest, Ability, CombatSheet, DraconicBloodKnightCombatSheet, DraconicBloodKnightAbility, NecromancerCombatSheet } from "../models";
 import { AuthService } from "../../auth/services";
 import { ErrorService } from "./error-service.service";
 import { environment } from "../../../environments/environment";
@@ -346,9 +346,9 @@ export class CharacterService {
         switch (className) {
             case "Draconic Blood Knight":
                 for (let i = 0; i < char.combatSheets.length; i++) {
-                    const currentSheet = char.combatSheets[i];
+                    const currentSheet: any = char.combatSheets[i];
 
-                    if (!(currentSheet instanceof DraconicBloodKnightCombatSheet)) {
+                    if (!currentSheet.bloodMarks || !(currentSheet instanceof DraconicBloodKnightCombatSheet)) {
                         const newSheet = Character.convertCombatSheet(currentSheet, "Draconic Blood Knight");
                         char.combatSheets[i] = newSheet;
                     }
@@ -359,6 +359,16 @@ export class CharacterService {
                     if (!(currentAbility instanceof DraconicBloodKnightAbility)) {
                         const newAbilitiy = Character.convertAbility(currentAbility, "Draconic Blood Knight");
                         char.abilities[i] = newAbilitiy;
+                    }
+                }
+                break;
+            case "Necromancer":
+                for (let i = 0; i < char.combatSheets.length; i++) {
+                    const currentSheet: any = char.combatSheets[i];
+
+                    if (!currentSheet.minionWoundSheets || !(currentSheet instanceof NecromancerCombatSheet)) {
+                        const newSheet = Character.convertCombatSheet(currentSheet, "Necromancer");
+                        char.combatSheets[i] = newSheet;
                     }
                 }
                 break;

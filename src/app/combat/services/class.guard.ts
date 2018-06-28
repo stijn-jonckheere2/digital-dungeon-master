@@ -20,6 +20,9 @@ export class ClassGuard implements CanActivate {
           case "Draconic Blood Knight":
             routeBase[routeBase.length - 1] = "draconic-blood-knight";
             break;
+          case "Necromancer":
+            routeBase[routeBase.length - 1] = "necromancer";
+            break;
         }
         this.router.navigate(routeBase);
       }
