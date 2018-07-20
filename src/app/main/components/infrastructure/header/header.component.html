@@ -16,7 +16,7 @@
       <a [routerLink]="['/story-recap']">Story Recap</a>
     </li>
     <li class="nav-dark">
-      <a (click)="onLogout()">Logout</a>
+      <a (click)="onLogout()">Log out</a>
     </li>
   </ul>
   <ul [ngClass]="{'dropdown-closed': !mobileMenuOpen, 'dropdown-open': mobileMenuOpen }" (click)="toggleMobileMenu()" *ngIf="authenticated && selectedChar > -1">
