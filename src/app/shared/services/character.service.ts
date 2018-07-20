@@ -141,7 +141,8 @@ export class CharacterService {
     }
 
     addCharacter(character: Character) {
-        this.characters.push(character);
+        const char = this.convertClass(character);
+        this.characters.push(char);
         this.saveCharacters(this.characters).subscribe(
             () => { },
             (error) => {

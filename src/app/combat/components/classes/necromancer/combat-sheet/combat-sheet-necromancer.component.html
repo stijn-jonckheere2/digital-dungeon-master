@@ -1,6 +1,6 @@
 <div class="combatTabs">
-    <a (click)="actionsEnabled = true" [ngClass]="{'disabled': !actionsEnabled}">Necro Combat</a>
-    <a (click)="actionsEnabled = false" [ngClass]="{'disabled': actionsEnabled}">Necro Wounds</a>
+    <a (click)="actionsEnabled = true" [ngClass]="{'disabled': !actionsEnabled}">Combat</a>
+    <a (click)="actionsEnabled = false" [ngClass]="{'disabled': actionsEnabled}">Wounds</a>
 </div>
 
 <ng-container *ngIf="actionsEnabled">
