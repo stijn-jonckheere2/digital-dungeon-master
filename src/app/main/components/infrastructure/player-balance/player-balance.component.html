@@ -1,0 +1,13 @@
+<h2>Player Balance</h2>
+
+<div class="balance-outer-wrapper balance-outer-wrapper-desktop" *ngIf="playerBalanceFetched">
+  <div class="balance-wrapper">
+    <div (click)="addBalance(true, 5)" class="balance-orb balance-orb-light"></div>
+    <div class="balance-beam-wrapper">
+      <div class="balance-beam balance-beam-light" [ngStyle]="{'width': getLightPercentage() + '%'}"></div>
+      <div class="balance-counter">{{ playerBalance }}</div>
+      <div class="balance-beam balance-beam-dark" [ngStyle]="{'width': getDarkPercentage() + '%'}"></div>
+    </div>
+    <div (click)="addBalance(false, -5)" class="balance-orb balance-orb-dark"></div>
+  </div>
+</div>

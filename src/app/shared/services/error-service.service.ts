@@ -12,7 +12,7 @@ export class ErrorService {
 
     setTimeout(() => {
       this.dismissError();
-    }, 5000);
+    }, 2500);
   }
 
   dismissError() {

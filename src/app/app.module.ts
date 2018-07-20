@@ -31,6 +31,8 @@ import { FilterPipe } from "./main/components/character/character-logs/filter.pi
 import { PlayerNotesService, StoryRecapService } from "./main/services";
 import { ErrorService, CharacterService } from "./shared/services";
 import { CharacterNewComponent } from "./main/components/character/character-new/character-new.component";
+import { BalanceService } from "./main/services/balance.service";
+import { PlayerBalanceComponent } from "./main/components/infrastructure/player-balance/player-balance.component";
 
 const charRoutes: Routes = [
   { path: "characters", component: CharacterListComponent, canActivate: [AuthGuard] },
@@ -69,6 +71,7 @@ const charRoutes: Routes = [
     CharacterNewComponent,
     CharacterMenuComponent,
     CharacterLogsComponent,
+    PlayerBalanceComponent,
     FilterPipe,
   ],
   imports: [
@@ -89,6 +92,7 @@ const charRoutes: Routes = [
     StoryRecapService,
     AuthGuard,
     CharacterService,
+    BalanceService,
     ErrorService
   ],
   bootstrap: [
