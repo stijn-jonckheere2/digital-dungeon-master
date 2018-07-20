@@ -34,7 +34,7 @@ import { CharacterNewComponent } from "./main/components/character/character-new
 
 const charRoutes: Routes = [
   { path: "characters", component: CharacterListComponent, canActivate: [AuthGuard] },
-  { path: "characters/new", component: CharacterNewComponent, canActivate: [AuthGuard] },
+  { path: "characters/create/new", component: CharacterNewComponent, canActivate: [AuthGuard] },
   {
     path: "characters/:id", component: CharacterMenuComponent, canActivate: [AuthGuard], children: [
       { path: "stats", component: StatsComponent, canActivate: [AuthGuard] },

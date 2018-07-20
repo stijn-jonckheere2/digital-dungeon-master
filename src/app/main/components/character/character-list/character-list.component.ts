@@ -49,6 +49,10 @@ export class CharacterListComponent implements OnInit, OnDestroy {
     );
   }
 
+  onNewCharacter() {
+    this.router.navigate(["/characters", "create", "new"]);
+  }
+
   onSelectCharacter(charId: number) {
     this.characterService.setCharacterSelected(charId);
     this.router.navigate(["/characters", charId, "stats"]);
