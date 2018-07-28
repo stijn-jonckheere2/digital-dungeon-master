@@ -5,8 +5,13 @@
       <ng-container *ngIf="!ability.isFlavourAbility">
         <p class="inventory-item-name">
           {{ ability.name }}
-          <span *ngIf="!ability.hasOwnProperty('bloodmarksPerUse')">({{ ability.usesPerTurn }}/R)</span>
+          <span *ngIf="!ability.hasOwnProperty('bloodmarksPerUse')">
+              ({{ ability.usesPerTurn == 0 ? "Free" : ability.usesPerTurn + "/R" }})
+          </span>
           <span *ngIf="ability.hasOwnProperty('bloodmarksPerUse')">(BM: {{ ability.bloodmarksPerUse }})</span>
+          <span *ngIf="ability.hasOwnProperty('type') && ability.type != abilityType.Basic" class="pain-indicator">
+              {{ ability.type == abilityType.Filler ? "Causes pain: " : "Requires pain: " }} {{ ability.amountOfPain }}
+          </span>
         </p>
         <p class="inventory-item-description">{{ ability.description }}</p>
         <div class="inventory-buttons">
@@ -59,14 +64,37 @@
       <input type="checkbox" value="" [(ngModel)]="newAbility.isFlavourAbility">flavour ability</label>
   </div>
   <ng-container *ngIf="!newAbility.isFlavourAbility">
+    <!-- Base class -->
     <div class="form-group" *ngIf="!newAbility.hasOwnProperty('bloodmarksPerUse')">
       <label for="usesPerTurn">uses per turn</label>
       <input type="number" id="usesPerTurn" class="form-control" [(ngModel)]="newAbility.usesPerTurn" />
     </div>
+    <!-- -->
+
+    <!-- Draconic Blood Knight -->
     <div class="form-group" *ngIf="newAbility.hasOwnProperty('bloodmarksPerUse')">
       <label for="bloodmarksPerUse">bloodmarks per use</label>
       <input type="number" id="bloodmarksPerUse" class="form-control" [(ngModel)]="newAbility.bloodmarksPerUse" />
     </div>
+    <!-- -->
+
+    <!-- Chaos Mage -->
+    <div class="form-group" *ngIf="newAbility.hasOwnProperty('type')">
+      <label for="type">Type</label>
+      <select name="type" id="type" class="form-control" [(ngModel)]="newAbility.type">
+        <option [value]="abilityType.Basic" selected>Basic</option>
+        <option [value]="abilityType.Filler">Filler</option>
+        <option [value]="abilityType.Spender">Spender</option>
+      </select>
+    </div>
+
+    <div class="form-group" 
+      *ngIf="newAbility.hasOwnProperty('type') && (newAbility.type == abilityType.Filler || newAbility.type == abilityType.Spender )">
+      <label for="amountOfPain">amount of pain</label>
+      <input type="number" id="amountOfPain" class="form-control" [(ngModel)]="newAbility.amountOfPain" [min]="1" [max]="20" />
+    </div>
+    <!-- -->
+
     <div class="form-group">
       <label for="amountOfStrikes">amount of strikes</label>
       <input type="number" id="amountOfStrikes" class="form-control" [(ngModel)]="newAbility.amountOfStrikes" />

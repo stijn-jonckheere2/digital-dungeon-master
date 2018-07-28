@@ -18,7 +18,6 @@
     color: $primary-color;
     span {
         color: $primary-color;
-        text-transform: uppercase;        
     }
 }
 .inventory-item-name:first-letter{
@@ -34,6 +33,15 @@
 }
 .inventory-hidden {
     display: none !important;
+}
+.pain-indicator {
+    display: block;
+    padding-top: 5px;
+    color: $chaos-color !important;
+    text-transform: lowercase !important;
+    &:first-letter {
+        text-transform: uppercase !important;
+    }
 }
 @media (min-width: 768px) {
     .inventory-item {

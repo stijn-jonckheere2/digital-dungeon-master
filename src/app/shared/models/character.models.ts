@@ -1,4 +1,5 @@
 import { v1 as uuidv1 } from "uuid";
+import { ChaosMageAbilityType } from "./character.enums";
 
 class Serializable {
     static fromJSON(jsonObj: Character) {
@@ -73,7 +74,6 @@ class Serializable {
         return sheets;
     }
     static convertCombatSheet(sheet: CombatSheet, className: string) {
-
         switch (className) {
             case "Draconic Blood Knight":
                 const draconicSheet: DraconicBloodKnightCombatSheet = new DraconicBloodKnightCombatSheet(sheet.name, sheet.autoRoll, sheet.initiative);
@@ -101,6 +101,16 @@ class Serializable {
 
                 return necroSheet;
 
+            case "Chaos Mage":
+                const chaosSheet: ChaosMageCombatSheet = new ChaosMageCombatSheet(sheet.name, sheet.autoRoll, sheet.initiative);
+                chaosSheet.actions = sheet.actions;
+                chaosSheet.createdOn = sheet.createdOn;
+                chaosSheet.id = sheet.id;
+                chaosSheet.modifiedOn = sheet.modifiedOn;
+                chaosSheet.statusEffects = sheet.statusEffects;
+                chaosSheet.wounds = sheet.wounds;
+                chaosSheet.painMeter = sheet["painMeter"] ? sheet["painMeter"] : 0;
+                return chaosSheet;
             default:
                 return sheet;
         }
@@ -119,6 +129,19 @@ class Serializable {
                     ability.effect
                 );
                 return transformedAbility;
+            case "Chaos Mage":
+                const chaosAbility = new ChaosMageAbility(
+                    ability.name,
+                    ability.description,
+                    ability.usesPerTurn,
+                    ability.amountOfStrikes,
+                    ability.isFlavourAbility,
+                    ability.hasStatusEffect,
+                    ability.effect,
+                    ChaosMageAbilityType.Basic,
+                    0
+                );
+                return chaosAbility;
             default:
                 return ability;
         }
@@ -297,6 +320,25 @@ export class DraconicBloodKnightAbility extends Ability {
     }
 }
 
+export class ChaosMageAbility extends Ability {
+    constructor(
+        public name: string,
+        public description: string,
+        public usesPerTurn: number,
+        public amountOfStrikes: number,
+        public isFlavourAbility: boolean,
+        public hasStatusEffect: boolean,
+        public effect: {
+            name: string;
+            numberOfTurns: number;
+        },
+        public type: ChaosMageAbilityType,
+        public amountOfPain: number
+    ) {
+        super(name, description, usesPerTurn, amountOfStrikes, isFlavourAbility, hasStatusEffect, effect);
+    }
+}
+
 export class InventoryItem {
     public id: string;
     constructor(
@@ -425,6 +467,19 @@ export class DraconicBloodKnightCombatSheet extends CombatSheet {
     ) {
         super(name, autoRoll, initiative);
         this.bloodMarks = 3;
+    }
+}
+
+export class ChaosMageCombatSheet extends CombatSheet {
+    public painMeter: number;
+
+    constructor(
+        public name: string,
+        public autoRoll: boolean,
+        public initiative?: number,
+    ) {
+        super(name, autoRoll, initiative);
+        this.painMeter = 0;
     }
 }
 

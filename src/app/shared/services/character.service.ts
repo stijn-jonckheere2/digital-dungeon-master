@@ -368,6 +368,24 @@ export class CharacterService {
                     }
                 }
                 break;
+            case "Chaos Mage":
+                for (let i = 0; i < char.combatSheets.length; i++) {
+                    const currentSheet: any = char.combatSheets[i];
+
+                    if (!currentSheet.hasOwnProperty("painMeter")) {
+                        const newSheet = Character.convertCombatSheet(currentSheet, "Chaos Mage");
+                        char.combatSheets[i] = newSheet;
+                    }
+                }
+                for (let i = 0; i < char.abilities.length; i++) {
+                    const currentAbility = char.abilities[i];
+
+                    if (!currentAbility.hasOwnProperty("type")) {
+                        const newAbilitiy = Character.convertAbility(currentAbility, "Chaos Mage");
+                        char.abilities[i] = newAbilitiy;
+                    }
+                }
+                break;
         }
 
         return char;

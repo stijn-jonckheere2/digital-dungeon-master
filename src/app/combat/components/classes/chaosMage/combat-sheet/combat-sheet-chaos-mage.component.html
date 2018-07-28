@@ -3,6 +3,11 @@
     <a (click)="actionsEnabled = false" [ngClass]="{'disabled': actionsEnabled}">Wounds</a>
 </div>
 
+<app-pain-meter 
+    *ngIf="actionsEnabled && currentSheet && currentSheet.painMeter !== undefined" 
+    [painLevel]="currentSheet.painMeter">
+</app-pain-meter>
+
 <ng-container *ngIf="actionsEnabled">
     <div class="effectsWrapper" *ngIf="currentSheet && currentSheet.statusEffects && currentSheet.statusEffects.length > 0">
         <ng-container *ngFor="let effect of currentSheet.statusEffects">
@@ -55,9 +60,6 @@
         </a>
         <a (click)="showItems()">
             <i class="material-icons">invert_colors</i>
-        </a>
-        <a (click)="setPainMeter()">
-            <i class="material-icons">blur_on</i>
         </a>
         <a (click)="updateStatusEffects()" *ngIf="currentSheet.statusEffects.length > 0">
             <i class="material-icons">access_time</i>
@@ -113,18 +115,22 @@
 </ng-container>
 
 <ng-container *ngIf="abilitiesVisible">
-    <app-ability-chooser 
-        *ngIf="character && currentSheet" 
+    <app-ability-chooser-chaos-mage 
+        *ngIf="character && currentSheet && currentSheet.hasOwnProperty('painMeter')" 
         [actions]="currentSheet.actions" 
         [abilities]="character.abilities"
-        [abilitiesOnCooldown]="abilitiesOnCooldown" 
+        [abilitiesOnCooldown]="abilitiesOnCooldown"
+        [currentPain]="currentSheet.painMeter"
         (abilitySelected)="castAbility($event)" 
         (abilityCanceled)="cancelAbility()">
-    </app-ability-chooser>
+    </app-ability-chooser-chaos-mage>
 </ng-container>
 
 <ng-container *ngIf="itemsVisible">
-    <app-item-chooser *ngIf="character && currentSheet" [inventory]="character.inventory" (itemSelected)="useConsumable($event)"
+    <app-item-chooser 
+        *ngIf="character && currentSheet" 
+        [inventory]="character.inventory" 
+        (itemSelected)="useConsumable($event)"
         (itemCanceled)="cancelItem()">
     </app-item-chooser>
 </ng-container>

@@ -1,14 +1,14 @@
 import { Component, OnInit, OnDestroy } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
-import { Character, CombatSheet, Ability, CombatWound, InventoryItem, ChaosMageCombatSheet } from "../../../../../shared/models";
+import { Character, Ability, CombatWound, InventoryItem, ChaosMageCombatSheet, ChaosMageAbility, ChaosMageAbilityType } from "../../../../../shared/models";
 import { CharacterService, ErrorService } from "../../../../../shared/services";
 
 @Component({
-  selector: "app-combat-sheet",
-  templateUrl: "./combat-sheet.component.html",
-  styleUrls: ["./combat-sheet.component.scss"]
+  selector: "app-combat-sheet-chaos-mage",
+  templateUrl: "./combat-sheet-chaos-mage.component.html",
+  styleUrls: ["./combat-sheet-chaos-mage.component.scss"]
 })
-export class CombatSheetComponent implements OnInit, OnDestroy {
+export class CombatSheetChaosMageComponent implements OnInit, OnDestroy {
   characterSub: any;
   character: Character;
   charId: number;
@@ -85,15 +85,18 @@ export class CombatSheetComponent implements OnInit, OnDestroy {
   }
 
   castAbility(ability: Ability) {
+    const chaosAbility = ability as ChaosMageAbility;
+    chaosAbility.type = +chaosAbility.type;
+
     // The ability is now casting for the last time
-    if (this.abilityOutOfUses(ability)) {
-      this.abilitiesOnCooldown.push(ability);
+    if (this.abilityOutOfUses(chaosAbility)) {
+      this.abilitiesOnCooldown.push(chaosAbility);
     }
 
     // Add roll data
     if (this.currentSheet.autoRoll) {
       const rolls = [];
-      for (let counter = 0; counter < ability.amountOfStrikes; counter++) {
+      for (let counter = 0; counter < chaosAbility.amountOfStrikes; counter++) {
         rolls.push({
           toHitRoll: this.rollDice(20),
           locationRoll: this.rollDice(20),
@@ -102,19 +105,28 @@ export class CombatSheetComponent implements OnInit, OnDestroy {
       }
       this.currentSheet.actions.unshift({
         type: "ability",
-        abilityName: ability.name,
+        abilityName: chaosAbility.name,
         rolls: rolls
       });
     } else {
       // Skip roll data
       this.currentSheet.actions.unshift({
         type: "ability",
-        abilityName: ability.name
+        abilityName: chaosAbility.name
       });
     }
 
-    if (ability.hasStatusEffect) {
-      this.addStatusEffect(ability.effect);
+    if (chaosAbility.hasStatusEffect) {
+      this.addStatusEffect(chaosAbility.effect);
+    }
+
+    switch (chaosAbility.type) {
+      case ChaosMageAbilityType.Filler:
+        this.currentSheet.painMeter += chaosAbility.amountOfPain;
+        break;
+      case ChaosMageAbilityType.Spender:
+        this.currentSheet.painMeter -= chaosAbility.amountOfPain;
+        break;
     }
 
     this.cancelAbility();
@@ -160,6 +172,10 @@ export class CombatSheetComponent implements OnInit, OnDestroy {
   }
 
   abilityOutOfUses(ability: Ability) {
+    if (ability.usesPerTurn === 0) {
+      return false;
+    }
+
     let amountOfCasts = 0;
 
     this.currentSheet.actions.map((action) => {
@@ -191,18 +207,9 @@ export class CombatSheetComponent implements OnInit, OnDestroy {
     }
 
     for (const ability of this.character.abilities) {
-      if (usedAbilities[ability["name"]] >= ability["usesPerTurn"]) {
+      if (ability["usesPerTurn"] !== 0 && usedAbilities[ability["name"]] >= ability["usesPerTurn"]) {
         this.abilitiesOnCooldown.push(ability);
       }
-    }
-  }
-
-  setPainMeter() {
-    const newPainLevel = +prompt("What should your pain level be?");
-    if (newPainLevel !== null && !isNaN(newPainLevel) && newPainLevel > 0 && newPainLevel < 20) {
-      this.currentSheet.painMeter = newPainLevel;
-    } else {
-      this.errorService.displayError("Pain level should be between 0 and 20");
     }
   }
 

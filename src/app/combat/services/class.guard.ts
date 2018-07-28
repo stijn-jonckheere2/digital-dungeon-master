@@ -22,6 +22,9 @@ export class ClassGuard implements CanActivate {
           case "Necromancer":
             routeBase[routeBase.length - 1] = "necromancer";
             break;
+          case "Chaos Mage":
+            routeBase[routeBase.length - 1] = "chaos-mage";
+            break;
         }
         this.router.navigate(routeBase);
       }
