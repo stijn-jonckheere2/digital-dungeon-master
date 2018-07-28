@@ -37,7 +37,6 @@ export class StoryRecapComponent implements OnInit, OnDestroy {
       (recaps: StoryRecap[]) => {
         if (recaps !== null) {
           this.recaps = this.sort(recaps);
-          console.log("Got recaps!", this.recaps);
         }
         this.recapEditEnabled = false;
         this.recapsFetched = true;

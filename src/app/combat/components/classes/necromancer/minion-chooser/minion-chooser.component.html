@@ -1,0 +1,30 @@
+<div class="minionWrapper" *ngIf="minionSheets !== undefined">
+  <div class="menu">
+    <i class="material-icons" (click)="cancelMinion()">close</i>
+  </div>
+  <ng-container *ngIf="!minionFormEnabled">
+    <h2>Which minion will do your dirty work this time?</h2>
+    <div class="minion" *ngFor="let sheet of minionSheets; let sheetIndex = index">
+      <p>
+        <span>{{sheet.name}}</span>
+        <i class="material-icons" (click)="selectMinion(sheetIndex)">pan_tool</i>
+        <i class="material-icons" (click)="deleteMinion(sheetIndex)">delete_forever</i>
+      </p>
+    </div>
+    <p class="no-minions" *ngIf="minionSheets.length === 0">You don't have any minions yet.<br />And you call yourself a necromancer, hah!</p>
+    <div class="button-wrapper">
+      <button class="btn btn-primary" (click)="summonMinion()">Summon a minion</button>
+    </div>
+  </ng-container>
+  <ng-container *ngIf="minionFormEnabled">
+    <h2>What foul creature will you summon?</h2>
+    <div class="form">
+      <div class="form-group">
+        <label for="name">name</label>
+        <input type="text" id="name" class="form-control" [(ngModel)]="newMinionWoundSheet.name" />
+      </div>
+      <button class="btn btn-primary" (click)="onAddMinion()" [disabled]="newMinionWoundSheet.name.length === 0">Add</button>
+      <a (click)="cancelAddMinion()" class="btn btn-default">Cancel</a>
+    </div>
+  </ng-container>
+</div>

@@ -1,0 +1,77 @@
+@import '~sass/variables';
+
+h2 {
+    margin-bottom: 0;
+}
+
+.actionWrapper {
+    box-sizing: border-box;
+    padding-top: 20px;
+    padding-bottom: 40px;
+    .action {
+        margin-bottom: 20px;
+        &:last-of-type {
+            margin-bottom: 0;
+        }
+    }
+}
+
+.buttonWrapper {
+    display: flex;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    background-color: $btn-action-color;
+    box-sizing: border-box;
+    width: 100%;
+    a {
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-sizing: border-box;
+        padding: 5px;
+        flex-basis: 25%;
+        flex-grow: 0;
+        flex-shrink: 1;
+        text-align: center;
+        cursor: pointer;
+        border-top: 2px solid white;
+        i {
+            font-size: 1.8em;
+        }
+        +a {
+            border-left: 2px solid white;
+        }
+        &.buttonIni {
+            position: relative;
+            span {
+                position: absolute;
+                top: calc(50% - 10px);
+                left: calc(50% - 10px);
+                display: flex;
+                width: 20px;
+                height: 20px;
+                align-items: center;
+                justify-content: center;
+                font-size: 0.8em;
+            }
+        }
+        &:first-of-type {
+            background-color: #ED4337;
+        }
+    }
+}
+
+@media (min-width: 768px) {
+    .actionWrapper {
+        padding-top: 60px;
+    }
+    .buttonWrapper {
+        max-width: 880px;
+        margin: 0 auto;
+        right: 0;
+        border-left: 2px solid white;
+        border-right: 2px solid white;
+    }
+}

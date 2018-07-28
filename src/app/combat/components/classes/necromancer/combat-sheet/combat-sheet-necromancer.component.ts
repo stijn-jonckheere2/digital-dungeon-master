@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
-import { Character, CombatSheet, Ability, CombatWound, InventoryItem } from "../../../../../shared/models";
+import { Character, CombatSheet, Ability, CombatWound, InventoryItem, MinionWoundSheet, NecromancerCombatSheet } from "../../../../../shared/models";
 import { CharacterService, ErrorService } from "../../../../../shared/services";
 
 @Component({
@@ -14,12 +14,13 @@ export class NecromancerCombatSheetComponent implements OnInit, OnDestroy {
   charId: number;
 
   currentSheetIndex: number;
-  currentSheet: CombatSheet;
+  currentSheet: NecromancerCombatSheet;
 
   actionsEnabled = true;
   abilitiesVisible = false;
   itemsVisible = false;
   woundFormVisible = false;
+  minionsVisible = false;
 
   abilitiesOnCooldown: Ability[] = [];
   formWounds: CombatWound[] = [];
@@ -36,8 +37,7 @@ export class NecromancerCombatSheetComponent implements OnInit, OnDestroy {
     this.characterService.getCharacterById(this.charId).then(
       (char: Character) => {
         this.character = char;
-        this.currentSheet = char.combatSheets[this.currentSheetIndex];
-        console.log("Loaded sheet", this.currentSheet);
+        this.currentSheet = char.combatSheets[this.currentSheetIndex] as NecromancerCombatSheet;
         this.calculateCooldowns();
       }
     );
@@ -197,7 +197,28 @@ export class NecromancerCombatSheetComponent implements OnInit, OnDestroy {
       }
     }
 
-    console.log("Calculated Cooldowns", this.abilitiesOnCooldown, usedAbilities);
+  }
+
+  selectMinion(minionIndex: number) {
+    this.router.navigate([minionIndex], { relativeTo: this.route });
+  }
+
+  showMinions() {
+    this.minionsVisible = true;
+  }
+
+  cancelMinion() {
+    this.minionsVisible = false;
+  }
+
+  onAddMinion(minion: MinionWoundSheet) {
+    this.currentSheet.minionWoundSheets.push(minion);
+    this.characterService.updateCombatSheet(this.charId, this.currentSheetIndex, this.currentSheet);
+  }
+
+  onRemoveMinion(minionIndex: number) {
+    this.currentSheet.minionWoundSheets.splice(minionIndex, 1);
+    this.characterService.updateCombatSheet(this.charId, this.currentSheetIndex, this.currentSheet);
   }
 
   // WOUNDS

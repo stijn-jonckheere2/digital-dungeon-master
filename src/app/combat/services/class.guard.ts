@@ -15,7 +15,6 @@ export class ClassGuard implements CanActivate {
 
     this.characterService.getCharacterById(charId).then(
       (char: Character) => {
-        console.log("charClassGuard", char);
         switch (char.className) {
           case "Draconic Blood Knight":
             routeBase[routeBase.length - 1] = "draconic-blood-knight";

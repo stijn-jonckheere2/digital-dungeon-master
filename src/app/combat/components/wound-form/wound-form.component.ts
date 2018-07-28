@@ -21,7 +21,6 @@ export class WoundFormComponent implements OnInit, OnChanges {
   constructor() { }
 
   ngOnInit() {
-    console.log("Loaded wound form", this.formType, this.wounds);
   }
 
   ngOnChanges() {

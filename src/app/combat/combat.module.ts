@@ -20,6 +20,8 @@ import { AbilityChooserDraconicBloodKnightComponent } from "./components/classes
 import { CombatSheetDraconicBloodKnightComponent } from "./components/classes/draconicBloodKnight/combat-sheet/combat-sheet-draconic-blood-knight.component";
 import { CharacterMenuComponent } from "../main/components/character/character-menu/character-menu.component";
 import { NecromancerCombatSheetComponent } from "./components/classes/necromancer/combat-sheet/combat-sheet-necromancer.component";
+import { MinionChooserComponent } from "./components/classes/necromancer/minion-chooser/minion-chooser.component";
+import { MinionWoundSheetComponent } from "./components/classes/necromancer/minion-wound-sheet/minion-wound-sheet.component";
 
 const combatRoutes: Routes = [
   {
@@ -27,6 +29,7 @@ const combatRoutes: Routes = [
       { path: "combat-sheets", component: CombatSheetListComponent, canActivate: [AuthGuard] },
       { path: "combat-sheets/:sheetId/default", component: CombatSheetComponent, canActivate: [AuthGuard] },
       { path: "combat-sheets/:sheetId/draconic-blood-knight", component: CombatSheetDraconicBloodKnightComponent, canActivate: [AuthGuard] },
+      { path: "combat-sheets/:sheetId/necromancer/:minionSheetId", component: MinionWoundSheetComponent, canActivate: [AuthGuard] },
       { path: "combat-sheets/:sheetId/necromancer", component: NecromancerCombatSheetComponent, canActivate: [AuthGuard] },
       { path: "combat-sheets/:sheetId", component: CombatSheetComponent, canActivate: [AuthGuard, ClassGuard] },
     ]
@@ -48,6 +51,8 @@ const combatRoutes: Routes = [
     CombatSheetComponent,
     CombatSheetDraconicBloodKnightComponent,
     NecromancerCombatSheetComponent,
+    MinionChooserComponent,
+    MinionWoundSheetComponent,
     WoundFormComponent,
     WoundPipePipe
   ],

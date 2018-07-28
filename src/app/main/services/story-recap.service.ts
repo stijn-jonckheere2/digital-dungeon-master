@@ -23,7 +23,6 @@ export class StoryRecapService {
       (resolve, reject) => {
         const userId = this.authService.getUserId();
         this.recapDb = firebase.database().ref().child("recaps");
-        console.log("Fetching Recaps!" + new Date());
 
         this.recapDb.on("value", snapshot => {
           if (snapshot.val() !== null) {
@@ -52,7 +51,6 @@ export class StoryRecapService {
   getRecaps() {
     const promise = new Promise(
       (resolve, reject) => {
-        console.log("Get Recaps Called" + new Date(), this.recapsFetched);
         if (this.recapsFetched) {
           resolve(this.recaps);
         } else {

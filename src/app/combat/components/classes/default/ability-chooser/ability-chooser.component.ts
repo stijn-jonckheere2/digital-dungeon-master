@@ -34,7 +34,6 @@ export class AbilityChooserComponent implements OnInit {
         return ab;
       }
     });
-    console.log("Filtered abilities", this.availableAbilities);
   }
 
   castAbility(ability: Ability) {

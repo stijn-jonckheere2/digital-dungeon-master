@@ -31,7 +31,6 @@ export class CharacterService {
 
     // Character Methods
     saveCharacters(characters: Character[]) {
-        console.log("Save Characters Called!");
         const userId = this.authService.getUserId();
         const url = environment.database.databaseURL + "/characters/" + userId + "-characters.json";
         return this.http.put(url, this.characters);
@@ -42,7 +41,6 @@ export class CharacterService {
             (resolve, reject) => {
                 const userId = this.authService.getUserId();
                 this.characterDb = firebase.database().ref().child("characters").child(userId + "-characters");
-                console.log("Fetching Characters!");
 
                 this.characterDb.on("value", snapshot => {
                     if (snapshot.val() !== null) {
@@ -61,13 +59,11 @@ export class CharacterService {
             return Character.fromJSON(char);
         });
         this.charactersFetched = true;
-        console.log("Characters Fetched!", this.characters);
     }
 
     getCharacters() {
         const promise = new Promise(
             (resolve, reject) => {
-                console.log("Get Characters Called", this.charactersFetched);
                 if (this.charactersFetched) {
                     resolve(this.characters);
                 } else {
@@ -301,16 +297,15 @@ export class CharacterService {
 
     // Combat Sheet Methods
     addCombatSheet(charId: number, sheet: CombatSheet) {
-        let newSheet = sheet;
         if (this.characters[charId].className !== "Base Class") {
-            newSheet = Character.convertCombatSheet(sheet, this.characters[charId].className);
+            sheet = Character.convertCombatSheet(sheet, this.characters[charId].className);
         }
         if (this.characters[charId].combatSheets) {
-            this.characters[charId].combatSheets.push(newSheet);
+            this.characters[charId].combatSheets.push(sheet);
         } else {
-            this.characters[charId].combatSheets = [newSheet];
+            this.characters[charId].combatSheets = [sheet];
         }
-        this.characters[charId].addLog("Added combat sheet  <" + newSheet.name + ">", "combatSheetLog");
+        this.characters[charId].addLog("Added combat sheet  <" + sheet.name + ">", "combatSheetLog");
         this.updateCharacterById(charId, this.characters[charId]);
     }
 

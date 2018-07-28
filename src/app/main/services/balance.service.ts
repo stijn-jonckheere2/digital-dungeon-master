@@ -27,7 +27,6 @@ export class BalanceService {
             const balance = response.json();
             if (balance !== null) {
               this.playerBalance = parseInt(balance);
-              console.log("Fetched player balance!", this.playerBalance);
             }
             this.balanceFetched = true;
             resolve();

@@ -14,11 +14,9 @@ export class CharacterNewComponent implements OnInit {
 
   constructor(private characterService: CharacterService,
     private router: Router) {
-    console.log("New char const");
   }
 
   ngOnInit() {
-    console.log("New char init");
   }
 
   onSaveCharacter() {

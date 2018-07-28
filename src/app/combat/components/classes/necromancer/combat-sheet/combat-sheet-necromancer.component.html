@@ -56,6 +56,9 @@
         <a (click)="showItems()">
             <i class="material-icons">invert_colors</i>
         </a>
+        <a (click)="showMinions()">
+            <i class="material-icons">pets</i>
+        </a>
         <a (click)="updateStatusEffects()" *ngIf="currentSheet.statusEffects.length > 0">
             <i class="material-icons">access_time</i>
         </a>
@@ -110,13 +113,29 @@
 </ng-container>
 
 <ng-container *ngIf="abilitiesVisible">
-    <app-ability-chooser *ngIf="character && currentSheet" [actions]="currentSheet.actions" [abilities]="character.abilities"
-        [abilitiesOnCooldown]="abilitiesOnCooldown" (abilitySelected)="castAbility($event)" (abilityCanceled)="cancelAbility()">
+    <app-ability-chooser *ngIf="character && currentSheet" 
+        [actions]="currentSheet.actions" 
+        [abilities]="character.abilities"
+        [abilitiesOnCooldown]="abilitiesOnCooldown" 
+        (abilitySelected)="castAbility($event)" 
+        (abilityCanceled)="cancelAbility()">
     </app-ability-chooser>
 </ng-container>
 
 <ng-container *ngIf="itemsVisible">
-    <app-item-chooser *ngIf="character && currentSheet" [inventory]="character.inventory" (itemSelected)="useConsumable($event)"
+    <app-item-chooser *ngIf="character && currentSheet" 
+        [inventory]="character.inventory" 
+        (itemSelected)="useConsumable($event)"
         (itemCanceled)="cancelItem()">
     </app-item-chooser>
+</ng-container>
+
+<ng-container *ngIf="minionsVisible">
+    <app-minion-chooser *ngIf="character && currentSheet" 
+        [minionSheets]="currentSheet.minionWoundSheets" 
+        (minionSelected)="selectMinion($event)"
+        (minionAdded)="onAddMinion($event)"
+        (minionRemoved)="onRemoveMinion($event)"
+        (minionCanceled)="cancelMinion()">
+    </app-minion-chooser>
 </ng-container>

@@ -37,7 +37,6 @@ export class CombatSheetComponent implements OnInit, OnDestroy {
       (char: Character) => {
         this.character = char;
         this.currentSheet = char.combatSheets[this.currentSheetIndex];
-        console.log("Loaded sheet", this.currentSheet);
         this.calculateCooldowns();
       }
     );
@@ -196,8 +195,6 @@ export class CombatSheetComponent implements OnInit, OnDestroy {
         this.abilitiesOnCooldown.push(ability);
       }
     }
-
-    console.log("Calculated Cooldowns", this.abilitiesOnCooldown, usedAbilities);
   }
 
   // WOUNDS

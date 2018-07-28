@@ -18,7 +18,7 @@ class Serializable {
         convertedChar.inventory = jsonObj.inventory || [];
         convertedChar.questLog = jsonObj.questLog || [];
         convertedChar.npcList = jsonObj.npcList || [];
-        convertedChar.combatSheets = jsonObj.combatSheets ? this.combatSheetsFromJSON(jsonObj.combatSheets) : [];
+        convertedChar.combatSheets = jsonObj.combatSheets ? this.combatSheetsFromJSON(jsonObj.combatSheets, convertedChar.className) : [];
 
         convertedChar.primaryStats = jsonObj.primaryStats;
         convertedChar.secondaryStats = jsonObj.secondaryStats;
@@ -53,7 +53,7 @@ class Serializable {
 
         return convertedChar;
     }
-    static combatSheetsFromJSON(jsonObj: CombatSheet[]) {
+    static combatSheetsFromJSON(jsonObj: CombatSheet[], className: string) {
         const sheets: CombatSheet[] = [];
 
         jsonObj.map((sheet) => {
@@ -66,34 +66,40 @@ class Serializable {
             if (!sheet.statusEffects) {
                 sheet.statusEffects = [];
             }
+            sheet = Character.convertCombatSheet(sheet, className);
             sheets.push(sheet);
         });
 
         return sheets;
     }
     static convertCombatSheet(sheet: CombatSheet, className: string) {
-        let transformedSheet: CombatSheet;
 
         switch (className) {
             case "Draconic Blood Knight":
-                transformedSheet = new DraconicBloodKnightCombatSheet(sheet.name, sheet.autoRoll, sheet.initiative);
-                transformedSheet.actions = sheet.actions;
-                transformedSheet.createdOn = sheet.createdOn;
-                transformedSheet.id = sheet.id;
-                transformedSheet.modifiedOn = sheet.modifiedOn;
-                transformedSheet.statusEffects = sheet.statusEffects;
-                transformedSheet.wounds = sheet.wounds;
-                return transformedSheet;
+                const draconicSheet: DraconicBloodKnightCombatSheet = new DraconicBloodKnightCombatSheet(sheet.name, sheet.autoRoll, sheet.initiative);
+                draconicSheet.actions = sheet.actions;
+                draconicSheet.createdOn = sheet.createdOn;
+                draconicSheet.id = sheet.id;
+                draconicSheet.modifiedOn = sheet.modifiedOn;
+                draconicSheet.statusEffects = sheet.statusEffects;
+                draconicSheet.wounds = sheet.wounds;
+                return draconicSheet;
 
             case "Necromancer":
-                transformedSheet = new NecromancerCombatSheet(sheet.name, sheet.autoRoll, sheet.initiative);
-                transformedSheet.actions = sheet.actions;
-                transformedSheet.createdOn = sheet.createdOn;
-                transformedSheet.id = sheet.id;
-                transformedSheet.modifiedOn = sheet.modifiedOn;
-                transformedSheet.statusEffects = sheet.statusEffects;
-                transformedSheet.wounds = sheet.wounds;
-                return transformedSheet;
+                const necroSheet: NecromancerCombatSheet = new NecromancerCombatSheet(sheet.name, sheet.autoRoll, sheet.initiative);
+                necroSheet.actions = sheet.actions;
+                necroSheet.createdOn = sheet.createdOn;
+                necroSheet.id = sheet.id;
+                necroSheet.modifiedOn = sheet.modifiedOn;
+                necroSheet.statusEffects = sheet.statusEffects;
+                necroSheet.wounds = sheet.wounds;
+                necroSheet.minionWoundSheets = sheet["minionWoundSheets"] ? sheet["minionWoundSheets"] : [];
+
+                necroSheet.minionWoundSheets.map(minionSheet => {
+                    minionSheet.wounds = minionSheet.wounds ? minionSheet.wounds : [];
+                });
+
+                return necroSheet;
 
             default:
                 return sheet;

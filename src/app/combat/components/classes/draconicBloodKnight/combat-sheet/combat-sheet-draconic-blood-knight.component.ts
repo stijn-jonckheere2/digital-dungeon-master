@@ -36,7 +36,6 @@ export class CombatSheetDraconicBloodKnightComponent implements OnInit, OnDestro
       (char: Character) => {
         this.character = char;
         this.currentSheet = char.combatSheets[this.currentSheetIndex];
-        console.log("Loaded sheet", this.currentSheet);
       }
     );
   }

@@ -1,0 +1,31 @@
+<h2 *ngIf="currentMinionSheet">{{ currentMinionSheet.name }}</h2>
+<div class="woundsWrapper" *ngIf="currentMinionSheet && currentMinionSheet.wounds">
+    <app-wound-selector *ngIf="!woundFormVisible" [wounds]="currentMinionSheet.wounds">
+    </app-wound-selector>
+    <app-wound-form *ngIf="woundFormVisible" [wounds]="formWounds" [formType]="formType" (woundAdded)="woundAdded($event)" (woundLowered)="woundLowered($event)"
+        (woundRemoved)="woundRemoved($event)" (formCanceled)="woundFormCanceled()">
+    </app-wound-form>
+</div>
+<div class="buttonWrapper" *ngIf="character && currentMinionSheet">
+    <a (click)="backToCombatSheet()">
+        <i class="material-icons">arrow_back</i>
+    </a>
+    <a (click)="addWound()">
+        <i class="material-icons">add_circle</i>
+    </a>
+    <a (click)="lowerWound()" *ngIf="currentMinionSheet.wounds.length > 0">
+        <i class="material-icons">low_priority</i>
+    </a>
+    <a *ngIf="currentMinionSheet.wounds.length === 0">
+        <i style="opacity: 0.5" class="material-icons">low_priority</i>
+    </a>
+    <a (click)="removeWound()" *ngIf="currentMinionSheet.wounds.length > 0">
+        <i class="material-icons">remove_circle</i>
+    </a>
+    <a *ngIf="currentMinionSheet.wounds.length === 0">
+        <i style="opacity: 0.5" class="material-icons">remove_circle</i>
+    </a>
+    <a (click)="clearWounds()">
+        <i class="material-icons">clear_all</i>
+    </a>
+</div>

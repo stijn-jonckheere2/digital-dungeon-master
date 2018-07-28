@@ -25,7 +25,6 @@ export class ItemChooserComponent implements OnInit {
         this.availableItems.push(it);
       }
     }
-    console.log("Filtered items", this.availableItems);
   }
 
   useItem(item: InventoryItem) {
