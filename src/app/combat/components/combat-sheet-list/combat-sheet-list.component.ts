@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
-import { Character, CombatSheet, ChaosMageCombatSheet } from "../../../shared/models";
+import { Character, CombatSheet, ChaosMageCombatSheet, NecromancerCombatSheet } from "../../../shared/models";
 import { CharacterService, ErrorService } from "../../../shared/services";
 
 @Component({
@@ -72,6 +72,12 @@ export class CombatSheetListComponent implements OnInit, OnDestroy {
       const chaosSheet = this.newSheet as ChaosMageCombatSheet;
       chaosSheet.painMeter = sheet["painMeter"];
       this.newSheet = chaosSheet;
+    }
+
+    if (sheet.hasOwnProperty("minionWoundSheets")) {
+      const necroSheet = this.newSheet as NecromancerCombatSheet;
+      necroSheet.minionWoundSheets = sheet["minionWoundSheets"];
+      this.newSheet = necroSheet;
     }
   }
 
