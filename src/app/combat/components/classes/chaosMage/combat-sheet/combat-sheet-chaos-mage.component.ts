@@ -215,7 +215,7 @@ export class CombatSheetChaosMageComponent implements OnInit, OnDestroy {
 
   setPainMeter() {
     const newPainLevel = +prompt("What should your pain level be?");
-    if (newPainLevel !== null && !isNaN(newPainLevel) && newPainLevel > 0 && newPainLevel < 20) {
+    if (newPainLevel !== null && !isNaN(newPainLevel) && newPainLevel >= 0 && newPainLevel < 20) {
       this.currentSheet.painMeter = newPainLevel;
     } else {
       this.errorService.displayError("Pain level should be between 0 and 20");
