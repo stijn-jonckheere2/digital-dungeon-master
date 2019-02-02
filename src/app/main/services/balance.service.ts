@@ -1,10 +1,10 @@
 // tslint:disable:radix
 
-import { Injectable } from "@angular/core";
-import { ErrorService } from "../../shared/services";
-import { Http } from "@angular/http";
-import { AuthService } from "../../auth/services";
-import { environment } from "../../../environments/environment";
+import { Injectable } from '@angular/core';
+import { ErrorService } from '../../shared/services';
+import { AuthService } from '../../auth/services';
+import { environment } from '../../../environments/environment';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable()
 export class BalanceService {
@@ -13,18 +13,18 @@ export class BalanceService {
   balanceFetched = false;
 
   constructor(private authService: AuthService,
-    private errorService: ErrorService,
-    private http: Http) { }
+              private errorService: ErrorService,
+              private http: HttpClient) { }
 
   fetchPlayerBalance() {
     const fetchPromise = new Promise(
       (resolve, reject) => {
         const userId = this.authService.getUserId();
-        const url = environment.database.databaseURL + "/playerbalance/" + userId + "-balance.json";
+        const url = environment.database.databaseURL + '/playerbalance/' + userId + '-balance.json';
 
         this.http.get(url).subscribe(
-          (response) => {
-            const balance = response.json();
+          (response: any) => {
+            const balance = response !== null ? response[0] : null;
             if (balance !== null) {
               this.playerBalance = parseInt(balance);
             }
@@ -61,13 +61,13 @@ export class BalanceService {
 
   saveBalance(balance: number) {
     const userId = this.authService.getUserId();
-    const url = environment.database.databaseURL + "/playerbalance/" + userId + "-balance.json";
+    const url = environment.database.databaseURL + '/playerbalance/' + userId + '-balance.json';
     this.playerBalance = balance;
 
     this.http.put(url, [balance]).subscribe(
-      (response) => { console.log("Player balance saved succesfully!"); },
+      (response) => { console.log('Player balance saved succesfully!'); },
       (error) => {
-        this.errorService.displayError("Saving player balance failed! Last balance was:" + balance);
+        this.errorService.displayError('Saving player balance failed! Last balance was:' + balance);
       }
     );
   }

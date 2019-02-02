@@ -1,9 +1,9 @@
-import { NgModule } from "@angular/core";
-import { Routes, RouterModule } from "@angular/router";
-import { RedirectComponent } from "./components/redirect/redirect.component";
+import { NgModule } from '@angular/core';
+import { Routes, RouterModule } from '@angular/router';
+import { RedirectComponent } from './components/redirect/redirect.component';
 
 const authRoutes: Routes = [
-  { path: "redirecting", component: RedirectComponent }
+  { path: 'redirecting', component: RedirectComponent }
 ];
 
 @NgModule({

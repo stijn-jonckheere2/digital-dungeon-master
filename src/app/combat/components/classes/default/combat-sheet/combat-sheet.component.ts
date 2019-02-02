@@ -1,12 +1,12 @@
-import { Component, OnInit, OnDestroy } from "@angular/core";
-import { ActivatedRoute, Router } from "@angular/router";
-import { Character, CombatSheet, Ability, CombatWound, InventoryItem, ChaosMageCombatSheet } from "../../../../../shared/models";
-import { CharacterService, ErrorService } from "../../../../../shared/services";
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Character, CombatSheet, Ability, CombatWound, InventoryItem, MinionWoundSheet } from '../../../../../shared/models';
+import { CharacterService, ErrorService } from '../../../../../shared/services';
 
 @Component({
-  selector: "app-combat-sheet",
-  templateUrl: "./combat-sheet.component.html",
-  styleUrls: ["./combat-sheet.component.scss"]
+  selector: 'app-combat-sheet',
+  templateUrl: './combat-sheet.component.html',
+  styleUrls: ['./combat-sheet.component.scss']
 })
 export class CombatSheetComponent implements OnInit, OnDestroy {
   characterSub: any;
@@ -14,21 +14,22 @@ export class CombatSheetComponent implements OnInit, OnDestroy {
   charId: number;
 
   currentSheetIndex: number;
-  currentSheet: ChaosMageCombatSheet;
+  currentSheet: CombatSheet;
 
   actionsEnabled = true;
   abilitiesVisible = false;
   itemsVisible = false;
   woundFormVisible = false;
+  minionsVisible = false;
 
   abilitiesOnCooldown: Ability[] = [];
   formWounds: CombatWound[] = [];
-  formType = "add";
+  formType = 'add';
 
   constructor(private characterService: CharacterService,
-    private errorService: ErrorService,
-    private route: ActivatedRoute,
-    private router: Router) {
+              private errorService: ErrorService,
+              private route: ActivatedRoute,
+              private router: Router) {
 
   }
 
@@ -36,35 +37,37 @@ export class CombatSheetComponent implements OnInit, OnDestroy {
     this.characterService.getCharacterById(this.charId).then(
       (char: Character) => {
         this.character = char;
-        this.currentSheet = char.combatSheets[this.currentSheetIndex] as ChaosMageCombatSheet;
+        this.currentSheet = char.combatSheets[this.currentSheetIndex];
         this.calculateCooldowns();
       }
     );
   }
 
   ngOnInit() {
-    this.charId = +this.route.parent.snapshot.params["id"];
-    this.currentSheetIndex = +this.route.snapshot.params["sheetId"];
+    this.charId = +this.route.parent.snapshot.params.id;
+    this.currentSheetIndex = +this.route.snapshot.params.sheetId;
     this.loadCharacter();
     this.characterSub = this.characterService.characterUpdatesReceived.subscribe(
       () => {
         this.loadCharacter();
       }
     );
+
+    console.log('loaded sheet', this.currentSheet);
   }
 
   setInitiative() {
-    const ini = +prompt("What is your initiative roll?");
+    const ini = +prompt('What is your initiative roll?');
     if (ini && !isNaN(ini) && ini >= 0 && ini <= 10) {
       this.currentSheet.initiative = ini;
       this.onSaveCharacter();
     } else {
-      this.errorService.displayError("Not a valid initiative roll!");
+      this.errorService.displayError('Not a valid initiative roll!');
     }
   }
 
   rollInitiative() {
-    if (confirm("Would you like to re-roll initiative?")) {
+    if (confirm('Would you like to re-roll initiative?')) {
       const ini = this.rollDice(10);
       this.currentSheet.initiative = ini;
       this.characterService.updateCombatSheet(this.charId, this.currentSheetIndex, this.currentSheet);
@@ -72,7 +75,7 @@ export class CombatSheetComponent implements OnInit, OnDestroy {
   }
 
   toggleAutoRoll() {
-    if (confirm("Would you like to toggle automatic dice rolling?")) {
+    if (confirm('Would you like to toggle automatic dice rolling?')) {
       this.currentSheet.autoRoll = !this.currentSheet.autoRoll;
       this.characterService.updateCombatSheet(this.charId, this.currentSheetIndex, this.currentSheet);
     }
@@ -101,14 +104,14 @@ export class CombatSheetComponent implements OnInit, OnDestroy {
         });
       }
       this.currentSheet.actions.unshift({
-        type: "ability",
+        type: 'ability',
         abilityName: ability.name,
-        rolls: rolls
+        rolls
       });
     } else {
       // Skip roll data
       this.currentSheet.actions.unshift({
-        type: "ability",
+        type: 'ability',
         abilityName: ability.name
       });
     }
@@ -137,7 +140,7 @@ export class CombatSheetComponent implements OnInit, OnDestroy {
     if (amountOfConsumables > 0) {
       this.itemsVisible = true;
     } else {
-      this.errorService.displayError("You don't have any consumables!");
+      this.errorService.displayError('You don\'t have any consumables!');
     }
   }
 
@@ -149,7 +152,7 @@ export class CombatSheetComponent implements OnInit, OnDestroy {
     const itemIndex = this.character.inventory.findIndex(item => item.name === consumable.name);
 
     this.currentSheet.actions.unshift({
-      type: "item",
+      type: 'item',
       itemName: consumable.name
     });
 
@@ -163,8 +166,8 @@ export class CombatSheetComponent implements OnInit, OnDestroy {
     let amountOfCasts = 0;
 
     this.currentSheet.actions.map((action) => {
-      if (action["ability"]) {
-        if (action["abilityName"] === ability.name) {
+      if (action.ability) {
+        if (action.abilityName === ability.name) {
           amountOfCasts++;
         }
       }
@@ -181,35 +184,26 @@ export class CombatSheetComponent implements OnInit, OnDestroy {
     const usedAbilities = {};
 
     for (const action of this.currentSheet.actions) {
-      if (action["type"] === "ability") {
-        if (usedAbilities[action["abilityName"]]) {
-          usedAbilities[action["abilityName"]]++;
+      if (action.type === 'ability') {
+        if (usedAbilities[action.abilityName]) {
+          usedAbilities[action.abilityName]++;
         } else {
-          usedAbilities[action["abilityName"]] = 1;
+          usedAbilities[action.abilityName] = 1;
         }
       }
     }
 
     for (const ability of this.character.abilities) {
-      if (usedAbilities[ability["name"]] >= ability["usesPerTurn"]) {
+      if (usedAbilities[ability.name] >= ability.usesPerTurn) {
         this.abilitiesOnCooldown.push(ability);
       }
-    }
-  }
-
-  setPainMeter() {
-    const newPainLevel = +prompt("What should your pain level be?");
-    if (newPainLevel !== null && !isNaN(newPainLevel) && newPainLevel > 0 && newPainLevel < 20) {
-      this.currentSheet.painMeter = newPainLevel;
-    } else {
-      this.errorService.displayError("Pain level should be between 0 and 20");
     }
   }
 
   // WOUNDS
 
   addWound() {
-    this.formType = "add";
+    this.formType = 'add';
     this.formWounds = [];
     this.woundFormVisible = true;
   }
@@ -220,9 +214,9 @@ export class CombatSheetComponent implements OnInit, OnDestroy {
   }
 
   lowerWound() {
-    this.formType = "lower";
+    this.formType = 'lower';
     this.formWounds = this.currentSheet.wounds.filter((w) => {
-      if (w.severity !== "SCR") {
+      if (w.severity !== 'SCR') {
         return w;
       }
     });
@@ -232,16 +226,16 @@ export class CombatSheetComponent implements OnInit, OnDestroy {
   woundLowered(wound: CombatWound) {
     const woundIndex = this.currentSheet.wounds.findIndex(w => w.location === wound.location && w.severity === wound.severity);
     switch (this.currentSheet.wounds[woundIndex].severity) {
-      case "FAT":
-        this.currentSheet.wounds.push(new CombatWound(wound.location, "SW"), new CombatWound(wound.location, "SW"));
+      case 'FAT':
+        this.currentSheet.wounds.push(new CombatWound(wound.location, 'SW'), new CombatWound(wound.location, 'SW'));
         break;
-      case "SW":
-        this.currentSheet.wounds.push(new CombatWound(wound.location, "LW"),
-          new CombatWound(wound.location, "LW"));
+      case 'SW':
+        this.currentSheet.wounds.push(new CombatWound(wound.location, 'LW'),
+          new CombatWound(wound.location, 'LW'));
         break;
-      case "LW":
-        this.currentSheet.wounds.push(new CombatWound(wound.location, "SCR"),
-          new CombatWound(wound.location, "SCR"));
+      case 'LW':
+        this.currentSheet.wounds.push(new CombatWound(wound.location, 'SCR'),
+          new CombatWound(wound.location, 'SCR'));
         break;
     }
     this.currentSheet.wounds.splice(woundIndex, 1);
@@ -249,7 +243,7 @@ export class CombatSheetComponent implements OnInit, OnDestroy {
   }
 
   removeWound() {
-    this.formType = "remove";
+    this.formType = 'remove';
     this.formWounds = this.currentSheet.wounds;
     this.woundFormVisible = true;
   }
@@ -261,14 +255,14 @@ export class CombatSheetComponent implements OnInit, OnDestroy {
   }
 
   clearWounds() {
-    if (confirm("Are you sure you want to clear your wounds?")) {
+    if (confirm('Are you sure you want to clear your wounds?')) {
       this.currentSheet.wounds = [];
       this.onSaveCharacter();
     }
   }
 
   woundFormCanceled() {
-    this.formType = "add";
+    this.formType = 'add';
     this.formWounds = [];
     this.woundFormVisible = false;
   }
@@ -293,7 +287,7 @@ export class CombatSheetComponent implements OnInit, OnDestroy {
   }
 
   updateStatusEffects() {
-    if (confirm("Proceed to the next round?")) {
+    if (confirm('Proceed to the next round?')) {
       this.currentSheet.statusEffects = this.currentSheet.statusEffects.filter((eff) => {
         if (eff.numberOfTurns > 1) {
           return eff;
@@ -305,6 +299,30 @@ export class CombatSheetComponent implements OnInit, OnDestroy {
       });
       this.characterService.updateCombatSheet(this.charId, this.currentSheetIndex, this.currentSheet);
     }
+  }
+
+  // Minions
+
+  selectMinion(minionIndex: number) {
+    this.router.navigate(['minion', minionIndex], { relativeTo: this.route });
+  }
+
+  showMinions() {
+    this.minionsVisible = true;
+  }
+
+  cancelMinion() {
+    this.minionsVisible = false;
+  }
+
+  onAddMinion(minion: MinionWoundSheet) {
+    this.currentSheet.minionWoundSheets.push(minion);
+    this.characterService.updateCombatSheet(this.charId, this.currentSheetIndex, this.currentSheet);
+  }
+
+  onRemoveMinion(minionIndex: number) {
+    this.currentSheet.minionWoundSheets.splice(minionIndex, 1);
+    this.characterService.updateCombatSheet(this.charId, this.currentSheetIndex, this.currentSheet);
   }
 
   // OTHER
@@ -320,7 +338,7 @@ export class CombatSheetComponent implements OnInit, OnDestroy {
     this.characterService.updateCharacterById(this.charId, this.character);
   }
 
-  rollDice(number: number) {
-    return Math.floor(Math.random() * (number - 1 + 1)) + 1;
+  rollDice(someNumber: number) {
+    return Math.floor(Math.random() * (someNumber - 1 + 1)) + 1;
   }
 }

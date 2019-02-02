@@ -1,10 +1,10 @@
-import { Component, OnInit } from "@angular/core";
-import { ErrorService } from "../../../../shared/services";
+import { Component, OnInit } from '@angular/core';
+import { ErrorService } from '../../../../shared/services';
 
 @Component({
-  selector: "app-error-display",
-  templateUrl: "./error-display.component.html",
-  styleUrls: ["./error-display.component.scss"]
+  selector: 'app-error-display',
+  templateUrl: './error-display.component.html',
+  styleUrls: ['./error-display.component.scss']
 })
 export class ErrorDisplayComponent implements OnInit {
 
@@ -19,7 +19,7 @@ export class ErrorDisplayComponent implements OnInit {
     );
 
     this.errorService.errorDismissed.subscribe(
-      () => this.error = ""
+      () => this.error = ''
     );
   }
 

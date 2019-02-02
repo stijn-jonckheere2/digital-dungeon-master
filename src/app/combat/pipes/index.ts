@@ -1,1 +1,1 @@
-export * from "./wound-pipe.pipe";
+export * from './wound-pipe.pipe';

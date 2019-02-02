@@ -1,13 +1,13 @@
-import { Component, OnInit, OnDestroy } from "@angular/core";
+import { Component, OnInit, OnDestroy } from '@angular/core';
 
-import { Router } from "@angular/router";
-import { AuthService } from "../../../../auth/services";
-import { CharacterService } from "../../../../shared/services";
+import { Router } from '@angular/router';
+import { AuthService } from '../../../../auth/services';
+import { CharacterService } from '../../../../shared/services';
 
 @Component({
-  selector: "app-header",
-  templateUrl: "./header.component.html",
-  styleUrls: ["./header.component.scss"]
+  selector: 'app-header',
+  templateUrl: './header.component.html',
+  styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent implements OnInit, OnDestroy {
   mobileMenuOpen = false;
@@ -19,8 +19,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
   charListener: any;
 
   constructor(private authService: AuthService,
-    private characterService: CharacterService,
-    private router: Router) {
+              private characterService: CharacterService,
+              private router: Router) {
   }
 
   ngOnInit() {
@@ -42,7 +42,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   unselectCharacter() {
     this.mobileMenuOpen = false;
     this.characterService.unsetCharacterSelected();
-    this.router.navigate(["/characters"]);
+    this.router.navigate(['/characters']);
   }
 
   toggleMobileMenu() {

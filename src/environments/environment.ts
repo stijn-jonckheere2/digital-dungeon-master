@@ -7,21 +7,21 @@ export const environment = {
   production: false,
 
   database: {
-    apiKey: "AIzaSyBqhxlpbErCF557lZd0-0qsXPubgMZzC_4",
-    authDomain: "digital-dungeon-master-dev.firebaseapp.com",
-    databaseURL: "https://digital-dungeon-master-dev.firebaseio.com",
-    projectId: "digital-dungeon-master-dev",
-    storageBucket: "digital-dungeon-master-dev.appspot.com",
-    messagingSenderId: "259994406067"
+    apiKey: 'AIzaSyBqhxlpbErCF557lZd0-0qsXPubgMZzC_4',
+    authDomain: 'digital-dungeon-master-dev.firebaseapp.com',
+    databaseURL: 'https://digital-dungeon-master-dev.firebaseio.com',
+    projectId: 'digital-dungeon-master-dev',
+    storageBucket: 'digital-dungeon-master-dev.appspot.com',
+    messagingSenderId: '259994406067'
   },
 
   authZero: {
-    clientID: "w2DOJNRWBOxnCfe2oYYSowIS5U8C4PaZ",
-    domain: "midlin.eu.auth0.com",
-    responseType: "token id_token",
-    audience: "https://midlin.eu.auth0.com/userinfo",
-    redirectUri: "http://localhost:4200/redirecting",
-    scope: "openid"
+    clientID: 'w2DOJNRWBOxnCfe2oYYSowIS5U8C4PaZ',
+    domain: 'midlin.eu.auth0.com',
+    responseType: 'token id_token',
+    audience: 'https://midlin.eu.auth0.com/userinfo',
+    redirectUri: 'http://localhost:4200/redirecting',
+    scope: 'openid'
   }
 
 };

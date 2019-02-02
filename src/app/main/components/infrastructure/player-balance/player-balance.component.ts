@@ -1,13 +1,13 @@
-import { Component, OnInit } from "@angular/core";
-import { Router } from "@angular/router";
-import { PlayerNotesService } from "../../../services";
-import { ErrorService } from "../../../../shared/services";
-import { BalanceService } from "../../../services/balance.service";
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { PlayerNotesService } from '../../../services';
+import { ErrorService } from '../../../../shared/services';
+import { BalanceService } from '../../../services/balance.service';
 
 @Component({
-  selector: "app-player-balance",
-  templateUrl: "./player-balance.component.html",
-  styleUrls: ["./player-balance.component.scss"]
+  selector: 'app-player-balance',
+  templateUrl: './player-balance.component.html',
+  styleUrls: ['./player-balance.component.scss']
 })
 export class PlayerBalanceComponent implements OnInit {
 
@@ -15,8 +15,8 @@ export class PlayerBalanceComponent implements OnInit {
   playerBalanceFetched = false;
 
   constructor(private balanceService: BalanceService,
-    private router: Router,
-    private errorService: ErrorService) { }
+              private router: Router,
+              private errorService: ErrorService) { }
 
   ngOnInit() {
     this.updateBalance();

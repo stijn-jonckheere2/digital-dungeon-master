@@ -1,12 +1,12 @@
-import { Pipe, PipeTransform } from "@angular/core";
+import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-  name: "filter"
+  name: 'filter'
 })
 export class FilterPipe implements PipeTransform {
 
   transform(value: any, filterString: string, propName: string): any {
-    if (value.length === 0 || filterString === "all") {
+    if (value.length === 0 || filterString === 'all') {
       return value;
     }
     const resultArray = [];

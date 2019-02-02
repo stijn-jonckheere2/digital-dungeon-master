@@ -1,10 +1,10 @@
-import { Component, OnInit, Input, EventEmitter, Output } from "@angular/core";
-import { MinionWoundSheet } from "../../../../../shared/models";
+import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
+import { MinionWoundSheet } from '../../../../../shared/models';
 
 @Component({
-  selector: "app-minion-chooser",
-  templateUrl: "./minion-chooser.component.html",
-  styleUrls: ["./minion-chooser.component.scss"]
+  selector: 'app-minion-chooser',
+  templateUrl: './minion-chooser.component.html',
+  styleUrls: ['./minion-chooser.component.scss']
 })
 export class MinionChooserComponent implements OnInit {
   @Input() minionSheets: MinionWoundSheet[];
@@ -14,7 +14,7 @@ export class MinionChooserComponent implements OnInit {
   @Output() minionRemoved: EventEmitter<number> = new EventEmitter();
 
   minionFormEnabled = false;
-  newMinionWoundSheet: MinionWoundSheet = new MinionWoundSheet("Skeleton");
+  newMinionWoundSheet: MinionWoundSheet = new MinionWoundSheet('Skeleton');
 
   constructor() { }
 
@@ -33,7 +33,7 @@ export class MinionChooserComponent implements OnInit {
   deleteMinion(minionIndex: number) {
     const minionName = this.minionSheets[minionIndex].name;
 
-    if (confirm("Are you sure you want to send " + minionName + " back to the shadows?")) {
+    if (confirm('Are you sure you want to send ' + minionName + ' back to the shadows?')) {
       this.minionRemoved.emit(minionIndex);
     }
   }
@@ -44,7 +44,7 @@ export class MinionChooserComponent implements OnInit {
 
   cancelAddMinion() {
     this.minionFormEnabled = false;
-    this.newMinionWoundSheet = new MinionWoundSheet("Skeleton");
+    this.newMinionWoundSheet = new MinionWoundSheet('Skeleton');
   }
 
   summonMinion() {

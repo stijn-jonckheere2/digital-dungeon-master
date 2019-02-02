@@ -1,8 +1,0 @@
-<div class="pain-meter-wrapper">
-    <div class="pain-meter">
-        <div class="pain-block" *ngFor="let block of painBlocks; let blockIndex = index">
-            <span class="pain-indicator" *ngIf="blockIndex + 1 === painBlocks.length">{{ painBlocks[blockIndex] }}</span>
-        </div>
-        <span class="pain-indicator pain-indicator-zero" *ngIf="painBlocks.length === 0">0</span>
-    </div>
-</div>

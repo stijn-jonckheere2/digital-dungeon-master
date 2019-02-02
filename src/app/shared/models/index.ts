@@ -1,2 +1,2 @@
-export * from "./character.models";
-export * from "./character.enums";
+export * from './character.models';
+export * from './character.enums';

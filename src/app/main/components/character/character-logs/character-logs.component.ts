@@ -1,12 +1,12 @@
-import { Component, OnInit, OnDestroy } from "@angular/core";
-import { ActivatedRoute } from "@angular/router";
-import { Character } from "../../../../shared/models";
-import { CharacterService } from "../../../../shared/services";
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { Character } from '../../../../shared/models';
+import { CharacterService } from '../../../../shared/services';
 
 @Component({
-  selector: "app-character-logs",
-  templateUrl: "./character-logs.component.html",
-  styleUrls: ["./character-logs.component.scss"]
+  selector: 'app-character-logs',
+  templateUrl: './character-logs.component.html',
+  styleUrls: ['./character-logs.component.scss']
 })
 export class CharacterLogsComponent implements OnInit, OnDestroy {
   character: Character;
@@ -14,14 +14,14 @@ export class CharacterLogsComponent implements OnInit, OnDestroy {
   characterSub: any;
   logLimit = 5;
   logsAvailable = true;
-  logType = "all";
+  logType = 'all';
 
   constructor(private characterService: CharacterService,
-    private route: ActivatedRoute) {
+              private route: ActivatedRoute) {
   }
 
   ngOnInit() {
-    this.characterId = +this.route.parent.snapshot.params["id"];
+    this.characterId = +this.route.parent.snapshot.params.id;
     this.loadCharacter();
     this.characterSub = this.characterService.characterUpdatesReceived.subscribe(
       () => {

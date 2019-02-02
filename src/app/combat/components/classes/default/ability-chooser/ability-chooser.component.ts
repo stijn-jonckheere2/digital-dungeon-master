@@ -1,10 +1,10 @@
-import { Component, OnInit, Input, Output, EventEmitter } from "@angular/core";
-import { Ability } from "../../../../../shared/models";
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Ability } from '../../../../../shared/models';
 
 @Component({
-  selector: "app-ability-chooser",
-  templateUrl: "./ability-chooser.component.html",
-  styleUrls: ["./ability-chooser.component.scss"]
+  selector: 'app-ability-chooser',
+  templateUrl: './ability-chooser.component.html',
+  styleUrls: ['./ability-chooser.component.scss']
 })
 export class AbilityChooserComponent implements OnInit {
   @Input() abilities: Ability[];
@@ -30,7 +30,7 @@ export class AbilityChooserComponent implements OnInit {
       }
     }
     this.availableAbilities = this.availableAbilities.filter((ab) => {
-      if(!ab.isFlavourAbility) {
+      if (!ab.isFlavourAbility) {
         return ab;
       }
     });
@@ -48,8 +48,8 @@ export class AbilityChooserComponent implements OnInit {
     let amountOfCasts = 0;
 
     this.actions.map((action) => {
-      if (action["type"] === "ability") {
-        if (action["abilityName"] === ability.name) {
+      if (action.type === 'ability') {
+        if (action.abilityName === ability.name) {
           amountOfCasts++;
         }
       }

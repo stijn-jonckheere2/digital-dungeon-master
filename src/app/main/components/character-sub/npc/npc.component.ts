@@ -1,12 +1,12 @@
-import { Component, OnInit, OnDestroy } from "@angular/core";
-import { ActivatedRoute } from "@angular/router";
-import { Character, Npc } from "../../../../shared/models";
-import { CharacterService, ErrorService } from "../../../../shared/services";
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { Character, Npc } from '../../../../shared/models';
+import { CharacterService, ErrorService } from '../../../../shared/services';
 
 @Component({
-  selector: "app-npc",
-  templateUrl: "./npc.component.html",
-  styleUrls: ["./npc.component.scss"]
+  selector: 'app-npc',
+  templateUrl: './npc.component.html',
+  styleUrls: ['./npc.component.scss']
 })
 export class NpcComponent implements OnInit, OnDestroy {
   character: Character;
@@ -14,16 +14,16 @@ export class NpcComponent implements OnInit, OnDestroy {
   characterSub: any;
 
   npcFormEnabled = false;
-  newNpc = new Npc("", "");
+  newNpc = new Npc('', '');
   newNpcId = -1;
 
   constructor(private characterService: CharacterService,
-    private errorService: ErrorService,
-    private route: ActivatedRoute) {
+              private errorService: ErrorService,
+              private route: ActivatedRoute) {
   }
 
   ngOnInit() {
-    this.characterId = +this.route.parent.snapshot.params["id"];
+    this.characterId = +this.route.parent.snapshot.params.id;
     this.loadCharacter();
     this.characterSub = this.characterService.characterUpdatesReceived.subscribe(
       () => {
@@ -64,12 +64,12 @@ export class NpcComponent implements OnInit, OnDestroy {
       this.characterService.updateNpc(this.characterId, this.newNpcId, this.newNpc);
     } else {
       if (this.newNpc.name.length === 0) {
-        this.errorService.displayError("NPC name can't be empty!");
+        this.errorService.displayError('NPC name can\'t be empty!');
       } else {
         this.characterService.addNpc(this.characterId, this.newNpc);
       }
     }
-    this.newNpc = new Npc("", "");
+    this.newNpc = new Npc('', '');
     this.npcFormEnabled = false;
     this.resetNpc();
     this.updateNpcs();
@@ -87,14 +87,14 @@ export class NpcComponent implements OnInit, OnDestroy {
   }
 
   removeNpc(npcId: number) {
-    if (confirm("Are you sure you want to delete this NPC?")) {
+    if (confirm('Are you sure you want to delete this NPC?')) {
       this.characterService.deleteNpc(this.characterId, npcId);
       this.updateNpcs();
     }
   }
 
   resetNpc() {
-    this.newNpc = new Npc("", "");
+    this.newNpc = new Npc('', '');
     this.newNpcId = -1;
   }
 

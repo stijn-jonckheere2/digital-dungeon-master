@@ -1,22 +1,22 @@
-import { Component, OnInit } from "@angular/core";
-import { Router } from "@angular/router";
-import { PlayerNotesService } from "../../../services";
-import { ErrorService } from "../../../../shared/services";
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { PlayerNotesService } from '../../../services';
+import { ErrorService } from '../../../../shared/services';
 
 @Component({
-  selector: "app-player-notes",
-  templateUrl: "./player-notes.component.html",
-  styleUrls: ["./player-notes.component.scss"]
+  selector: 'app-player-notes',
+  templateUrl: './player-notes.component.html',
+  styleUrls: ['./player-notes.component.scss']
 })
 export class PlayerNotesComponent implements OnInit {
 
-  playerNotes = "";
+  playerNotes = '';
   playerNotesFetched = false;
   noteEdit = false;
 
   constructor(private playerNotesService: PlayerNotesService,
-    private router: Router,
-    private errorService: ErrorService) { }
+              private router: Router,
+              private errorService: ErrorService) { }
 
   ngOnInit() {
     this.updateNotes();

@@ -1,12 +1,12 @@
-import { Component, OnInit, OnDestroy } from "@angular/core";
-import { ActivatedRoute } from "@angular/router";
-import { Character, InventoryItem } from "../../../../shared/models";
-import { CharacterService, ErrorService } from "../../../../shared/services";
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { Character, InventoryItem } from '../../../../shared/models';
+import { CharacterService, ErrorService } from '../../../../shared/services';
 
 @Component({
-  selector: "app-inventory",
-  templateUrl: "./inventory.component.html",
-  styleUrls: ["./inventory.component.scss"]
+  selector: 'app-inventory',
+  templateUrl: './inventory.component.html',
+  styleUrls: ['./inventory.component.scss']
 })
 export class InventoryComponent implements OnInit, OnDestroy {
   character: Character;
@@ -14,17 +14,17 @@ export class InventoryComponent implements OnInit, OnDestroy {
   characterSub: any;
 
   itemFormEnabled = false;
-  newInventoryItem = new InventoryItem("", "", 1, false, "unknown");
+  newInventoryItem = new InventoryItem('', '', 1, false, 'unknown');
   newItemId = -1;
   activeItemIndex = -1;
 
   constructor(private characterService: CharacterService,
-    private errorService: ErrorService,
-    private route: ActivatedRoute) {
+              private errorService: ErrorService,
+              private route: ActivatedRoute) {
   }
 
   ngOnInit() {
-    this.characterId = +this.route.parent.snapshot.params["id"];
+    this.characterId = +this.route.parent.snapshot.params.id;
     this.loadCharacter();
     this.characterSub = this.characterService.characterUpdatesReceived.subscribe(
       () => {
@@ -58,13 +58,13 @@ export class InventoryComponent implements OnInit, OnDestroy {
       this.characterService.updateInventoryItem(this.characterId, this.newItemId, this.newInventoryItem);
     } else {
       if (this.newInventoryItem.name.length === 0) {
-        this.errorService.displayError("Item name can't be empty!");
+        this.errorService.displayError('Item name can\'t be empty!');
       } else {
         this.characterService.addInventoryItem(this.characterId, this.newInventoryItem);
       }
     }
 
-    this.newInventoryItem = new InventoryItem("", "", 1, false, "unknown");
+    this.newInventoryItem = new InventoryItem('', '', 1, false, 'unknown');
     this.newItemId = -1;
     this.itemFormEnabled = false;
     this.activeItemIndex = -1;
@@ -80,7 +80,7 @@ export class InventoryComponent implements OnInit, OnDestroy {
   }
 
   cancelAddItem() {
-    this.newInventoryItem = new InventoryItem("", "", 1, false, "unknown");
+    this.newInventoryItem = new InventoryItem('', '', 1, false, 'unknown');
     this.itemFormEnabled = false;
     this.activeItemIndex = -1;
   }
@@ -91,7 +91,7 @@ export class InventoryComponent implements OnInit, OnDestroy {
   }
 
   removeItem(itemId: number) {
-    if (confirm("Are you sure you want to delete this item?")) {
+    if (confirm('Are you sure you want to delete this item?')) {
       this.characterService.deleteInventoryItem(this.characterId, itemId);
       this.updateInventory();
     }
@@ -99,23 +99,23 @@ export class InventoryComponent implements OnInit, OnDestroy {
 
   addGold() {
     // tslint:disable-next-line:radix
-    const gold = parseInt(prompt("How much gold would you like to add?"));
+    const gold = parseInt(prompt('How much gold would you like to add?'));
     if (!isNaN(gold)) {
       this.characterService.addGold(this.characterId, gold);
       this.characterService.updateCharacterById(this.characterId, this.character);
     } else {
-      this.errorService.displayError("Not a valid amount of gold!");
+      this.errorService.displayError('Not a valid amount of gold!');
     }
   }
 
   reduceGold() {
     // tslint:disable-next-line:radix
-    const gold = parseInt(prompt("How much gold would you like to spend?"));
-    if(!isNaN(gold) && this.character.gold >= gold) {
+    const gold = parseInt(prompt('How much gold would you like to spend?'));
+    if (!isNaN(gold) && this.character.gold >= gold) {
       this.characterService.reduceGold(this.characterId, gold);
       this.characterService.updateCharacterById(this.characterId, this.character);
     } else {
-      this.errorService.displayError("You don't have enough gold!");
+      this.errorService.displayError('You don\'t have enough gold!');
     }
   }
 

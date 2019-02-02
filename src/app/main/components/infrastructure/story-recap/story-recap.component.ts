@@ -1,14 +1,14 @@
-import { Component, OnInit, OnDestroy } from "@angular/core";
-import { Router } from "@angular/router";
-import { StoryRecap } from "../../../../shared/models";
-import { StoryRecapService } from "../../../services";
-import { ErrorService } from "../../../../shared/services";
-import { AuthService } from "../../../../auth/services";
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Router } from '@angular/router';
+import { StoryRecap } from '../../../../shared/models';
+import { StoryRecapService } from '../../../services';
+import { ErrorService } from '../../../../shared/services';
+import { AuthService } from '../../../../auth/services';
 
 @Component({
-  selector: "app-story-recap",
-  templateUrl: "./story-recap.component.html",
-  styleUrls: ["./story-recap.component.scss"]
+  selector: 'app-story-recap',
+  templateUrl: './story-recap.component.html',
+  styleUrls: ['./story-recap.component.scss']
 })
 export class StoryRecapComponent implements OnInit, OnDestroy {
 
@@ -19,9 +19,9 @@ export class StoryRecapComponent implements OnInit, OnDestroy {
   recapSub: any;
 
   constructor(private recapService: StoryRecapService,
-    private authService: AuthService,
-    private router: Router,
-    private errorService: ErrorService) { }
+              private authService: AuthService,
+              private router: Router,
+              private errorService: ErrorService) { }
 
   ngOnInit() {
     this.loadRecaps();

@@ -1,12 +1,12 @@
-import { Component, OnInit, OnDestroy } from "@angular/core";
-import { ActivatedRoute, Router } from "@angular/router";
-import { Character, CombatSheet, ChaosMageCombatSheet, NecromancerCombatSheet } from "../../../shared/models";
-import { CharacterService, ErrorService } from "../../../shared/services";
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Character, CombatSheet } from '../../../shared/models';
+import { CharacterService, ErrorService } from '../../../shared/services';
 
 @Component({
-  selector: "app-combat-sheet-list",
-  templateUrl: "./combat-sheet-list.component.html",
-  styleUrls: ["./combat-sheet-list.component.scss"]
+  selector: 'app-combat-sheet-list',
+  templateUrl: './combat-sheet-list.component.html',
+  styleUrls: ['./combat-sheet-list.component.scss']
 })
 export class CombatSheetListComponent implements OnInit, OnDestroy {
   character: Character;
@@ -14,17 +14,17 @@ export class CombatSheetListComponent implements OnInit, OnDestroy {
   characterId: number;
 
   sheetFormEnabled = false;
-  newSheet = new CombatSheet("", true);
+  newSheet = new CombatSheet('', true);
   newSheetId = -1;
 
   constructor(private characterService: CharacterService,
-    private errorService: ErrorService,
-    private route: ActivatedRoute,
-    private router: Router) {
+              private errorService: ErrorService,
+              private route: ActivatedRoute,
+              private router: Router) {
   }
 
   ngOnInit() {
-    this.characterId = +this.route.parent.snapshot.params["id"];
+    this.characterId = +this.route.parent.snapshot.params.id;
     this.loadCharacter();
     this.characterSub = this.characterService.characterUpdatesReceived.subscribe(
       () => {
@@ -64,30 +64,19 @@ export class CombatSheetListComponent implements OnInit, OnDestroy {
     const sheet = this.character.combatSheets[sheetIndex];
     this.sheetFormEnabled = true;
     this.newSheet.wounds = sheet.wounds;
-    this.newSheet.name = sheet.name + " (continued)";
+    this.newSheet.name = sheet.name + ' (continued)';
     this.newSheet.autoRoll = sheet.autoRoll;
     this.newSheet.initiative = sheet.initiative;
-
-    if (sheet.hasOwnProperty("painMeter")) {
-      const chaosSheet = this.newSheet as ChaosMageCombatSheet;
-      chaosSheet.painMeter = sheet["painMeter"];
-      this.newSheet = chaosSheet;
-    }
-
-    if (sheet.hasOwnProperty("minionWoundSheets")) {
-      const necroSheet = this.newSheet as NecromancerCombatSheet;
-      necroSheet.minionWoundSheets = sheet["minionWoundSheets"];
-      this.newSheet = necroSheet;
-    }
+    this.newSheet.minionWoundSheets = sheet.minionWoundSheets;
   }
 
   addSheet() {
     if (this.newSheet.name.length === 0) {
-      this.errorService.displayError("Sheet name can't be empty!");
+      this.errorService.displayError('Sheet name can\'t be empty!');
     } else if (this.newSheet.initiative && (this.newSheet.initiative > 10 || this.newSheet.initiative < 1)) {
-      this.errorService.displayError("Initiative must be between 1 and 10!");
+      this.errorService.displayError('Initiative must be between 1 and 10!');
     } else if (!this.newSheet.autoRoll && !this.newSheet.initiative) {
-      this.errorService.displayError("Initiative can't be empty!");
+      this.errorService.displayError('Initiative can\'t be empty!');
     } else {
       if (this.newSheetId >= 0) {
         this.characterService.updateCombatSheet(this.characterId, this.newSheetId, this.newSheet);
@@ -97,7 +86,7 @@ export class CombatSheetListComponent implements OnInit, OnDestroy {
         }
         this.characterService.addCombatSheet(this.characterId, this.newSheet);
       }
-      this.newSheet = new CombatSheet("", true);
+      this.newSheet = new CombatSheet('', true);
       this.newSheetId = -1;
       this.sheetFormEnabled = false;
       this.updateSheets();
@@ -105,7 +94,7 @@ export class CombatSheetListComponent implements OnInit, OnDestroy {
   }
 
   cancelAddSheet() {
-    this.newSheet = new CombatSheet("", true);
+    this.newSheet = new CombatSheet('', true);
     this.newSheetId = -1;
     this.sheetFormEnabled = false;
   }
@@ -117,7 +106,7 @@ export class CombatSheetListComponent implements OnInit, OnDestroy {
   }
 
   removeSheet(sheetId: number) {
-    if (confirm("Are you sure you want to delete this combat sheet?")) {
+    if (confirm('Are you sure you want to delete this combat sheet?')) {
       this.characterService.deleteCombatSheet(this.characterId, sheetId);
       this.updateSheets();
     }
@@ -127,8 +116,8 @@ export class CombatSheetListComponent implements OnInit, OnDestroy {
     this.router.navigate([sheetId], { relativeTo: this.route });
   }
 
-  rollDice(number: number) {
-    return Math.floor(Math.random() * (number - 1 + 1)) + 1;
+  rollDice(amount: number) {
+    return Math.floor(Math.random() * (amount - 1 + 1)) + 1;
   }
 
 }

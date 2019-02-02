@@ -1,10 +1,10 @@
-import { Injectable, EventEmitter } from "@angular/core";
-import { ErrorService } from "../../shared/services";
-import { Http } from "@angular/http";
-import * as firebase from "firebase";
-import { StoryRecap } from "../../shared/models";
-import { AuthService } from "../../auth/services";
-import { environment } from "../../../environments/environment";
+import { Injectable, EventEmitter } from '@angular/core';
+import { ErrorService } from '../../shared/services';
+import * as firebase from 'firebase';
+import { StoryRecap } from '../../shared/models';
+import { AuthService } from '../../auth/services';
+import { environment } from '../../../environments/environment';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable()
 export class StoryRecapService {
@@ -15,16 +15,16 @@ export class StoryRecapService {
   recapsFetched = false;
 
   constructor(private authService: AuthService,
-    private errorService: ErrorService,
-    private http: Http) { }
+              private errorService: ErrorService,
+              private http: HttpClient) { }
 
   fetchCharacters() {
     const fetchPromise = new Promise(
       (resolve, reject) => {
         const userId = this.authService.getUserId();
-        this.recapDb = firebase.database().ref().child("recaps");
+        this.recapDb = firebase.database().ref().child('recaps');
 
-        this.recapDb.on("value", snapshot => {
+        this.recapDb.on('value', snapshot => {
           if (snapshot.val() !== null) {
             this.convertCharacters(snapshot.val());
             this.recapUpdatesReceived.emit();
@@ -40,8 +40,8 @@ export class StoryRecapService {
     this.recaps = [];
     for (const prop in recaps) {
       if (recaps[prop]) {
-        recaps[prop]["createdOn"] = new Date(recaps[prop]["createdOn"]);
-        recaps[prop]["modifiedOn"] = new Date(recaps[prop]["modifiedOn"]);
+        recaps[prop].createdOn = new Date(recaps[prop].createdOn);
+        recaps[prop].modifiedOn = new Date(recaps[prop].modifiedOn);
         this.recaps.push(recaps[prop]);
       }
     }
@@ -73,11 +73,11 @@ export class StoryRecapService {
   }
 
   saveRecap(recap: StoryRecap) {
-    const url = environment.database.databaseURL + "/recaps/" + recap.id + "-recap.json";
+    const url = environment.database.databaseURL + '/recaps/' + recap.id + '-recap.json';
     this.http.put(url, recap).subscribe(
-      (response) => { console.log("Recap saved succesfully!" + new Date()); },
+      (response) => { console.log('Recap saved succesfully!' + new Date()); },
       (error) => {
-        this.errorService.displayError("Save recap failed! => " + error);
+        this.errorService.displayError('Save recap failed! => ' + error);
       }
     );
   }

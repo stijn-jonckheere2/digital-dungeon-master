@@ -1,12 +1,12 @@
-import { Component, OnInit, OnDestroy } from "@angular/core";
-import { ActivatedRoute, Router } from "@angular/router";
-import { Character } from "../../../../shared/models";
-import { CharacterService } from "../../../../shared/services";
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Character } from '../../../../shared/models';
+import { CharacterService } from '../../../../shared/services';
 
 @Component({
-  selector: "app-character-edit",
-  templateUrl: "./character-edit.component.html",
-  styleUrls: ["./character-edit.component.scss"]
+  selector: 'app-character-edit',
+  templateUrl: './character-edit.component.html',
+  styleUrls: ['./character-edit.component.scss']
 })
 export class CharacterEditComponent implements OnInit, OnDestroy {
   characterSub: any;
@@ -14,8 +14,8 @@ export class CharacterEditComponent implements OnInit, OnDestroy {
   charId: number;
 
   constructor(private characterService: CharacterService,
-    private route: ActivatedRoute,
-    private router: Router) {
+              private route: ActivatedRoute,
+              private router: Router) {
   }
 
   loadCharacter() {
@@ -25,7 +25,7 @@ export class CharacterEditComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.charId = +this.route.snapshot.params["id"];
+    this.charId = +this.route.snapshot.params.id;
     this.loadCharacter();
     this.characterSub = this.characterService.characterUpdatesReceived.subscribe(
       () => {
@@ -39,9 +39,9 @@ export class CharacterEditComponent implements OnInit, OnDestroy {
   }
 
   onSaveCharacter() {
-    if (confirm("Saving your character will apply your selected class. Are you sure?")) {
+    if (confirm('Saving your character will apply your selected class. Are you sure?')) {
       this.characterService.updateCharacterByIdAfterEdit(this.charId, this.character);
-      this.router.navigate(["/characters"]);
+      this.router.navigate(['/characters']);
     }
   }
 

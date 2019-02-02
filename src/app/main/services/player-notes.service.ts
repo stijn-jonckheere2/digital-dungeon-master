@@ -1,8 +1,8 @@
-import { Injectable } from "@angular/core";
-import { ErrorService } from "../../shared/services";
-import { Http } from "@angular/http";
-import { AuthService } from "../../auth/services";
-import { environment } from "../../../environments/environment";
+import { Injectable } from '@angular/core';
+import { ErrorService } from '../../shared/services';
+import { AuthService } from '../../auth/services';
+import { environment } from '../../../environments/environment';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable()
 export class PlayerNotesService {
@@ -11,18 +11,18 @@ export class PlayerNotesService {
   notesFetched = false;
 
   constructor(private authService: AuthService,
-    private errorService: ErrorService,
-    private http: Http) { }
+              private errorService: ErrorService,
+              private http: HttpClient) { }
 
   fetchAdminNotes() {
     const fetchPromise = new Promise(
       (resolve, reject) => {
         const userId = this.authService.getUserId();
-        const url = environment.database.databaseURL + "/playernotes/" + userId + "-notes.json";
+        const url = environment.database.databaseURL + '/playernotes/' + userId + '-notes.json';
 
         this.http.get(url).subscribe(
-          (response) => {
-            const notes = response.json();
+          (response: any) => {
+            const notes = response !== null ? response.json() : null;
             if (notes !== null) {
               this.playerNotes = notes;
             }
@@ -59,13 +59,13 @@ export class PlayerNotesService {
 
   saveNotes(notes: string) {
     const userId = this.authService.getUserId();
-    const url = environment.database.databaseURL + "/playernotes/" + userId + "-notes.json";
+    const url = environment.database.databaseURL + '/playernotes/' + userId + '-notes.json';
     this.playerNotes = notes;
 
     this.http.put(url, [notes]).subscribe(
-      (response) => { console.log("Player notes saved succesfully!"); },
+      (response) => { console.log('Player notes saved succesfully!'); },
       (error) => {
-        this.errorService.displayError("Saving player notes failed! => " + error);
+        this.errorService.displayError('Saving player notes failed! => ' + error);
       }
     );
   }

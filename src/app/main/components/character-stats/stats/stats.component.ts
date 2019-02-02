@@ -1,12 +1,12 @@
-import { Component, OnInit, OnDestroy } from "@angular/core";
-import { ActivatedRoute, Params } from "@angular/router";
-import { Character } from "../../../../shared/models";
-import { CharacterService, ErrorService } from "../../../../shared/services";
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { ActivatedRoute, Params } from '@angular/router';
+import { Character } from '../../../../shared/models';
+import { CharacterService, ErrorService } from '../../../../shared/services';
 
 @Component({
-  selector: "app-stats",
-  templateUrl: "./stats.component.html",
-  styleUrls: ["./stats.component.scss"]
+  selector: 'app-stats',
+  templateUrl: './stats.component.html',
+  styleUrls: ['./stats.component.scss']
 })
 export class StatsComponent implements OnInit, OnDestroy {
   character: Character;
@@ -17,7 +17,7 @@ export class StatsComponent implements OnInit, OnDestroy {
   statLogs = [];
 
   constructor(private characterService: CharacterService, private errorService: ErrorService,
-    private route: ActivatedRoute) {
+              private route: ActivatedRoute) {
   }
 
   loadCharacter() {
@@ -27,7 +27,7 @@ export class StatsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.characterId = +this.route.parent.snapshot.params["id"];
+    this.characterId = +this.route.parent.snapshot.params.id;
     this.loadCharacter();
     this.characterSub = this.characterService.characterUpdatesReceived.subscribe(
       () => {
@@ -42,26 +42,26 @@ export class StatsComponent implements OnInit, OnDestroy {
 
   incrementStat(type: string, statIndex: number) {
     switch (type) {
-      case "primary":
+      case 'primary':
         this.character.primaryStats[statIndex].level++;
-        this.statLogs.push("Added 1 stat point to <" + this.character.primaryStats[statIndex].name + ">");
+        this.statLogs.push('Added 1 stat point to <' + this.character.primaryStats[statIndex].name + '>');
         break;
-      case "secondary":
+      case 'secondary':
         this.character.secondaryStats[statIndex].level++;
-        this.statLogs.push("Added 1 stat point to <" + this.character.secondaryStats[statIndex].name + ">");
+        this.statLogs.push('Added 1 stat point to <' + this.character.secondaryStats[statIndex].name + '>');
         break;
     }
   }
 
   decrementStat(type: string, statIndex: number) {
     switch (type) {
-      case "primary":
+      case 'primary':
         this.character.primaryStats[statIndex].level--;
-        this.statLogs.push("Removed 1 stat point from <" + this.character.primaryStats[statIndex].name + ">");
+        this.statLogs.push('Removed 1 stat point from <' + this.character.primaryStats[statIndex].name + '>');
         break;
-      case "secondary":
+      case 'secondary':
         this.character.secondaryStats[statIndex].level--;
-        this.statLogs.push("Removed 1 stat point from <" + this.character.secondaryStats[statIndex].name + ">");
+        this.statLogs.push('Removed 1 stat point from <' + this.character.secondaryStats[statIndex].name + '>');
         break;
     }
   }
@@ -72,21 +72,21 @@ export class StatsComponent implements OnInit, OnDestroy {
 
   setStat(type: string, statIndex, statName) {
     // tslint:disable-next-line:radix
-    const newStatValue = parseInt(window.prompt("Enter a value for <" + statName + ">:"));
+    const newStatValue = parseInt(window.prompt('Enter a value for <' + statName + '>:'));
 
     switch (type) {
-      case "primary":
+      case 'primary':
         if (typeof newStatValue === typeof 0 && newStatValue <= 20 && newStatValue >= 0) {
           this.character.primaryStats[statIndex].level = newStatValue;
         } else {
-          this.errorService.displayError("The stat value you entered for <" + statName + "> was not correct");
+          this.errorService.displayError('The stat value you entered for <' + statName + '> was not correct');
         }
         break;
-      case "secondary":
+      case 'secondary':
         if (typeof newStatValue === typeof 0 && newStatValue <= 20 && newStatValue >= 3) {
           this.character.secondaryStats[statIndex].level = newStatValue;
         } else {
-          this.errorService.displayError("The stat value you entered for <" + statName + "> was not correct");
+          this.errorService.displayError('The stat value you entered for <' + statName + '> was not correct');
         }
         break;
     }
@@ -96,7 +96,7 @@ export class StatsComponent implements OnInit, OnDestroy {
 
   onSave() {
     for (const log of this.statLogs) {
-      this.character.addLog(log, "statLog");
+      this.character.addLog(log, 'statLog');
     }
     this.statLogs = [];
     this.characterService.updateCharacterById(this.characterId, this.character);

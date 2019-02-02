@@ -1,12 +1,12 @@
-import { Component, OnInit, OnDestroy } from "@angular/core";
-import { Router } from "@angular/router";
-import { Character } from "../../../../shared/models";
-import { CharacterService, ErrorService } from "../../../../shared/services";
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Router } from '@angular/router';
+import { Character } from '../../../../shared/models';
+import { CharacterService, ErrorService } from '../../../../shared/services';
 
 @Component({
-  selector: "app-character-list",
-  templateUrl: "./character-list.component.html",
-  styleUrls: ["./character-list.component.scss"]
+  selector: 'app-character-list',
+  templateUrl: './character-list.component.html',
+  styleUrls: ['./character-list.component.scss']
 })
 export class CharacterListComponent implements OnInit, OnDestroy {
 
@@ -15,8 +15,8 @@ export class CharacterListComponent implements OnInit, OnDestroy {
   characterSub: any;
 
   constructor(private characterService: CharacterService,
-    private router: Router,
-    private errorService: ErrorService) { }
+              private router: Router,
+              private errorService: ErrorService) { }
 
   ngOnInit() {
     this.loadCharacters();
@@ -50,12 +50,12 @@ export class CharacterListComponent implements OnInit, OnDestroy {
   }
 
   onNewCharacter() {
-    this.router.navigate(["/characters", "create", "new"]);
+    this.router.navigate(['/characters', 'create', 'new']);
   }
 
   onSelectCharacter(charId: number) {
     this.characterService.setCharacterSelected(charId);
-    this.router.navigate(["/characters", charId, "stats"]);
+    this.router.navigate(['/characters', charId, 'stats']);
   }
 
   onDeleteCharacter(id: number) {

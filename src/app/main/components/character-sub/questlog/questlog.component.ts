@@ -1,12 +1,12 @@
-import { Component, OnInit, OnDestroy } from "@angular/core";
-import { ActivatedRoute } from "@angular/router";
-import { Character, Quest } from "../../../../shared/models";
-import { CharacterService, ErrorService } from "../../../../shared/services";
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { Character, Quest } from '../../../../shared/models';
+import { CharacterService, ErrorService } from '../../../../shared/services';
 
 @Component({
-  selector: "app-questlog",
-  templateUrl: "./questlog.component.html",
-  styleUrls: ["./questlog.component.scss"]
+  selector: 'app-questlog',
+  templateUrl: './questlog.component.html',
+  styleUrls: ['./questlog.component.scss']
 })
 export class QuestlogComponent implements OnInit, OnDestroy {
   character: Character;
@@ -15,15 +15,15 @@ export class QuestlogComponent implements OnInit, OnDestroy {
   characterSub: any;
 
   questFormEnabled = false;
-  newQuest = new Quest("", "", false);
+  newQuest = new Quest('', '', false);
   newQuestId = -1;
 
   activeQuestLog: Quest[] = [];
   completedQuestLog: Quest[] = [];
 
   constructor(private characterService: CharacterService,
-    private errorService: ErrorService,
-    private route: ActivatedRoute) {
+              private errorService: ErrorService,
+              private route: ActivatedRoute) {
   }
 
   loadCharacter() {
@@ -36,7 +36,7 @@ export class QuestlogComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.characterId = +this.route.parent.snapshot.params["id"];
+    this.characterId = +this.route.parent.snapshot.params.id;
     this.loadCharacter();
     this.characterSub = this.characterService.characterUpdatesReceived.subscribe(
       () => {
@@ -80,12 +80,12 @@ export class QuestlogComponent implements OnInit, OnDestroy {
       this.characterService.updateQuest(this.characterId, this.newQuestId, this.newQuest);
     } else {
       if (this.newQuest.name.length === 0) {
-        this.errorService.displayError("Quest name can't be empty!");
+        this.errorService.displayError('Quest name can\'t be empty!');
       } else {
         this.characterService.addQuest(this.characterId, this.newQuest);
       }
     }
-    this.newQuest = new Quest("", "", false);
+    this.newQuest = new Quest('', '', false);
     this.questFormEnabled = false;
     this.resetQuest();
     this.updateQuests();
@@ -103,14 +103,14 @@ export class QuestlogComponent implements OnInit, OnDestroy {
   }
 
   removeQuest(npcId: number) {
-    if (confirm("Are you sure you want to delete this quest?")) {
+    if (confirm('Are you sure you want to delete this quest?')) {
       this.characterService.deleteQuest(this.characterId, npcId);
       this.updateQuests();
     }
   }
 
   resetQuest() {
-    this.newQuest = new Quest("", "", false);
+    this.newQuest = new Quest('', '', false);
     this.newQuestId = -1;
   }
 
