@@ -22,7 +22,7 @@ export class PlayerNotesService {
 
         this.http.get(url).subscribe(
           (response: any) => {
-            const notes = response !== null ? response.json() : null;
+            const notes = response !== null ? response[0] : null;
             if (notes !== null) {
               this.playerNotes = notes;
             }
