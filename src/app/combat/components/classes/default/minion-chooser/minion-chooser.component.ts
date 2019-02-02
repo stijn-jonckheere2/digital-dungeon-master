@@ -14,7 +14,7 @@ export class MinionChooserComponent implements OnInit {
   @Output() minionRemoved: EventEmitter<number> = new EventEmitter();
 
   minionFormEnabled = false;
-  newMinionWoundSheet: MinionWoundSheet = new MinionWoundSheet('Skeleton');
+  newMinionWoundSheet: MinionWoundSheet = new MinionWoundSheet('');
 
   constructor() { }
 
@@ -44,7 +44,7 @@ export class MinionChooserComponent implements OnInit {
 
   cancelAddMinion() {
     this.minionFormEnabled = false;
-    this.newMinionWoundSheet = new MinionWoundSheet('Skeleton');
+    this.newMinionWoundSheet = new MinionWoundSheet('');
   }
 
   summonMinion() {

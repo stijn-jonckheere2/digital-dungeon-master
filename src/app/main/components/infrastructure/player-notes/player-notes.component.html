@@ -9,8 +9,9 @@
 
 <ng-container *ngIf="noteEdit">
   <div class="form-group">
-    <label for="playerNotes">My notes:</label>
-    <textarea id="playerNotes" class="form-control" [(ngModel)]="playerNotes" rows="15"></textarea>
+    <mat-form-field>
+        <textarea matInput matTextareaAutoSize placeholder="My notes" id="playerNotes" class="form-control" [(ngModel)]="playerNotes"></textarea>
+    </mat-form-field>
   </div>
   <button class="btn btn-primary" (click)="saveNotes()">Save</button>
 

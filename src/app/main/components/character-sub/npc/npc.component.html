@@ -1,37 +1,40 @@
 <h2>NPCs</h2>
 <ng-container *ngIf="npcFormEnabled === false">
-    <div class="inventory" *ngIf="character && character.npcList && character.npcList.length > 0">
-      <div class="inventory-item" *ngFor="let npc of character.npcList let npcIndex = index">
-        <p class="inventory-item-name">
-          {{ npc.name }}
-        </p>
-        <p class="inventory-item-description" [innerHtml]="npc.description">
-        </p>
-        <div class="inventory-buttons">
-          <button class="btn btn-default" (click)="editNpc(npcIndex, npc)">
-              <i class="material-icons">&#xE254;</i>
-          </button>
-          <button class="btn btn-danger" (click)="removeNpc(npcIndex)">
-              <i class="material-icons">delete_forever</i>
-          </button>
-        </div>
+  <div class="inventory" *ngIf="character && character.npcList && character.npcList.length > 0">
+    <div class="inventory-item" *ngFor="let npc of character.npcList let npcIndex = index">
+      <p class="inventory-item-name">
+        {{ npc.name }}
+      </p>
+      <p class="inventory-item-description" [innerHtml]="npc.description">
+      </p>
+      <div class="inventory-buttons">
+        <button class="btn btn-default" (click)="editNpc(npcIndex, npc)">
+          <i class="material-icons">&#xE254;</i>
+        </button>
+        <button class="btn btn-danger" (click)="removeNpc(npcIndex)">
+          <i class="material-icons">delete_forever</i>
+        </button>
       </div>
     </div>
-  
-    <div class="button-wrapper">
-      <button class="btn btn-primary" (click)="enableAddNpc()">Add new NPC</button>
-    </div>
-  </ng-container>
-  
-  <div *ngIf="npcFormEnabled === true">
-    <div class="form-group">
-      <label for="name">name</label>
-      <input type="text" id="name" class="form-control" [(ngModel)]="newNpc.name" />
-    </div>
-    <div class="form-group">
-      <label for="description">description</label>
-      <textarea rows="10" id="description" class="form-control" [(ngModel)]="newNpc.description"></textarea>
-    </div>
-    <button class="btn btn-primary" (click)="saveNpc()">Save</button>
-    <a (click)="cancelAddNpc()" class="btn btn-default">Cancel</a>
   </div>
+
+  <div class="button-wrapper">
+    <button class="btn btn-primary" (click)="enableAddNpc()">Add new NPC</button>
+  </div>
+</ng-container>
+
+<div *ngIf="npcFormEnabled === true">
+  <div class="form-group">
+    <mat-form-field>
+      <input matInput placeholder="Name" type="text" id="name" class="form-control" [(ngModel)]="newNpc.name" />
+    </mat-form-field>
+  </div>
+  <div class="form-group">
+    <mat-form-field>
+      <textarea matInput matTextareaAutoSize placeholder="Description" id="description" class="form-control"
+        [(ngModel)]="newNpc.description"></textarea>
+    </mat-form-field>
+  </div>
+  <button class="btn btn-primary" (click)="saveNpc()">Save</button>
+  <a (click)="cancelAddNpc()" class="btn btn-default">Cancel</a>
+</div>

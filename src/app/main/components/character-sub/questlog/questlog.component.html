@@ -8,10 +8,10 @@
       <p class="inventory-item-description">{{ quest.description }}</p>
       <div class="inventory-buttons">
         <button class="btn btn-default" (click)="editQuest(quest.originId, quest)">
-            <i class="material-icons">&#xE254;</i>
+          <i class="material-icons">&#xE254;</i>
         </button>
         <button class="btn btn-danger" (click)="removeQuest(quest.originId)">
-            <i class="material-icons">delete_forever</i>
+          <i class="material-icons">delete_forever</i>
         </button>
       </div>
     </div>
@@ -31,7 +31,7 @@
       <p class="inventory-item-description">{{ quest.description }}</p>
       <div class="inventory-buttons">
         <button class="btn btn-default" (click)="editQuest(quest.originId, quest)">
-            <i class="material-icons">&#xE254;</i>
+          <i class="material-icons">&#xE254;</i>
         </button>
         <button class="btn btn-danger" (click)="removeQuest(quest.originId)">
           <i class="material-icons">delete_forever</i>
@@ -43,15 +43,18 @@
 
 <div *ngIf="questFormEnabled === true">
   <div class="form-group">
-    <label for="name">name</label>
-    <input type="text" id="name" class="form-control" [(ngModel)]="newQuest.name" />
+    <mat-form-field>
+      <input matInput placeholder="Name" type="text" id="name" class="form-control" [(ngModel)]="newQuest.name" />
+    </mat-form-field>
   </div>
   <div class="form-group">
-    <label for="description">description</label>
-    <textarea rows="10" id="description" class="form-control" [(ngModel)]="newQuest.description"></textarea>
+    <mat-form-field>
+      <textarea matInput matTextareaAutoSize placeholder="Description" id="description" class="form-control"
+        [(ngModel)]="newQuest.description"></textarea>
+    </mat-form-field>
   </div>
-  <div class="checkbox">
-    <label><input type="checkbox" value="" [(ngModel)]="newQuest.complete">quest complete</label>
+  <div class="form-group">
+    <mat-checkbox [(ngModel)]="newQuest.complete">quest complete</mat-checkbox>
   </div>
   <button class="btn btn-primary" (click)="saveQuest()">Save</button>
   <a (click)="cancelAddQuest()" class="btn btn-default">Cancel</a>

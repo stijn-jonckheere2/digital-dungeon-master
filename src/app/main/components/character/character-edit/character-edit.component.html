@@ -2,30 +2,36 @@
 
 <div *ngIf="character !== undefined">
   <div class="form-group">
-    <label for="name">name</label>
-    <input type="text" id="name" class="form-control" [(ngModel)]="character.name"/>
+    <mat-form-field>
+      <input matInput placeholder="name" type="text" id="name" [(ngModel)]="character.name" />
+    </mat-form-field>
   </div>
   <div class="form-group">
-    <label for="className">class</label>
-    <select name="className" id="className" class="form-control" [(ngModel)]="character.className">
-      <option value="Default">Default</option>
-    </select>
+    <mat-form-field>
+      <mat-select placeholder="className" id="className" class="form-control" [(ngModel)]="character.className">
+        <mat-option value="Default">Default</mat-option>
+      </mat-select>
+    </mat-form-field>
   </div>
   <div class="form-group">
-    <label for="race">race</label>
-    <input type="text" id="race" class="form-control" [(ngModel)]="character.race"/>
+    <mat-form-field>
+      <input matInput type="text" id="race" placeholder="race" class="form-control" [(ngModel)]="character.race" />
+    </mat-form-field>
   </div>
   <div class="form-group">
-    <label for="description">description</label>
-    <textarea rows="10" id="description" class="form-control" [(ngModel)]="character.description"></textarea>
+    <mat-form-field>
+      <textarea matInput matTextAreaAutoSize id="description" placeholder="description" class="form-control" [(ngModel)]="character.description"></textarea>
+    </mat-form-field>
   </div>
   <div class="form-group">
-    <label for="age">age</label>
-    <input type="number" id="age" class="form-control" [(ngModel)]="character.age"/>
+    <mat-form-field>
+      <input matInput type="number" id="age" placeholder="age" class="form-control" [(ngModel)]="character.age" />
+    </mat-form-field>
   </div>
   <div class="form-group">
-    <label for="level">level</label>
-    <input type="number" id="level" class="form-control" [(ngModel)]="character.level"/>
+    <mat-form-field>
+      <input matInput type="number" id="level" placeholder="level" class="form-control" [(ngModel)]="character.level" />
+    </mat-form-field>
   </div>
   <button class="btn btn-primary" (click)="onSaveCharacter()">Save</button>
   <a [routerLink]="['/characters']" class="btn btn-default">Cancel</a>

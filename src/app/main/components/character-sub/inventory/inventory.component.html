@@ -50,32 +50,36 @@
 
 <div *ngIf="itemFormEnabled === true">
   <div class="form-group">
-    <label for="name">name</label>
-    <input type="text" id="name" class="form-control" [(ngModel)]="newInventoryItem.name" />
+    <mat-form-field>
+      <input placeholder="Name" matInput type="text" id="name" class="form-control" [(ngModel)]="newInventoryItem.name" />
+    </mat-form-field>
   </div>
   <div class="form-group">
-    <label for="description">description</label>
-    <textarea rows="10" id="description" class="form-control" [(ngModel)]="newInventoryItem.description"></textarea>
+    <mat-form-field>
+      <textarea placeholder="description" matInput matTextareaAutoSize id="description" class="form-control"
+        [(ngModel)]="newInventoryItem.description"></textarea>
+    </mat-form-field>
   </div>
   <div class="form-group">
-    <label for="age">amount</label>
-    <input type="number" id="age" class="form-control" [(ngModel)]="newInventoryItem.amount" />
+    <mat-form-field>
+      <input placeholder="Amount" matInput type="number" id="age" class="form-control" [(ngModel)]="newInventoryItem.amount" />
+    </mat-form-field>
   </div>
   <div class="form-group">
-    <label for="itemType">type</label>
-    <select name="itemType" id="itemType" class="form-control" [(ngModel)]="newInventoryItem.type">
-      <option value="unknown">Unidentified</option>
-      <option value="potion">Potion</option>
-      <option value="herb">Herb</option>
-      <option value="resource">Resource</option>
-      <option value="weapon">Weapon</option>
-      <option value="armor">Armor</option>
-      <option value="jewelry">Jewelry</option>
-    </select>
+    <mat-form-field>
+      <mat-select placeholder="Item type" id="itemType" class="form-control" [(ngModel)]="newInventoryItem.type">
+        <mat-option value="unknown">Unidentified</mat-option>
+        <mat-option value="potion">Potion</mat-option>
+        <mat-option value="herb">Herb</mat-option>
+        <mat-option value="resource">Resource</mat-option>
+        <mat-option value="weapon">Weapon</mat-option>
+        <mat-option value="armor">Armor</mat-option>
+        <mat-option value="jewelry">Jewelry</mat-option>
+      </mat-select>
+    </mat-form-field>
   </div>
-  <div class="checkbox">
-    <label>
-      <input type="checkbox" value="" [(ngModel)]="newInventoryItem.consumable">consumable</label>
+  <div class="form-group">
+    <mat-checkbox [(ngModel)]="newInventoryItem.consumable">consumable</mat-checkbox>
   </div>
   <button class="btn btn-primary" (click)="addItem()">Save</button>
   <a (click)="cancelAddItem()" class="btn btn-default">Cancel</a>

@@ -30,16 +30,17 @@
 
 <div *ngIf="sheetFormEnabled === true">
     <div class="form-group">
-        <label for="name">name</label>
-        <input type="text" id="name" class="form-control" [(ngModel)]="newSheet.name" />
+        <mat-form-field>
+            <input matInput placeholder="Who are you fighting" type="text" id="name" class="form-control" [(ngModel)]="newSheet.name" />
+        </mat-form-field>
     </div>
-    <div class="checkbox">
-        <label>
-            <input type="checkbox" value="" [(ngModel)]="newSheet.autoRoll">auto roll enabled</label>
+    <div class="form-group">
+        <mat-checkbox [(ngModel)]="newSheet.autoRoll">Auto roll enabled</mat-checkbox>
     </div>
     <div class="form-group" *ngIf="!newSheet.autoRoll">
-        <label for="ini">initiative</label>
-        <input type="number" id="ini" class="form-control" [(ngModel)]="newSheet.initiative" />
+        <mat-form-field>
+            <input matInput placeholder="Initiative" type="number" id="ini" class="form-control" [(ngModel)]="newSheet.initiative" />
+        </mat-form-field>
     </div>
     <button class="btn btn-primary" (click)="addSheet()">Save</button>
     <a (click)="cancelAddSheet()" class="btn btn-default">Cancel</a>

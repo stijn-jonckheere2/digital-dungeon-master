@@ -19,6 +19,7 @@ import { AbilityChooserComponent } from './components/classes/default/ability-ch
 import { CharacterMenuComponent } from '../main/components/character/character-menu/character-menu.component';
 import { MinionWoundSheetComponent } from './components/classes/default/minion-wound-sheet/minion-wound-sheet.component';
 import { MinionChooserComponent } from './components/classes/default/minion-chooser/minion-chooser.component';
+import { MatFormFieldModule, MatInputModule, MatRippleModule, MatCheckboxModule, MatSelectModule } from '@angular/material';
 
 const combatRoutes: Routes = [
   {
@@ -34,6 +35,11 @@ const combatRoutes: Routes = [
   imports: [
     CommonModule,
     FormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatRippleModule,
+    MatCheckboxModule,
+    MatSelectModule,
     RouterModule.forChild(combatRoutes)
   ],
   declarations: [

@@ -5,25 +5,27 @@
 
 <div class="form">
   <div class="form-group" *ngIf="character && character.logs.length > 0 && logsAvailable">
-    <label for="logFilter">Type</label>
-    <select id="logFilter" class="form-control" [(ngModel)]="logType" name="secret">
-      <option value="all">All</option>
-      <option value="statLog">Stat logs</option>
-      <option value="abilityLog">Ability logs</option>
-      <option value="inventoryLog">Inventory logs</option>
-      <option value="questLog">Quest logs</option>
-      <option value="npcLog">NPC logs</option>
-    </select>
+    <mat-form-field>
+      <mat-select id="logFilter" class="form-control" [(ngModel)]="logType" name="secret">
+        <mat-option value="all">All</mat-option>
+        <mat-option value="statLog">Stat logs</mat-option>
+        <mat-option value="abilityLog">Ability logs</mat-option>
+        <mat-option value="inventoryLog">Inventory logs</mat-option>
+        <mat-option value="questLog">Quest logs</mat-option>
+        <mat-option value="npcLog">NPC logs</mat-option>
+      </mat-select>
+    </mat-form-field>
   </div>
   <div class="form-group" *ngIf="character && character.logs.length > 0 && logsAvailable">
-    <label for="name">Limit</label>
-    <select id="logFilter" class="form-control" [(ngModel)]="logLimit" name="secret">
-      <option value="5">5</option>
-      <option value="10">10</option>
-      <option value="20">20</option>
-      <option value="50">50</option>
-      <option value="100">100</option>
-    </select>
+    <mat-form-field>
+      <mat-select id="logFilter" class="form-control" [(ngModel)]="logLimit" name="secret">
+        <mat-option value="5">5</mat-option>
+        <mat-option value="10">10</mat-option>
+        <mat-option value="20">20</mat-option>
+        <mat-option value="50">50</mat-option>
+        <mat-option value="100">100</mat-option>
+      </mat-select>
+    </mat-form-field>
   </div>
 </div>
 

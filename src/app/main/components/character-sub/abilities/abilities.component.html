@@ -5,13 +5,6 @@
       <ng-container *ngIf="!ability.isFlavourAbility">
         <p class="inventory-item-name">
           {{ ability.name }}
-          <span *ngIf="!ability.hasOwnProperty('bloodmarksPerUse')">
-              ({{ ability.usesPerTurn == 0 ? "Free" : ability.usesPerTurn + "/R" }})
-          </span>
-          <span *ngIf="ability.hasOwnProperty('bloodmarksPerUse')">(BM: {{ ability.bloodmarksPerUse }})</span>
-          <span *ngIf="ability.hasOwnProperty('type') && ability.type != abilityType.Basic" class="pain-indicator">
-              {{ ability.type == abilityType.Filler ? "Causes pain: " : "Requires pain: " }} {{ ability.amountOfPain }}
-          </span>
         </p>
         <p class="inventory-item-description">{{ ability.description }}</p>
         <div class="inventory-buttons">
@@ -25,7 +18,8 @@
       </ng-container>
     </div>
   </div>
-  <h2 style="margin-top: 40px" *ngIf="character && character.abilities && character.abilities.length > 0">Flavour Abilities</h2>
+  <h2 style="margin-top: 40px" *ngIf="character && character.abilities && character.abilities.length > 0">Flavour
+    Abilities</h2>
   <div class="inventory" *ngIf="character && character.abilities && character.abilities.length > 0">
     <div [ngClass]="{'inventory-hidden': !ability.isFlavourAbility}" class="inventory-item" *ngFor="let ability of character.abilities; let abilityIndex = index">
       <ng-container *ngIf="ability.isFlavourAbility">
@@ -52,65 +46,47 @@
 
 <div *ngIf="abilityFormEnabled === true">
   <div class="form-group">
-    <label for="name">name</label>
-    <input type="text" id="name" class="form-control" [(ngModel)]="newAbility.name" />
+    <mat-form-field>
+      <input matInput placeholder="name" type="text" id="name" class="form-control" [(ngModel)]="newAbility.name" />
+    </mat-form-field>
   </div>
   <div class="form-group">
-    <label for="description">description</label>
-    <textarea rows="10" id="description" class="form-control" [(ngModel)]="newAbility.description"></textarea>
+    <mat-form-field>
+      <textarea matInput matTextareaAutoSize placeholder="description" id="description" class="form-control"
+        [(ngModel)]="newAbility.description"></textarea>
+    </mat-form-field>
   </div>
-  <div class="checkbox">
-    <label>
-      <input type="checkbox" value="" [(ngModel)]="newAbility.isFlavourAbility">flavour ability</label>
+  <div class="form-group">
+    <mat-checkbox [(ngModel)]="newAbility.isFlavourAbility">Flavour ability</mat-checkbox>
   </div>
+
   <ng-container *ngIf="!newAbility.isFlavourAbility">
     <!-- Base class -->
     <div class="form-group" *ngIf="!newAbility.hasOwnProperty('bloodmarksPerUse')">
-      <label for="usesPerTurn">uses per turn</label>
-      <input type="number" id="usesPerTurn" class="form-control" [(ngModel)]="newAbility.usesPerTurn" />
+      <mat-form-field>
+        <input matInput placeholder="Uses per turn" type="number" id="usesPerTurn" class="form-control" [(ngModel)]="newAbility.usesPerTurn" />
+      </mat-form-field>
     </div>
     <!-- -->
-
-    <!-- Draconic Blood Knight -->
-    <div class="form-group" *ngIf="newAbility.hasOwnProperty('bloodmarksPerUse')">
-      <label for="bloodmarksPerUse">bloodmarks per use</label>
-      <input type="number" id="bloodmarksPerUse" class="form-control" [(ngModel)]="newAbility.bloodmarksPerUse" />
-    </div>
-    <!-- -->
-
-    <!-- Chaos Mage -->
-    <div class="form-group" *ngIf="newAbility.hasOwnProperty('type')">
-      <label for="type">Type</label>
-      <select name="type" id="type" class="form-control" [(ngModel)]="newAbility.type">
-        <option [value]="abilityType.Basic" selected>Basic</option>
-        <option [value]="abilityType.Filler">Filler</option>
-        <option [value]="abilityType.Spender">Spender</option>
-      </select>
-    </div>
-
-    <div class="form-group" 
-      *ngIf="newAbility.hasOwnProperty('type') && (newAbility.type == abilityType.Filler || newAbility.type == abilityType.Spender )">
-      <label for="amountOfPain">amount of pain</label>
-      <input type="number" id="amountOfPain" class="form-control" [(ngModel)]="newAbility.amountOfPain" [min]="1" [max]="20" />
-    </div>
-    <!-- -->
-
     <div class="form-group">
-      <label for="amountOfStrikes">amount of strikes</label>
-      <input type="number" id="amountOfStrikes" class="form-control" [(ngModel)]="newAbility.amountOfStrikes" />
+      <mat-form-field>
+        <input matInput placeholder="Amount of strikes" type="number" id="amountOfStrikes" class="form-control"
+          [(ngModel)]="newAbility.amountOfStrikes" />
+      </mat-form-field>
     </div>
-    <div class="checkbox">
-      <label>
-        <input type="checkbox" value="" [(ngModel)]="newAbility.hasStatusEffect">has status effect</label>
+    <div class="form-group">
+      <mat-checkbox [(ngModel)]="newAbility.hasStatusEffect">has status effect</mat-checkbox>
     </div>
     <ng-container *ngIf="newAbility.hasStatusEffect">
       <div class="form-group">
-        <label for="effectName">effect name</label>
-        <input type="text" id="effectName" class="form-control" [(ngModel)]="newAbility.effect.name" />
+        <mat-form-field>
+          <input matInput placeholder="Effect name" type="text" id="effectName" class="form-control" [(ngModel)]="newAbility.effect.name" />
+        </mat-form-field>
       </div>
       <div class="form-group">
-        <label for="effectTurns">turns the effect lasts</label>
-        <input type="number" id="effectTurns" class="form-control" [(ngModel)]="newAbility.effect.numberOfTurns" />
+        <mat-form-field>
+          <input matInput placeholder="Number of turns" type="number" id="effectTurns" class="form-control" [(ngModel)]="newAbility.effect.numberOfTurns" />
+        </mat-form-field>
       </div>
     </ng-container>
   </ng-container>
