@@ -1,0 +1,80 @@
+@import '~sass/variables';
+
+.woundArea {
+    box-sizing: border-box;
+    background-color: rgba(0, 0, 0, 0.3);
+    border: 3px solid black;
+
+    & > div {
+        padding: 15px 10px;
+    }
+    & > div:first-of-type {
+        background-color: black;
+        position: relative;
+
+        .wound-actions {
+            position: absolute;
+            right: 5px;
+            top: 12px;
+
+            mat-icon {
+                cursor: pointer;
+                font-size: 20px;
+                user-select: none;
+            }
+        }
+    }
+    & > div:last-of-type {
+        padding-bottom: 0;
+    }
+}
+
+.woundList {
+    display: flex;
+    flex-wrap: wrap;
+    min-height: 100px;
+    align-items: flex-start;
+
+    p {
+        position: relative;
+        padding: 5px 15px;
+        background-color: rgb(0, 0, 0);
+        margin-bottom: 10px;
+        margin-right: 10px;
+        text-align: center;
+        font-size: 14px;
+        border-bottom: 2px solid black;
+        cursor: pointer;
+
+        &:last-of-type {
+            margin-bottom: 15px;
+        }
+        &.woundSCR {
+            color: lighten($wound-color, 40%);
+            border-color: lighten($wound-color, 40%);
+        }
+        &.woundLW {
+            color: lighten($wound-color, 25%);
+            border-color: lighten($wound-color, 25%);
+        }
+        &.woundSW {
+            color: lighten($wound-color, 10%);
+            border-color: lighten($wound-color, 10%);
+        }
+        &.woundFAT {
+            color: $wound-color;
+            border-color: $wound-color;
+        }
+
+        .animation-overlay {
+            display: block;
+            height: 100%;
+
+            position: absolute;
+            top: 0;
+            left: 0;
+
+            background-color: rgba(255, 255, 255, 0.8);
+        }
+    }
+}

@@ -34,7 +34,7 @@ import { CharacterNewComponent } from './main/components/character/character-new
 import { BalanceService } from './main/services/balance.service';
 import { PlayerBalanceComponent } from './main/components/infrastructure/player-balance/player-balance.component';
 import { HttpClientModule } from '@angular/common/http';
-import { MatButtonModule, MatCheckboxModule, MatFormFieldModule, MatInputModule, MatRippleModule, MatSelectModule } from '@angular/material';
+import { MatButtonModule, MatCheckboxModule, MatFormFieldModule, MatInputModule, MatRippleModule, MatSelectModule, MatIconModule } from '@angular/material';
 
 const charRoutes: Routes = [
   { path: 'characters', component: CharacterListComponent, canActivate: [AuthGuard] },
@@ -91,6 +91,7 @@ const charRoutes: Routes = [
     MatRippleModule,
     MatCheckboxModule,
     MatSelectModule,
+    MatIconModule,
     RouterModule.forRoot(charRoutes)
   ],
   providers: [

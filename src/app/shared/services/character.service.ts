@@ -5,6 +5,7 @@ import { AuthService } from '../../auth/services';
 import { ErrorService } from './error-service.service';
 import { environment } from '../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
+import { take } from 'rxjs/operators';
 
 @Injectable()
 export class CharacterService {
@@ -117,39 +118,37 @@ export class CharacterService {
 
     updateCharacterById(id: number, character: Character) {
         this.characters[id] = character;
-        this.saveCharacters(this.characters).subscribe(
+        this.saveCharacters(this.characters).pipe(take(1)).subscribe(
             () => { },
             (error) => {
-                this.errorService.displayError(error.json().error);
+                this.errorService.displayError(error.message);
             }
         );
     }
 
     updateCharacterByIdAfterEdit(id: number, character: Character) {
-        // const char = this.convertClass(character);
         this.characters[id] = character;
-        this.saveCharacters(this.characters).subscribe(
+        this.saveCharacters(this.characters).pipe(take(1)).subscribe(
             () => { },
             (error) => {
-                this.errorService.displayError(error.json().error);
+                this.errorService.displayError(error.message);
             }
         );
     }
 
     addCharacter(character: Character) {
-        // const char = this.convertClass(character);
         this.characters.push(character);
-        this.saveCharacters(this.characters).subscribe(
+        this.saveCharacters(this.characters).pipe(take(1)).subscribe(
             () => { },
             (error) => {
-                this.errorService.displayError(error.json().error);
+                this.errorService.displayError(error.message);
             }
         );
     }
 
     deleteCharacter(id: number) {
         this.characters.splice(id, 1);
-        this.saveCharacters(this.characters).subscribe(
+        this.saveCharacters(this.characters).pipe(take(1)).subscribe(
             () => { },
             (error) => {
                 this.errorService.displayError(error.message);

@@ -1,75 +1,59 @@
 <div class="woundSelectorWrapper">
   <div class="woundsTop">
-    <div class="woundArea">
-      <div class="woundsHead">
-        Head
-      </div>
-      <div class="woundList">
-        <ng-container *ngFor="let wound of wounds">
-          <p class="wound{{wound.severity}}" *ngIf="wound.location === 'head'">{{ wound.severity }}</p>
-        </ng-container>
-      </div>
-    </div>
+    <wound-area
+      [location]="woundLocation.Head"
+      [wounds]="wounds"
+      (addWound)="onAddWound($event)"
+      (removeWound)="onRemoveWound($event)"
+      (clearWounds)="onClearWounds($event)">
+    </wound-area>
   </div>
   <div class="woundsMiddle">
-    <div class="woundArea">
-      <div class="woundsLeftArm">
-        Left arm
-      </div>
-      <div class="woundList">
-        <ng-container *ngFor="let wound of wounds">
-          <p class="wound{{wound.severity}}" *ngIf="wound.location === 'leftArm'">{{ wound.severity }}</p>
-        </ng-container>
-      </div>
-    </div>
-    <div class="woundArea">
-      <div class="woundsRightArm">Right arm</div>
-      <div class="woundList">
-        <ng-container *ngFor="let wound of wounds">
-          <p class="wound{{wound.severity}}" *ngIf="wound.location === 'rightArm'">{{ wound.severity }}</p>
-        </ng-container>
-      </div>
-    </div>
+    <wound-area
+      [location]="woundLocation.LeftArm"
+      [wounds]="wounds"
+      (addWound)="onAddWound($event)"
+      (removeWound)="onRemoveWound($event)"
+      (clearWounds)="onClearWounds($event)">
+    </wound-area>
+    <wound-area
+      [location]="woundLocation.RightArm"
+      [wounds]="wounds"
+      (addWound)="onAddWound($event)"
+      (removeWound)="onRemoveWound($event)"
+      (clearWounds)="onClearWounds($event)">
+    </wound-area>
   </div>
   <div class="woundsMiddle">
-    <div class="woundArea">
-      <div class="woundsChest">
-        Chest
-      </div>
-      <div class="woundList">
-        <ng-container *ngFor="let wound of wounds">
-          <p class="wound{{wound.severity}}" *ngIf="wound.location === 'chest'">{{ wound.severity }}</p>
-        </ng-container>
-      </div>
-    </div>
-    <div class="woundArea">
-      <div class="woundsAbs">
-        Abdomen
-      </div>
-      <div class="woundList">
-        <ng-container *ngFor="let wound of wounds">
-          <p class="wound{{wound.severity}}" *ngIf="wound.location === 'abdomen'">{{ wound.severity }}</p>
-        </ng-container>
-      </div>
-    </div>
+    <wound-area
+      [location]="woundLocation.Chest"
+      [wounds]="wounds"
+      (addWound)="onAddWound($event)"
+      (removeWound)="onRemoveWound($event)"
+      (clearWounds)="onClearWounds($event)">
+    </wound-area>
+    <wound-area
+      [location]="woundLocation.Abdomen"
+      [wounds]="wounds"
+      (addWound)="onAddWound($event)"
+      (removeWound)="onRemoveWound($event)"
+      (clearWounds)="onClearWounds($event)">
+    </wound-area>
   </div>
   <div class="woundsBottom">
-    <div class="woundArea">
-      <div class="woundsLeftLeg">Left leg
-      </div>
-      <div class="woundList">
-        <ng-container *ngFor="let wound of wounds">
-          <p class="wound{{wound.severity}}" *ngIf="wound.location === 'leftLeg'">{{ wound.severity }}</p>
-        </ng-container>
-      </div>
-    </div>
-    <div class="woundArea">
-      <div class="woundsRightLeg">Right leg</div>
-      <div class="woundList">
-        <ng-container *ngFor="let wound of wounds">
-          <p class="wound{{wound.severity}}" *ngIf="wound.location === 'rightLeg'">{{ wound.severity }}</p>
-        </ng-container>
-      </div>
-    </div>
+    <wound-area
+      [location]="woundLocation.LeftLeg"
+      [wounds]="wounds"
+      (addWound)="onAddWound($event)"
+      (removeWound)="onRemoveWound($event)"
+      (clearWounds)="onClearWounds($event)">
+    </wound-area>
+    <wound-area
+      [location]="woundLocation.RightLeg"
+      [wounds]="wounds"
+      (addWound)="onAddWound($event)"
+      (removeWound)="onRemoveWound($event)"
+      (clearWounds)="onClearWounds($event)">
+    </wound-area>
   </div>
 </div>

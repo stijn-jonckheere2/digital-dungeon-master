@@ -1,5 +1,5 @@
 import { v1 as uuidv1 } from 'uuid';
-import { ChaosMageAbilityType } from './character.enums';
+import { ChaosMageAbilityType, WoundLocation, WoundSeverity } from './character.enums';
 
 // tslint:disable:prefer-for-of
 // tslint:disable:space-before-function-paren
@@ -67,6 +67,8 @@ class Serializable {
       }
       if (!sheet.wounds) {
         sheet.wounds = [];
+      } else {
+        sheet.wounds = Character.migrateWounds(sheet.wounds);
       }
       if (!sheet.statusEffects) {
         sheet.statusEffects = [];
@@ -76,13 +78,72 @@ class Serializable {
       }
 
       sheet.minionWoundSheets.map(minionSheet => {
-        minionSheet.wounds = minionSheet.wounds ? minionSheet.wounds : [];
+        minionSheet.wounds = minionSheet.wounds ? Character.migrateWounds(minionSheet.wounds) : [];
       });
 
       sheets.push(sheet);
     });
 
     return sheets;
+  }
+  static migrateWounds(wounds: CombatWound[]): CombatWound[] {
+    return wounds.map((wound: CombatWound) => {
+      let location: WoundLocation = null;
+      let severity: WoundSeverity = null;
+
+      switch (wound.severity as string) {
+        case 'SCR':
+          severity = WoundSeverity.Scratch;
+          break;
+        case 'LW':
+          severity = WoundSeverity.Light;
+          break;
+        case 'SW':
+          severity = WoundSeverity.Severe;
+          break;
+        case 'FAT':
+          severity = WoundSeverity.Fatal;
+      }
+
+      switch (wound.location as string) {
+        case WoundLocation.LeftArm:
+        case 'leftArm':
+          location = WoundLocation.LeftArm;
+          break;
+
+        case WoundLocation.RightArm:
+        case 'rightArm':
+          location = WoundLocation.RightArm;
+          break;
+
+        case WoundLocation.Chest:
+        case 'chest':
+          location = WoundLocation.Chest;
+          break;
+
+        case WoundLocation.Abdomen:
+        case 'abdomen':
+          location = WoundLocation.Abdomen;
+          break;
+
+        case WoundLocation.LeftLeg:
+        case 'leftLeg':
+          location = WoundLocation.LeftLeg;
+          break;
+
+        case WoundLocation.RightLeg:
+        case 'rightLeg':
+          location = WoundLocation.RightLeg;
+          break;
+
+        case WoundLocation.Head:
+        case 'head':
+          location = WoundLocation.Head;
+          break;
+      }
+
+      return new CombatWound(location, severity);
+    });
   }
 }
 
@@ -414,7 +475,9 @@ export class MinionWoundSheet {
 }
 
 export class CombatWound {
-  constructor(public location: string, public severity: string) { }
+  constructor(
+    public location: WoundLocation,
+    public severity: WoundSeverity) { }
 }
 
 export const primaryStatNames = [

@@ -1,0 +1,30 @@
+<div class="woundArea">
+    <div>
+        {{ location }}
+        <div class="wound-actions">
+            <mat-icon (mousedown)="onClearDown()" (mouseup)="onClearUp()">clear_all</mat-icon>
+            <mat-icon [matMenuTriggerFor]="woundMenu">add</mat-icon>
+            <mat-menu #woundMenu="matMenu">
+                <button mat-menu-item (click)="onAddWound(location, woundSeverity.Scratch)">Scratch</button>
+                <button mat-menu-item (click)="onAddWound(location, woundSeverity.Light)">Light wound</button>
+                <button mat-menu-item (click)="onAddWound(location, woundSeverity.Severe)">Severe wound</button>
+                <button mat-menu-item (click)="onAddWound(location, woundSeverity.Fatal)">Fatal</button>
+            </mat-menu>
+        </div>
+    </div>
+    <div class="woundList">
+        <ng-container *ngFor="let wound of wounds; let woundIndex = index">
+            <p *ngIf="wound.location === location"
+                class="wound{{wound.severity}}"
+                (mousedown)="onWoundDown(woundIndex)"
+                (mouseup)="onWoundUp()">
+                {{ wound.severity }}
+                <span 
+                    *ngIf="woundIndex === currentWoundIndex || clearTimerActive"
+                    [style.width]="removeAnimationProgress + '%'"
+                    class="animation-overlay">
+                </span>
+            </p>
+        </ng-container>
+    </div>
+</div>

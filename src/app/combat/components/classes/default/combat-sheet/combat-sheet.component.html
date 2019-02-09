@@ -86,29 +86,13 @@
 
 <ng-container *ngIf="!actionsEnabled">
     <div class="woundsWrapper" *ngIf="currentSheet && currentSheet.wounds">
-        <app-wound-selector *ngIf="!woundFormVisible" [wounds]="currentSheet.wounds"></app-wound-selector>
-        <app-wound-form *ngIf="woundFormVisible" [wounds]="formWounds" [formType]="formType" (woundAdded)="woundAdded($event)" (woundLowered)="woundLowered($event)"
-            (woundRemoved)="woundRemoved($event)" (formCanceled)="woundFormCanceled()"></app-wound-form>
-    </div>
-    <div class="buttonWrapper" *ngIf="character && currentSheet">
-        <a (click)="addWound()">
-            <i class="material-icons">add_circle</i>
-        </a>
-        <a (click)="lowerWound()" *ngIf="currentSheet.wounds.length > 0">
-            <i class="material-icons">low_priority</i>
-        </a>
-        <a *ngIf="currentSheet.wounds.length === 0">
-            <i style="opacity: 0.5" class="material-icons">low_priority</i>
-        </a>
-        <a (click)="removeWound()" *ngIf="currentSheet.wounds.length > 0">
-            <i class="material-icons">remove_circle</i>
-        </a>
-        <a *ngIf="currentSheet.wounds.length === 0">
-            <i style="opacity: 0.5" class="material-icons">remove_circle</i>
-        </a>
-        <a (click)="clearWounds()">
-            <i class="material-icons">clear_all</i>
-        </a>
+        <app-wound-selector 
+            *ngIf="!woundFormVisible" 
+            [wounds]="currentSheet.wounds" 
+            (addWound)="onAddWound($event)"
+            (removeWound)="onRemoveWound($event)"
+            (clearWounds)="onClearWounds($event)">
+        </app-wound-selector>
     </div>
 </ng-container>
 

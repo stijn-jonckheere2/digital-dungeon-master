@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Character, CombatWound, MinionWoundSheet, CombatSheet } from '../../../../../shared/models';
+import { Character, CombatWound, MinionWoundSheet, CombatSheet, WoundLocation } from '../../../../../shared/models';
 import { CharacterService, ErrorService } from '../../../../../shared/services';
 
 @Component({
@@ -19,8 +19,6 @@ export class MinionWoundSheetComponent implements OnInit, OnDestroy {
     currentMinionSheetIndex: number;
     currentMinionSheet: MinionWoundSheet;
 
-    woundFormVisible = false;
-
     formWounds: CombatWound[] = [];
     formType = 'add';
 
@@ -28,7 +26,6 @@ export class MinionWoundSheetComponent implements OnInit, OnDestroy {
                 private errorService: ErrorService,
                 private route: ActivatedRoute,
                 private router: Router) {
-
     }
 
     ngOnInit() {
@@ -56,73 +53,25 @@ export class MinionWoundSheetComponent implements OnInit, OnDestroy {
 
     // WOUNDS
 
-    addWound() {
-        this.formType = 'add';
-        this.formWounds = [];
-        this.woundFormVisible = true;
-    }
-
-    woundAdded(wound: CombatWound) {
+    onAddWound(wound: CombatWound) {
         this.currentMinionSheet.wounds.push(wound);
         this.recalculateWounds();
     }
 
-    lowerWound() {
-        this.formType = 'lower';
-        this.formWounds = this.currentMinionSheet.wounds.filter((w) => {
-            if (w.severity !== 'SCR') {
-                return w;
-            }
+    onRemoveWound(wound: CombatWound) {
+        const woundIndex = this.currentMinionSheet.wounds.findIndex(w => w.location === wound.location && w.severity === wound.severity);
+        this.currentMinionSheet.wounds.splice(woundIndex, 1);
+        this.recalculateWounds();
+    }
+
+    onClearWounds(location: WoundLocation): void {
+        this.currentMinionSheet.wounds = this.currentMinionSheet.wounds.filter((wound: CombatWound) => {
+            return wound.location !== location;
         });
-        this.woundFormVisible = true;
-    }
-
-    woundLowered(wound: CombatWound) {
-        const woundIndex = this.currentMinionSheet.wounds.findIndex(w => w.location === wound.location && w.severity === wound.severity);
-        switch (this.currentMinionSheet.wounds[woundIndex].severity) {
-            case 'FAT':
-                this.currentMinionSheet.wounds.push(new CombatWound(wound.location, 'SW'), new CombatWound(wound.location, 'SW'));
-                break;
-            case 'SW':
-                this.currentMinionSheet.wounds.push(new CombatWound(wound.location, 'LW'),
-                    new CombatWound(wound.location, 'LW'));
-                break;
-            case 'LW':
-                this.currentMinionSheet.wounds.push(new CombatWound(wound.location, 'SCR'),
-                    new CombatWound(wound.location, 'SCR'));
-                break;
-        }
-        this.currentMinionSheet.wounds.splice(woundIndex, 1);
         this.recalculateWounds();
-    }
-
-    removeWound() {
-        this.formType = 'remove';
-        this.formWounds = this.currentMinionSheet.wounds;
-        this.woundFormVisible = true;
-    }
-
-    woundRemoved(wound: CombatWound) {
-        const woundIndex = this.currentMinionSheet.wounds.findIndex(w => w.location === wound.location && w.severity === wound.severity);
-        this.currentMinionSheet.wounds.splice(woundIndex, 1);
-        this.recalculateWounds();
-    }
-
-    clearWounds() {
-        if (confirm('Are you sure you want to clear your wounds?')) {
-            this.currentMinionSheet.wounds = [];
-            this.onSaveCharacter();
-        }
-    }
-
-    woundFormCanceled() {
-        this.formType = 'add';
-        this.formWounds = [];
-        this.woundFormVisible = false;
     }
 
     recalculateWounds() {
-        this.woundFormVisible = false;
         this.currentSheet.minionWoundSheets[this.currentMinionSheetIndex] = this.currentMinionSheet;
         this.characterService.updateCombatSheet(this.charId, this.currentSheetIndex, this.currentSheet);
     }

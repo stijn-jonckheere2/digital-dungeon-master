@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Character, CombatSheet, Ability, CombatWound, InventoryItem, MinionWoundSheet } from '../../../../../shared/models';
+import { Character, CombatSheet, Ability, CombatWound, InventoryItem, MinionWoundSheet, WoundLocation } from '../../../../../shared/models';
 import { CharacterService, ErrorService } from '../../../../../shared/services';
 
 @Component({
@@ -30,7 +30,6 @@ export class CombatSheetComponent implements OnInit, OnDestroy {
               private errorService: ErrorService,
               private route: ActivatedRoute,
               private router: Router) {
-
   }
 
   loadCharacter() {
@@ -52,8 +51,6 @@ export class CombatSheetComponent implements OnInit, OnDestroy {
         this.loadCharacter();
       }
     );
-
-    console.log('loaded sheet', this.currentSheet);
   }
 
   setInitiative() {
@@ -202,76 +199,25 @@ export class CombatSheetComponent implements OnInit, OnDestroy {
 
   // WOUNDS
 
-  addWound() {
-    this.formType = 'add';
-    this.formWounds = [];
-    this.woundFormVisible = true;
-  }
-
-  woundAdded(wound: CombatWound) {
+  onAddWound(wound: CombatWound) {
     this.currentSheet.wounds.push(wound);
     this.recalculateWounds();
   }
 
-  lowerWound() {
-    this.formType = 'lower';
-    this.formWounds = this.currentSheet.wounds.filter((w) => {
-      if (w.severity !== 'SCR') {
-        return w;
-      }
+  onRemoveWound(wound: CombatWound) {
+    const woundIndex = this.currentSheet.wounds.findIndex(w => w.location === wound.location && w.severity === wound.severity);
+    this.currentSheet.wounds.splice(woundIndex, 1);
+    this.recalculateWounds();
+  }
+
+  onClearWounds(location: WoundLocation): void {
+    this.currentSheet.wounds = this.currentSheet.wounds.filter((wound: CombatWound) => {
+      return wound.location !== location;
     });
-    this.woundFormVisible = true;
-  }
-
-  woundLowered(wound: CombatWound) {
-    const woundIndex = this.currentSheet.wounds.findIndex(w => w.location === wound.location && w.severity === wound.severity);
-    switch (this.currentSheet.wounds[woundIndex].severity) {
-      case 'FAT':
-        this.currentSheet.wounds.push(new CombatWound(wound.location, 'SW'), new CombatWound(wound.location, 'SW'));
-        break;
-      case 'SW':
-        this.currentSheet.wounds.push(new CombatWound(wound.location, 'LW'),
-          new CombatWound(wound.location, 'LW'));
-        break;
-      case 'LW':
-        this.currentSheet.wounds.push(new CombatWound(wound.location, 'SCR'),
-          new CombatWound(wound.location, 'SCR'));
-        break;
-    }
-    this.currentSheet.wounds.splice(woundIndex, 1);
     this.recalculateWounds();
-  }
-
-  removeWound() {
-    this.formType = 'remove';
-    this.formWounds = this.currentSheet.wounds;
-    this.woundFormVisible = true;
-  }
-
-  woundRemoved(wound: CombatWound) {
-    const woundIndex = this.currentSheet.wounds.findIndex(w => w.location === wound.location && w.severity === wound.severity);
-    this.currentSheet.wounds.splice(woundIndex, 1);
-    this.recalculateWounds();
-  }
-
-  clearWounds() {
-    if (confirm('Are you sure you want to clear your wounds?')) {
-      this.currentSheet.wounds = [];
-      this.onSaveCharacter();
-    }
-  }
-
-  woundFormCanceled() {
-    this.formType = 'add';
-    this.formWounds = [];
-    this.woundFormVisible = false;
   }
 
   recalculateWounds() {
-    // Accumulate wounds
-
-    //
-    this.woundFormVisible = false;
     this.characterService.updateCombatSheet(this.charId, this.currentSheetIndex, this.currentSheet);
   }
 
