@@ -2,7 +2,13 @@
     <div>
         {{ location }}
         <div class="wound-actions">
-            <mat-icon (mousedown)="onClearDown()" (mouseup)="onClearUp()">clear_all</mat-icon>
+            <mat-icon
+                (touchstart)="onClearDown($event)"
+                (touchend)="onClearUp($event)"
+                (mousedown)="onClearDown($event)"
+                (mouseup)="onClearUp($event)">
+                clear_all
+            </mat-icon>
             <mat-icon [matMenuTriggerFor]="woundMenu">add</mat-icon>
             <mat-menu #woundMenu="matMenu">
                 <button mat-menu-item (click)="onAddWound(location, woundSeverity.Scratch)">Scratch</button>
@@ -16,8 +22,10 @@
         <ng-container *ngFor="let wound of wounds; let woundIndex = index">
             <p *ngIf="wound.location === location"
                 class="wound{{wound.severity}}"
-                (mousedown)="onWoundDown(woundIndex)"
-                (mouseup)="onWoundUp()">
+                (touchstart)="onWoundDown($event, woundIndex)"
+                (touchend)="onWoundUp($event)"
+                (mousedown)="onWoundDown($event, woundIndex)"
+                (mouseup)="onWoundUp($event)">
                 {{ wound.severity }}
                 <span 
                     *ngIf="woundIndex === currentWoundIndex || clearTimerActive"

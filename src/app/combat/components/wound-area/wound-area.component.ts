@@ -58,20 +58,24 @@ export class WoundAreaComponent implements OnInit {
         }
     }
 
-    onClearDown(): void {
+    onClearDown(event: any): void {
+        this.blockEvent(event);
         this.startClearTimer();
     }
 
-    onClearUp(): void {
+    onClearUp(event: any): void {
+        this.blockEvent(event);
         this.stopClearTimer();
     }
 
-    onWoundDown(woundIndex: number): void {
+    onWoundDown(event: any, woundIndex: number): void {
+        this.blockEvent(event);
         this.currentWoundIndex = woundIndex;
         this.startRemoveTimer();
     }
 
-    onWoundUp() {
+    onWoundUp(event: any) {
+        this.blockEvent(event);
         this.stopRemoveTimer();
         this.currentWoundIndex = null;
     }
@@ -131,5 +135,10 @@ export class WoundAreaComponent implements OnInit {
 
     calculateAnimationProgress(): void {
         this.removeAnimationProgress = (this.removeAnimationTimePassed / this.removeAnimationLength) * 100;
+    }
+
+    blockEvent(event: any): void {
+        event.preventDefault();
+        event.stopPropagation();
     }
 }
