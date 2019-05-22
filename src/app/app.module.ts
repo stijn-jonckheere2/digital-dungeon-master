@@ -35,6 +35,8 @@ import { BalanceService } from './main/services/balance.service';
 import { PlayerBalanceComponent } from './main/components/infrastructure/player-balance/player-balance.component';
 import { HttpClientModule } from '@angular/common/http';
 import { MatButtonModule, MatCheckboxModule, MatFormFieldModule, MatInputModule, MatRippleModule, MatSelectModule, MatIconModule, MatSidenavModule } from '@angular/material';
+import { PinchZoomModule } from 'ngx-pinch-zoom';
+import { WorldMapComponent } from './main/components/infrastructure/world-map/world-map.component';
 
 const charRoutes: Routes = [
   { path: 'characters', component: CharacterListComponent, canActivate: [AuthGuard] },
@@ -52,6 +54,7 @@ const charRoutes: Routes = [
     ]
   },
   { path: 'characters/:id/edit', component: CharacterEditComponent, canActivate: [AuthGuard] },
+  { path: 'world-map', component: WorldMapComponent, canActivate: [AuthGuard] }
 ];
 
 const materialModules = [
@@ -78,6 +81,7 @@ const materialModules = [
     ErrorDisplayComponent,
     AbilitiesComponent,
     PlayerNotesComponent,
+    WorldMapComponent,
     StoryRecapComponent,
     CharacterListComponent,
     CharacterEditComponent,
@@ -96,6 +100,7 @@ const materialModules = [
     FormsModule,
     HttpClientModule,
     BrowserAnimationsModule,
+    PinchZoomModule,
     ...materialModules,
     RouterModule.forRoot(charRoutes)
   ],

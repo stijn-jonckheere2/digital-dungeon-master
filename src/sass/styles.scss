@@ -129,8 +129,10 @@ p, li, a, span {
     }
 }
 
-
-
 .mat-checkbox-checked.mat-accent .mat-checkbox-background {
     background-color: #2196f3;
+}
+
+.mat-fab.mat-accent {
+    background-color: $primary-color;
 }
