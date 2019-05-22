@@ -1,16 +1,30 @@
 @import '~sass/variables';
 
+
 .header {
     position: fixed;
     width: 100%;
     top: 0;
     left: 0;
-    background-color: $primary-color;
     display: block;
     box-shadow: 0px 0px 9px 0px rgba(0,0,0,0.75);    
-    z-index: 999;
+    z-index: 5;
     max-height: 100vh;
     overflow-y: auto;
+
+    mat-sidenav-container, mat-sidenav {
+        background-color: $primary-color;
+    }
+
+    ::ng-deep .mat-drawer-backdrop {
+        position: fixed !important;
+    }
+}
+
+.menu-button {
+    mat-icon {
+        font-size: 1.6em;
+    }
 }
 
 .header ul {
@@ -30,70 +44,38 @@
     list-style-type: none;
     display: none;
 }
+
 .header li.active a {
     position: relative;
     &::before, &::after {
         position: absolute;
         top: calc(50% - 2px);
         content: "";
-        background-color: $primary-color-dark;
+        background-color: darken($primary-color-dark, 5%);
         height: 4px;
         display: block;
-        width: 50px;
+        width: 20px;
+    }
+    &::before {
+        left: 0;
     }
     &::after {
         right: 0;
     }
 }
-.header li:first-of-type {
-    display: block;
-    text-align: center;
 
-    background-image: url("/assets/images/menu-icon.png");
-    background-size: 30px 30px;
-    background-repeat: no-repeat;
-    background-position: 20px;
-}
 .header a {
     text-decoration: none;
     text-align: center;
     color: #F2F2F2;
     display: block;
-    padding: 10px 0;
+    padding: 10px 30px;
 }
+
 .header li.nav-dark {
     background-color: $primary-color-dark;
 }
 
-@media (min-width: 768px) {
-    .header ul {
-        max-width: 880px;
-        margin: 0 auto;
-        padding: 0;
-        display: flex;
-
-        li {
-            display: block;
-            padding: 0;
-            text-align: center;
-
-            flex-basis: 15%;
-            flex-grow: 0;
-            flex-shrink: 1;
-
-            &.active {
-                border-bottom: 5px solid #F2F2F2;
-                a {
-                    color: #F2F2F2; 
-                    
-                }
-                a::before, a::after {
-                    display: none;
-                }
-            }
-            a {
-                padding: 20px 0;
-            }
-        }
-    }
+.header li.nav-darker {
+    background-color: lighten($primary-color-dark, 10%);
 }

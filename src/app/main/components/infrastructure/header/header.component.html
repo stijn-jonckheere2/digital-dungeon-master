@@ -1,60 +1,66 @@
 <div class="header">
-  <ul [ngClass]="{'dropdown-closed': !mobileMenuOpen, 'dropdown-open': mobileMenuOpen }" (click)="toggleMobileMenu()" *ngIf="authenticated && selectedChar === -1">
-    <li class="hide-on-desktop">
-      <a>Menu</a>
+  <mat-sidenav-container>
+    <mat-sidenav #sidenav [fixedInViewport]="true" [fixedTopGap]="0" [fixedBottomGap]="0"
+      (backdropClick)="onCloseSidebar()">
+      <ng-template *ngIf="authenticated then navigation"></ng-template>
+    </mat-sidenav>
+
+    <mat-sidenav-content (click)="onOpenSidebar()">
+      <button class="menu-button" mat-button>
+        <mat-icon>menu</mat-icon>
+      </button>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+</div>
+
+<ng-template #navigation>
+  <ul (click)="onCloseSidebar()">
+    <ng-container *ngIf="selectedChar != undefined && selectedChar != null">
+      <li routerLinkActive="active">
+        <a [routerLink]="['/characters', selectedChar, 'stats']">Stats</a>
+      </li>
+      <li routerLinkActive="active">
+        <a [routerLink]="['/characters', selectedChar, 'abilities']">Abilities</a>
+      </li>
+      <li routerLinkActive="active">
+        <a [routerLink]="['/characters', selectedChar, 'equipment']">Gear stats</a>
+      </li>
+      <li routerLinkActive="active">
+        <a [routerLink]="['/characters', selectedChar, 'professions']">Professions</a>
+      </li>
+      <li routerLinkActive="active">
+        <a [routerLink]="['/characters', selectedChar, 'inventory']">Inventory</a>
+      </li>
+      <li routerLinkActive="active">
+        <a [routerLink]="['/characters', selectedChar, 'quests']">Questlog</a>
+      </li>
+      <li routerLinkActive="active">
+        <a [routerLink]="['/characters', selectedChar, 'npcs']">NPC's</a>
+      </li>
+      <li routerLinkActive="active">
+        <a [routerLink]="['/characters', selectedChar, 'combat-sheets']">Combat sheets</a>
+      </li>
+      <li routerLinkActive="active">
+        <a [routerLink]="['/characters', selectedChar, 'logs']">Logs</a>
+      </li>
+    </ng-container>
+
+    <li class="nav-darker">
+      <a [routerLink]="['/characters']">My characters</a>
     </li>
-    <li routerLinkActive="active">
-      <a [routerLink]="['/characters']">My Characters</a>
-    </li>
-    <li routerLinkActive="active">
+    <li routerLinkActive="active" class="nav-darker">
       <a [routerLink]="['/player-notes']">My Notes</a>
     </li>
-    <li routerLinkActive="active">
+    <li routerLinkActive="active" class="nav-darker">
       <a [routerLink]="['/player-balance']">My Balance</a>
     </li>
-    <li routerLinkActive="active">
+    <li routerLinkActive="active" class="nav-darker">
       <a [routerLink]="['/story-recap']">Story Recap</a>
     </li>
     <li class="nav-dark">
       <a (click)="onLogout()">Log out</a>
     </li>
   </ul>
-  <ul [ngClass]="{'dropdown-closed': !mobileMenuOpen, 'dropdown-open': mobileMenuOpen }" (click)="toggleMobileMenu()" *ngIf="authenticated && selectedChar > -1">
-    <li class="hide-on-desktop">
-      <a>Menu</a>
-    </li>
-    <li routerLinkActive="active">
-      <a [routerLink]="['/characters', selectedChar, 'stats']">Stats</a>
-    </li>
-    <li routerLinkActive="active">
-      <a [routerLink]="['/characters', selectedChar, 'abilities']">Abilities</a>
-    </li>
-    <li routerLinkActive="active">
-      <a [routerLink]="['/characters', selectedChar, 'equipment']">Gear</a>
-    </li>
-    <li routerLinkActive="active">
-      <a [routerLink]="['/characters', selectedChar, 'professions']">Professions</a>
-    </li>
-    <li routerLinkActive="active">
-      <a [routerLink]="['/characters', selectedChar, 'inventory']">Inventory</a>
-    </li>
-    <li routerLinkActive="active">
-      <a [routerLink]="['/characters', selectedChar, 'quests']">Quests</a>
-    </li>
-    <li routerLinkActive="active">
-      <a [routerLink]="['/characters', selectedChar, 'npcs']">NPCs</a>
-    </li>
-    <li routerLinkActive="active">
-      <a [routerLink]="['/characters', selectedChar, 'combat-sheets']">Combat</a>
-    </li>
-    <li routerLinkActive="active">
-      <a [routerLink]="['/characters', selectedChar, 'logs']">Logs</a>
-    </li>
-    <li class="nav-dark">
-      <a (click)="unselectCharacter()">Chars</a>
-    </li>
-    <li class="nav-dark">
-      <a (click)="onLogout()">Logout</a>
-    </li>
-  </ul>
-</div>
+</ng-template>
+
+<!--  -->

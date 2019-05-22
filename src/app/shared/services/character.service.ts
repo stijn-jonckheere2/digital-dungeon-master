@@ -27,7 +27,7 @@ export class CharacterService {
     }
 
     unsetCharacterSelected() {
-        this.characterSelection.emit(-1);
+        this.characterSelection.emit(null);
     }
 
     // Character Methods

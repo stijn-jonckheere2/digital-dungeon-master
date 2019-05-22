@@ -1,8 +1,11 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 
 import { Router } from '@angular/router';
 import { AuthService } from '../../../../auth/services';
 import { CharacterService } from '../../../../shared/services';
+import { MatSidenav } from '@angular/material';
+
+// tslint:disable:align
 
 @Component({
   selector: 'app-header',
@@ -10,17 +13,17 @@ import { CharacterService } from '../../../../shared/services';
   styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent implements OnInit, OnDestroy {
-  mobileMenuOpen = false;
-
   authenticated = false;
-  selectedChar = -1;
+  selectedChar: number;
 
   authListener: any;
   charListener: any;
 
+  @ViewChild('sidenav') sidenav: MatSidenav;
+
   constructor(private authService: AuthService,
-              private characterService: CharacterService,
-              private router: Router) {
+    private characterService: CharacterService,
+    private router: Router) {
   }
 
   ngOnInit() {
@@ -39,22 +42,22 @@ export class HeaderComponent implements OnInit, OnDestroy {
     );
   }
 
+  onOpenSidebar(): void {
+    if (this.authenticated) {
+      this.sidenav.open();
+    }
+  }
+
+  onCloseSidebar(): void {
+    this.sidenav.close();
+  }
+
   unselectCharacter() {
-    this.mobileMenuOpen = false;
     this.characterService.unsetCharacterSelected();
     this.router.navigate(['/characters']);
   }
 
-  toggleMobileMenu() {
-    if (window.innerWidth <= 768) {
-      this.mobileMenuOpen = !this.mobileMenuOpen;
-    } else {
-      this.mobileMenuOpen = false;
-    }
-  }
-
   onLogout() {
-    this.mobileMenuOpen = false;
     this.characterService.unsetCharacterSelected();
     this.characterService.clear();
     this.authService.logout();
