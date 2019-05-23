@@ -5,7 +5,7 @@
     <p>Loading map...</p>
 </ng-container>
 
-<ng-container *ngIf="mapSourceLoading === false">
+<ng-container *ngIf="mapSource && mapSourceLoading === false">
     <pinch-zoom *ngIf="!fullscreen">
         <img [src]="mapSource" />
     </pinch-zoom>
