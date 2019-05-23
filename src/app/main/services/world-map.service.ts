@@ -12,6 +12,6 @@ export class WorldMapService {
     const url = environment.database.databaseURL + '/worldmapsource.json';
     const response: any = await this.http.get(url).toPromise();
     const source = response !== null ? response[0] : null;
-    return source !== null ? source : 'assets/images/world-map.jpg';
+    return source !== null ? source : 'assets/images/world-map-small.jpg';
   }
 }

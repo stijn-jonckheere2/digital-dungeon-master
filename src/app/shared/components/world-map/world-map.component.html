@@ -12,7 +12,7 @@
 
     <div *ngIf="fullscreen" class="fullscreen-image-wrapper">
         <pinch-zoom>
-            <img src="assets/images/world-map.jpg" />
+            <img [src]="mapSource" />
         </pinch-zoom>
     </div>
 
