@@ -1,0 +1,39 @@
+<!--component html goes here -->
+<h2>World map</h2>
+
+<ng-container *ngIf="mapSourceLoading === true">
+    <p>Loading map...</p>
+</ng-container>
+
+<ng-container *ngIf="mapSourceLoading === false">
+    <pinch-zoom *ngIf="!fullscreen">
+        <img [src]="mapSource" />
+    </pinch-zoom>
+
+    <div *ngIf="fullscreen" class="fullscreen-image-wrapper">
+        <pinch-zoom>
+            <img src="assets/images/world-map.jpg" />
+        </pinch-zoom>
+    </div>
+
+    <div class="speed-dial-wrapper">
+        <eco-fab-speed-dial>
+            <eco-fab-speed-dial-trigger>
+                <button mat-fab>
+                    <mat-icon>menu</mat-icon>
+                </button>
+            </eco-fab-speed-dial-trigger>
+            <eco-fab-speed-dial-actions>
+                <button *ngIf="!fullscreen" mat-mini-fab (click)="refreshWorldMap()">
+                    <mat-icon>refresh</mat-icon>
+                </button>
+                <button *ngIf="!fullscreen" mat-mini-fab (click)="toggleFullscreen(true)">
+                    <mat-icon>fullscreen</mat-icon>
+                </button>
+                <button *ngIf="fullscreen" mat-mini-fab (click)="toggleFullscreen(false)">
+                    <mat-icon>keyboard_backspace</mat-icon>
+                </button>
+            </eco-fab-speed-dial-actions>
+        </eco-fab-speed-dial>
+    </div>
+</ng-container>

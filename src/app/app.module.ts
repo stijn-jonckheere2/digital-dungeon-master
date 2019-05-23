@@ -36,7 +36,9 @@ import { PlayerBalanceComponent } from './main/components/infrastructure/player-
 import { HttpClientModule } from '@angular/common/http';
 import { MatButtonModule, MatCheckboxModule, MatFormFieldModule, MatInputModule, MatRippleModule, MatSelectModule, MatIconModule, MatSidenavModule } from '@angular/material';
 import { PinchZoomModule } from 'ngx-pinch-zoom';
-import { WorldMapComponent } from './main/components/infrastructure/world-map/world-map.component';
+import { WorldMapService } from './main/services/world-map.service';
+import { WorldMapComponent } from './shared/components';
+import { EcoFabSpeedDialModule } from '@ecodev/fab-speed-dial';
 
 const charRoutes: Routes = [
   { path: 'characters', component: CharacterListComponent, canActivate: [AuthGuard] },
@@ -102,6 +104,7 @@ const materialModules = [
     BrowserAnimationsModule,
     PinchZoomModule,
     ...materialModules,
+    EcoFabSpeedDialModule,
     RouterModule.forRoot(charRoutes)
   ],
   providers: [
@@ -112,6 +115,7 @@ const materialModules = [
     AuthGuard,
     CharacterService,
     BalanceService,
+    WorldMapService,
     ErrorService
   ],
   bootstrap: [

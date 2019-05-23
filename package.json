@@ -23,6 +23,7 @@
     "@angular/platform-browser": "~7.2.0",
     "@angular/platform-browser-dynamic": "~7.2.0",
     "@angular/router": "~7.2.0",
+    "@ecodev/fab-speed-dial": "^3.1.0",
     "auth0-js": "^9.10.0",
     "core-js": "^2.5.4",
     "firebase": "^5.8.2",
