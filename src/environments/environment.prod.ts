@@ -21,7 +21,8 @@ export const environment = {
     responseType: 'token id_token',
     audience: 'https://midlin.eu.auth0.com/userinfo',
     redirectUri: 'http://ddm.netlify.com/redirecting',
-    scope: 'openid'
+    scope: 'openid',
+    prompt: 'none'
   }
 
 };

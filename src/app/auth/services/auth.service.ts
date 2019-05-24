@@ -19,16 +19,28 @@ export class AuthService {
 
   public handleAuthentication(): void {
     this.auth0.parseHash((err, authResult) => {
-      if (authResult && authResult.accessToken && authResult.idToken) {
-        window.location.hash = '';
-        this.setSession(authResult);
-        this.authEvent.emit(true);
-        this.router.navigate(['/characters']);
-      } else if (err) {
-        this.router.navigate(['/characters']);
-        console.log(err);
-      }
+      this.handleAuthResult(authResult, err, true);
     });
+  }
+
+  public renewSessionSilently(): void {
+    this.auth0.checkSession({}, (err, authResult) => {
+      this.handleAuthResult(authResult, err);
+    });
+  }
+
+  handleAuthResult(authResult: any, error: any, navigation: boolean = false): void {
+    if (authResult && authResult.accessToken && authResult.idToken) {
+      window.location.hash = '';
+      this.setSession(authResult);
+      this.authEvent.emit(true);
+      if (navigation) {
+        this.router.navigate(['/characters']);
+      }
+    } else if (error) {
+      this.router.navigate(['/characters']);
+      console.log(error);
+    }
   }
 
   private setSession(authResult): void {
@@ -53,7 +65,8 @@ export class AuthService {
     // Check whether the current time is past the
     // Access Token"s expiry time
     const expiresAt = JSON.parse(localStorage.getItem('expires_at'));
-    return new Date().getTime() < expiresAt;
+    const dateNow = new Date().getTime();
+    return dateNow < expiresAt;
   }
 
   public getUserId(): string {
@@ -62,4 +75,9 @@ export class AuthService {
     return tokenData.sub;
   }
 
+  public getNonce(): string {
+    const idToken = localStorage.getItem('id_token');
+    const tokenData = jwt_decode(idToken);
+    return tokenData.nonce;
+  }
 }

@@ -21,7 +21,8 @@ export const environment = {
     responseType: 'token id_token',
     audience: 'https://midlin.eu.auth0.com/userinfo',
     redirectUri: 'http://localhost:4200/redirecting',
-    scope: 'openid'
+    scope: 'openid',
+    prompt: 'none'
   }
 
 };
